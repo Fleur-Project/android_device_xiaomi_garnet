@@ -183,9 +183,6 @@ ro.netflix.bsp_rev=Q8450-34634-1
 ro.vendor.extension_library=libqti-perfd-client.so
 vendor.perf.framepacing.enable=1
 
-# Qcomd
-persist.vendor.qcomsysd.enabled=1
-
 # Radio
 persist.dbg.volte_avail_ovr=1
 persist.dbg.vt_avail_ovr=1
