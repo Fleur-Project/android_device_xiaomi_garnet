@@ -215,6 +215,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     charger_fw_fstab.qti \
     fstab.qcom \
+    init.dolby.rc \
     init.garnet.rc \
     init.qcom.rc \
     init.recovery.qcom.rc \

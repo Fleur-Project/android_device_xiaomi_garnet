@@ -47,6 +47,13 @@ prebuilt_etc {
 }
 
 prebuilt_etc {
+    name: "init.dolby.rc",
+    src: "etc/init.dolby.rc",
+    sub_dir: "init",
+    soc_specific: true
+}
+
+prebuilt_etc {
     name: "init.garnet.rc",
     src: "etc/init.garnet.rc",
     sub_dir: "init",

@@ -1,0 +1,3 @@
+on early-boot
+    # Dolby
+    mkdir /data/vendor/multimedia 0775 system system
