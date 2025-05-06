@@ -4,3 +4,5 @@ user=bluetooth seinfo=default name=com.android.bluetooth domain=bluetooth type=b
 # Euicc
 user=system seinfo=platform isPrivApp=true name=com.xiaomi.mtb domain=esimswitcher_app type=system_app_data_file levelFrom=all
 
+# XiaomiParts
+user=system seinfo=platform name=org.lineageos.settings domain=devicesettings_app type=system_app_data_file
