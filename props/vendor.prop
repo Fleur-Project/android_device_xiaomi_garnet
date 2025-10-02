@@ -209,6 +209,12 @@ debug.sdm.support_writeback=0
 # Netflix
 ro.netflix.bsp_rev=Q8450-34634-1
 
+# Media (Dolby)
+ro.vendor.audio.dolby.dax.support=true
+ro.vendor.audio.dolby.surround.enable=true
+vendor.audio.dolby.ds2.enabled=false
+vendor.audio.dolby.ds2.hardbypass=false
+
 # Perf
 ro.vendor.extension_library=libqti-perfd-client.so
 vendor.perf.framepacing.enable=1
