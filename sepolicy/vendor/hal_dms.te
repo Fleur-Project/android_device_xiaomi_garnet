@@ -22,3 +22,5 @@ allow hal_dms_default vendor_audio_prop:property_service set;
 allow hal_dms_default vendor_audio_prop:file {read getattr map open};
 
 allow hal_dms_default init:unix_stream_socket connectto;
+
+get_prop(hal_dms_default, vendor_audio_prop);
