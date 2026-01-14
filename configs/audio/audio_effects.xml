@@ -73,8 +73,8 @@
         <library name="audio_pre_processing" path="libqcomvoiceprocessing.so"/>
         <library name="volume_listener" path="libvolumelistener.so"/>
         <library name="audiosphere" path="libasphere.so"/>
-	<!--DOLBY DAP-->
-        <library name="dap" path="libswdap.so"/>
+        <!--DOLBY DAP-->
+        <library name="dap" path="libhwdap.so"/>
         <library name="dvl" path="libdlbvol.so"/>
         <!--DOLBY END-->
         <!--DOLBY GAME-->
