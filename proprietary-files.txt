@@ -1503,7 +1503,6 @@ vendor/etc/init/vendor.qti.media.c2@1.0-service.rc
 vendor/etc/init/vendor.qti.media.c2audio@1.0-service.rc
 vendor/etc/seccomp_policy/codec2.vendor.base-arm64.policy
 vendor/etc/seccomp_policy/codec2.vendor.ext-arm64.policy
-vendor/etc/vintf/manifest/c2_manifest_vendor.xml
 vendor/etc/vintf/manifest/c2_manifest_vendor_audio.xml
 vendor/lib64/libEvrcSwCodec.so
 vendor/lib64/libQcelp13SwCodec.so
@@ -1557,6 +1556,24 @@ vendor/lib64/soundfx/libswspatializer.so|913da48c37e7c124d37e67e503bda668b197415
 vendor/lib64/soundfx/libswvqe.so|68f317f2c653d96126cb03830f61fceab048c52b
 vendor/lib64/vendor.dolby.hardware.dms@2.0-impl.so|41fe4079a982f0fef9ba77c3ca30e45efc2400e9
 vendor/lib64/vendor.dolby.hardware.dms@2.0.so|e1aced930abf83580d980d40f9adb7aa3b0f80c4
+
+# Media (Dolby Vision)
+vendor/bin/hw/dolbycodec2|807b8f8e6bb4e16d8b03df5a9069053f92f0c63a
+vendor/etc/dolby_vision.cfg|1e329d752824b869d42b886eba8e21aeb2859ab6
+vendor/etc/media_codecs_dolby_video.xml|e2ae015ca5365ebd920146fa4ca7b93da0a4bea2
+vendor/etc/init/vendor.dolbyvision.media.c2@1.0-service.rc|1ea8b363e94fd4f5410cadceb30de8229fb38045
+vendor/lib/libstagefright_foundation-swiitchoff.so|a5620aace8dea5534e114ce4046c2de0745059bc
+vendor/lib64/c2.dolby.avc.dec.so|49955626c9aaa9f50aeeababb049f267357f7f13
+vendor/lib64/c2.dolby.avc.sec.dec.so|b6891ebc149a48e3a051f701bb1892c0df0ef890
+vendor/lib64/c2.dolby.client.so|df7192d7eb69fecee5a174b5e5cf0df0565328ad
+vendor/lib64/c2.dolby.egl.so|459dce8924566b8b8b10a5f5dce14d18ae80ab19
+vendor/lib64/c2.dolby.hevc.dec.so|75a06e052fd81149bbfeaf20298a168ca5c0c64d
+vendor/lib64/c2.dolby.hevc.enc.so|1a2aa82a9e73aec8e95006edea7979bada0422d8
+vendor/lib64/c2.dolby.hevc.sec.dec.so|d48679fa71d09436394e44dd179c44fe280be867
+vendor/lib64/c2.dolby.store.so|36c70638a61fe8d260a3634f418423068b2b522c
+vendor/lib64/libdolbyottcameracontrol.so|8f4f31fff73dc00293104d5bcfc082ab7d654e5d
+vendor/lib64/libdolbyvision.so|ded3529b6c3ed48b6ce44de9d90585c93ea3892d
+vendor/lib64/libstagefright_foundation-swiitchoff.so|8fbfecff9453fa5d467b8a9b8929483fde772b2a
 
 # Media Config
 vendor/etc/media_codecs_c2_audio.xml
