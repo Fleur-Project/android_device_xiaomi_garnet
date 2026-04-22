@@ -19,16 +19,16 @@ package org.lineageos.settings.charge;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragment;
-import androidx.preference.SwitchPreference;
+import com.android.settingslib.widget.SettingsBasePreferenceFragment;
+import androidx.preference.TwoStatePreference;
 
 import org.lineageos.settings.R;
 
-public class ChargeSettingsFragment extends PreferenceFragment
+public class ChargeSettingsFragment extends SettingsBasePreferenceFragment
     implements Preference.OnPreferenceChangeListener {
 
     private static final String KEY_BYPASS_CHARGE = "bypass_charge";
-    private SwitchPreference mBypassChargePreference;
+    private TwoStatePreference mBypassChargePreference;
     private ChargeUtils mChargeUtils;
 
     @Override
@@ -36,7 +36,7 @@ public class ChargeSettingsFragment extends PreferenceFragment
         setPreferencesFromResource(R.xml.charge_settings, rootKey);
         
         mChargeUtils = new ChargeUtils(getActivity());
-        mBypassChargePreference = (SwitchPreference) findPreference(KEY_BYPASS_CHARGE);
+        mBypassChargePreference = (TwoStatePreference) findPreference(KEY_BYPASS_CHARGE);
 
         boolean bypassChargeSupported = mChargeUtils.isBypassChargeSupported();
 

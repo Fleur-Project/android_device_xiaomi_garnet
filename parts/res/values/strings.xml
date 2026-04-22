@@ -115,6 +115,7 @@
     <string name="reset_settings">Reset to Default</string>
     <string name="settings_applied">Settings applied successfully</string>
     <string name="settings_reset">Settings reset to default</string>
+    <string name="kernel_value_unavailable">Unavailable</string>
 
     <!-- GPU Manager -->
     <string name="gpu_manager_title">GPU Manager</string>
@@ -149,5 +150,9 @@
     <string name="gpu_settings_category">GPU Settings</string>
     <string name="gpu_advanced_category">Advanced Settings</string>
     <string name="gpu_info_summary">Manage GPU frequency scaling and power settings. Changes may affect performance and battery life.</string>
+
+    <!-- Garnet Parts -->
+    <string name="garnet_parts_title">Garnet Parts</string>
+    <string name="garnet_parts_summary">Garnet is Yours</string>
 
 </resources>
