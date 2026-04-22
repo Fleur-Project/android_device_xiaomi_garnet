@@ -18,7 +18,7 @@ import java.io.IOException;
 public class KernelManagerUtils {
 
     public static final int EFFICIENCY_CLUSTER = 0;
-    public static final int PERFORMANCE_CLUSTER = 6;
+    public static final int PERFORMANCE_CLUSTER = 4;
     
     private static final int[] POLICIES = {EFFICIENCY_CLUSTER, PERFORMANCE_CLUSTER};
     private static final String DEFAULT_GOVERNOR = "schedutil";
