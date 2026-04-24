@@ -15,4 +15,18 @@
     <string-array name="kernel_freq_fallback_values">
         <item>0</item>
     </string-array>
+    
+    <string-array name="kprofiles_modes_entries">
+        <item>@string/kprofiles_modes_none</item>
+        <item>@string/kprofiles_modes_battery</item>
+        <item>@string/kprofiles_modes_balanced</item>
+        <item>@string/kprofiles_modes_performance</item>
+    </string-array>
+
+    <string-array name="kprofiles_modes_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 </resources>

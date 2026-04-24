@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/kernel_manager_title">
+    
+        <!-- KProfiles -->
+    <PreferenceCategory android:title="@string/kprofiles_title">
+        <Preference
+            android:key="kprofiles"
+            android:title="@string/kprofiles_title"
+            android:summary="@string/kprofiles_summary"
+            android:icon="@drawable/ic_kprofiles" />
+    </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/cpu_governor_title">
         <ListPreference

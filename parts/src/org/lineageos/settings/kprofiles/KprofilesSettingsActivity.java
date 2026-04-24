@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.kprofiles.battery;
+package org.lineageos.settings.kprofiles;
 
 import android.os.Bundle;
 

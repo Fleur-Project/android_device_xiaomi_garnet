@@ -27,6 +27,7 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.ACCESS_SURFACE_FLINGER" />
     <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
@@ -156,6 +157,26 @@
             android:name=".refreshrate.RefreshService"
             android:exported="true"
             android:permission="RefreshService">
+        </service>
+        
+        <!-- KProfiles activity -->
+        <activity
+            android:name=".kprofiles.KprofilesSettingsActivity"
+            android:exported="true"
+            android:label="@string/kprofiles_title" />
+            
+        <!-- KProfiles tile service -->
+        <service
+            android:name=".kprofiles.KProfilesModesTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_kprofiles"
+            android:label="@string/kprofiles_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE"/>
+            </intent-filter>
+            <meta-data android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
         </service>
 
         <!-- Display Saturation activity -->

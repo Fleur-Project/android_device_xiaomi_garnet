@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.kprofiles.battery;
+package org.lineageos.settings.kprofiles;
 
 import android.app.ActionBar;
 import android.content.BroadcastReceiver;
@@ -34,8 +34,8 @@ import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
 import androidx.preference.SwitchPreferenceCompat;
 
-import com.android.kprofiles.R;
-import com.android.kprofiles.utils.FileUtils;
+import org.lineageos.settings.R;
+import org.lineageos.settings.utils.FileUtils;
 import com.android.settingslib.widget.SettingsBasePreferenceFragment;
 
 public class KprofilesSettingsFragment extends SettingsBasePreferenceFragment implements
@@ -46,7 +46,7 @@ public class KprofilesSettingsFragment extends SettingsBasePreferenceFragment im
     private Preference kProfilesModesInfo;
     private boolean mSelfChange = false;
 
-    public static final String INTENT_ACTION = "com.android.kprofiles.battery.KPROFILE_CHANGED";
+    public static final String INTENT_ACTION = "org.lineageos.settings.kprofiles.KPROFILE_CHANGED";
     public static final String KPROFILES_MODES_NODE = "/sys/kernel/kprofiles/kp_mode";
     public static final String KPROFILES_AUTO_KEY = "kprofiles_auto";
     public static final String KPROFILES_AUTO_NODE = "/sys/module/kprofiles/parameters/auto_kp";

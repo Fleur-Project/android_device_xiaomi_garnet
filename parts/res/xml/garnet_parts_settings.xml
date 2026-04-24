@@ -50,4 +50,9 @@
         android:summary="@string/refresh_summary"
         android:icon="@drawable/ic_refresh_default" />
         
+    <com.android.settingslib.widget.FooterPreference
+        android:key="footer"
+        android:title="@string/garnet_parts_description"
+        android:selectable="false" />
+        
 </PreferenceScreen>
