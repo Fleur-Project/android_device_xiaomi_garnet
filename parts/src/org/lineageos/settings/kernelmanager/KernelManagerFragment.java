@@ -10,12 +10,14 @@
 
 package org.lineageos.settings.kernelmanager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import com.android.settingslib.widget.SettingsBasePreferenceFragment;
 import org.lineageos.settings.R;
+import org.lineageos.settings.kprofiles.KprofilesSettingsActivity;
 
 public class KernelManagerFragment extends SettingsBasePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
@@ -27,6 +29,7 @@ public class KernelManagerFragment extends SettingsBasePreferenceFragment
     private static final String KEY_PERFORMANCE_MAX_FREQ = "performance_max_freq";
     private static final String KEY_APPLY_SETTINGS = "apply_settings";
     private static final String KEY_RESET_SETTINGS = "reset_settings";
+    private static final String KEY_KPROFILES = "kprofiles";
     
     private KernelManagerUtils mKernelUtils;
     private ListPreference mGovernorPreference;
@@ -40,6 +43,16 @@ public class KernelManagerFragment extends SettingsBasePreferenceFragment
         
         initializePreferences();
         loadCurrentSettings();
+        
+        // KProfiles preference
+        Preference kprofilesPref = findPreference(KEY_KPROFILES);
+        if (kprofilesPref != null) {
+            kprofilesPref.setOnPreferenceClickListener(preference -> {
+                Intent intent = new Intent(getActivity(), KprofilesSettingsActivity.class);
+                startActivity(intent);
+                return true;
+            });
+        }
     }
 
     private void initializePreferences() {

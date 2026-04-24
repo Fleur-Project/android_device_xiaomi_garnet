@@ -64,15 +64,6 @@
             android:summary="@string/gpu_bus_split_summary" />
     </PreferenceCategory>
 
-    <!-- Thermal Settings -->
-    <PreferenceCategory android:title="@string/gpu_thermal_title">
-        <Preference
-            android:key="gpu_thermal_pwrlevel"
-            android:title="@string/gpu_thermal_pwrlevel_title"
-            android:summary="@string/gpu_thermal_pwrlevel_summary"
-            android:selectable="false" />
-    </PreferenceCategory>
-
     <PreferenceCategory>
         <Preference
             android:key="apply_gpu_settings"
@@ -82,6 +73,15 @@
             android:key="reset_gpu_settings"
             android:title="@string/reset_settings"
             android:summary="Reset all GPU settings to default values" />
+    </PreferenceCategory>
+    
+    <!-- Thermal Settings -->
+    <PreferenceCategory android:title="@string/gpu_thermal_title">
+        <Preference
+            android:key="gpu_thermal_pwrlevel"
+            android:title="@string/gpu_thermal_pwrlevel_title"
+            android:summary="@string/gpu_thermal_pwrlevel_summary"
+            android:selectable="false" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/kernel_info_category">

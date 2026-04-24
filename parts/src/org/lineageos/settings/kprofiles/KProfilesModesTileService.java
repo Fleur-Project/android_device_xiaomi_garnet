@@ -1,9 +1,9 @@
-package com.android.kprofiles.battery;
+package org.lineageos.settings.kprofiles;
 
-import static com.android.kprofiles.battery.KprofilesSettingsFragment.INTENT_ACTION;
-import static com.android.kprofiles.battery.KprofilesSettingsFragment.KPROFILES_MODES_NODE;
-import static com.android.kprofiles.battery.KprofilesSettingsFragment.KPROFILES_MODES_KEY;
-import static com.android.kprofiles.battery.KprofilesSettingsFragment.IS_SUPPORTED;
+import static org.lineageos.settings.kprofiles.KprofilesSettingsFragment.INTENT_ACTION;
+import static org.lineageos.settings.kprofiles.KprofilesSettingsFragment.KPROFILES_MODES_NODE;
+import static org.lineageos.settings.kprofiles.KprofilesSettingsFragment.KPROFILES_MODES_KEY;
+import static org.lineageos.settings.kprofiles.KprofilesSettingsFragment.IS_SUPPORTED;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -16,8 +16,8 @@ import android.service.quicksettings.TileService;
 
 import androidx.preference.PreferenceManager;
 
-import com.android.kprofiles.R;
-import com.android.kprofiles.utils.FileUtils;
+import org.lineageos.settings.R;
+import org.lineageos.settings.utils.FileUtils;
 
 public class KProfilesModesTileService extends TileService {
 

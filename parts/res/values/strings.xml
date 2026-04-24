@@ -101,7 +101,7 @@
 
     <!-- Kernel Manager -->
     <string name="kernel_manager_title">Kernel Manager</string>
-    <string name="kernel_manager_summary">Manage CPU frequencies and governor</string>
+    <string name="kernel_manager_summary">Manage CPU frequencies, governor and KProfiles</string>
     <string name="cpu_governor_title">CPU Governor</string>
     <string name="cpu_governor_summary">Current: %s</string>
     <string name="cpu_min_freq_title">Minimum Frequency</string>
@@ -110,7 +110,7 @@
     <string name="performance_cluster_title">Performance Cluster</string>
     <string name="kernel_info_category">Information</string>
     <string name="kernel_info_title">About Kernel Manager</string>
-    <string name="kernel_info_summary">Manage CPU governor and frequency scaling for all CPU clusters. Changes may affect performance and battery life.</string>
+    <string name="kernel_info_summary">Manage CPU governor, KProfiles and frequency scaling for all CPU clusters. Changes may affect performance and battery life.</string>
     <string name="apply_settings">Apply Settings</string>
     <string name="reset_settings">Reset to Default</string>
     <string name="settings_applied">Settings applied successfully</string>
@@ -137,7 +137,7 @@
     <string name="gpu_force_no_nap_summary">Disable GPU napping between frames</string>
     <string name="gpu_bus_split_title">Bus Split</string>
     <string name="gpu_bus_split_summary">Enable GPU bus splitting</string>
-    <string name="gpu_thermal_title">Thermal Settings</string>
+    <string name="gpu_thermal_title">Thermal Status</string>
     <string name="gpu_thermal_pwrlevel_title">Thermal Power Level</string>
     <string name="gpu_thermal_pwrlevel_summary">Current thermal power level</string>
     <string name="gpu_temp_title">GPU Temperature</string>
@@ -154,5 +154,23 @@
     <!-- Garnet Parts -->
     <string name="garnet_parts_title">Garnet Parts</string>
     <string name="garnet_parts_summary">Garnet is Yours</string>
+    <string name="garnet_parts_description">Your central hub for advanced hardware controls. Fine-tune performance, display, battery, and kernel settings to optimize your device experience</string>
+    
+    <!-- Kprofiles -->
+    <string name="kprofiles_title">KProfiles</string>
+    <string name="kprofiles_summary">Managing Kernelspace profiles to achieve balancing in terms of battery backup and performance</string>
+    <string name="kprofiles_auto_title">Use Auto KProfiles</string>
+    <string name="kprofiles_auto_summary">Automatically switch to battery mode when device screen turns off and back to default profile when screen turns on</string>
+    <string name="kprofiles_modes_title">KProfiles Modes</string>
+    <string name="kprofiles_modes_none">None</string>
+    <string name="kprofiles_modes_battery">Battery</string>
+    <string name="kprofiles_modes_balanced">Balanced</string>
+    <string name="kprofiles_modes_performance">Performance</string>
+    <string name="kprofiles_not_supported">KProfiles is not currently supported by the kernel</string>
+    <string name="kprofiles_modes_description" translatable="false"><xliff:g id="description">%s</xliff:g></string>
+    <string name="kprofiles_modes_none_description">Regulate and manage in-kernel activities in a profile-oriented manner to achieve balance in terms of battery backup and performance accordingly</string>
+    <string name="kprofiles_modes_battery_description">Battery Mode:\nSkip all userspace and/or in-kernel boosts, reduces gpu scaling frequency</string>
+    <string name="kprofiles_modes_balanced_description">Balanced Mode:\nTips the balance between battery and performance modes</string>
+    <string name="kprofiles_modes_performance_description">Performance Mode:\nMaximize all boosts, increases gpu scaling frequency to its max</string>
 
 </resources>

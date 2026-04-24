@@ -22,6 +22,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.hardware.display.DisplayManager;
 import android.os.Handler;
@@ -34,6 +35,17 @@ import android.view.Display.HdrCapabilities;
 
 import org.lineageos.settings.thermal.ThermalUtils;
 import org.lineageos.settings.refreshrate.RefreshUtils;
+import static org.lineageos.settings.kprofiles.KprofilesSettingsFragment.IS_SUPPORTED;
+import static org.lineageos.settings.kprofiles.KprofilesSettingsFragment.KPROFILES_AUTO_KEY;
+import static org.lineageos.settings.kprofiles.KprofilesSettingsFragment.KPROFILES_AUTO_NODE;
+import static org.lineageos.settings.kprofiles.KprofilesSettingsFragment.KPROFILES_MODES_KEY;
+import static org.lineageos.settings.kprofiles.KprofilesSettingsFragment.KPROFILES_MODES_NODE;
+import static org.lineageos.settings.kprofiles.KprofilesSettingsFragment.ON;
+import static org.lineageos.settings.kprofiles.KprofilesSettingsFragment.OFF;
+
+import androidx.preference.PreferenceManager;
+
+import org.lineageos.settings.utils.FileUtils;
 
 public class BootCompletedReceiver extends BroadcastReceiver {
     private static final boolean DEBUG = false;
@@ -49,6 +61,17 @@ public class BootCompletedReceiver extends BroadcastReceiver {
             case Intent.ACTION_BOOT_COMPLETED:
                 handleBootCompleted(context);
                 break;
+        }
+        
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        
+        if (FileUtils.fileExists(KPROFILES_AUTO_NODE)) {
+            boolean kProfilesAutoEnabled = sharedPrefs.getBoolean(KPROFILES_AUTO_KEY, false);
+            FileUtils.writeLine(KPROFILES_AUTO_NODE, kProfilesAutoEnabled ? ON : OFF);
+        }
+        if (IS_SUPPORTED) {
+            String kProfileMode = sharedPrefs.getString(KPROFILES_MODES_KEY, FileUtils.readOneLine(KPROFILES_MODES_NODE));
+            FileUtils.writeLine(KPROFILES_MODES_NODE, kProfileMode);
         }
     }
 
