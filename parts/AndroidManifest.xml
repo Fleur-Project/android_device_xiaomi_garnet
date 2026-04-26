@@ -74,7 +74,7 @@
         <activity
             android:name=".garnetparts.GarnetPartsActivity"
             android:label="@string/garnet_parts_title"
-            android:theme="@style/Theme.SubSettingsBase.Expressive"
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.android.settings.action.IA_SETTINGS" />
