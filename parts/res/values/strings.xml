@@ -153,7 +153,7 @@
 
     <!-- Garnet Parts -->
     <string name="garnet_parts_title">Garnet Parts</string>
-    <string name="garnet_parts_summary">Garnet is Yours</string>
+    <string name="garnet_parts_summary">System is Yours</string>
     <string name="garnet_parts_description">Your central hub for advanced hardware controls. Fine-tune performance, display, battery, and kernel settings to optimize your device experience</string>
     
     <!-- Kprofiles -->
