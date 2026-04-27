@@ -117,6 +117,10 @@ class ThermalViewModel(
         }
     }
 
+    fun updateSearchQuery(query: String) {
+        _uiState.update { it.copy(searchQuery = query) }
+    }
+
     fun resetProfiles() {
         Logging.d(TAG, "resetProfiles")
         thermalUtils.resetProfiles()

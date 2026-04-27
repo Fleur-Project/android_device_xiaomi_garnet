@@ -12,6 +12,7 @@ data class ThermalUiState(
     val isLoading: Boolean = false,
     val isEnabled: Boolean = false,
     val apps: List<AppThermalState> = emptyList(),
+    val searchQuery: String = "",
     val error: String? = null
 )
 
