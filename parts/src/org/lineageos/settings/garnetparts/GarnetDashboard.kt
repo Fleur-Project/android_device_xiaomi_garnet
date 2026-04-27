@@ -19,6 +19,7 @@ package org.lineageos.settings.garnetparts
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.view.HapticFeedbackConstants
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
@@ -41,6 +42,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -48,6 +50,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -77,6 +80,7 @@ val PremiumCardShape = RoundedCornerShape(32.dp)
 @Composable
 fun GarnetDashboard(onBackPressed: () -> Unit) {
     val context = LocalContext.current
+    val view = LocalView.current
     val coreControl = GarnetFeature("Core Control", "Optimized CPU management", R.drawable.ic_cpu, CoreControlActivity::class.java)
     val kernelManager = GarnetFeature("Kernel Manager", "Advanced system tuning", R.drawable.ic_kernel_manager, KernelManagerActivity::class.java)
     val gpuManager = GarnetFeature("GPU Manager", "Peak graphics performance", R.drawable.ic_gpu_manager, GpuManagerActivity::class.java)
@@ -89,6 +93,13 @@ fun GarnetDashboard(onBackPressed: () -> Unit) {
     )
 
     val carouselState = rememberCarouselState { carouselFeatures.size }
+    
+    LaunchedEffect(carouselState) {
+        snapshotFlow { carouselState.currentItem }.collect {
+            view.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
+        }
+    }
+
     val darkTheme = isSystemInDarkTheme()
     val colorScheme = when {
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
