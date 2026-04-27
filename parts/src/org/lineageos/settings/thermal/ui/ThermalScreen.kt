@@ -6,6 +6,10 @@
 package org.lineageos.settings.thermal.ui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -13,15 +17,20 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -130,6 +139,12 @@ fun ThermalScreen(
                             color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.padding(start = 32.dp, top = 16.dp, bottom = 8.dp)
                         )
+                        
+                        M3ExpressiveSearchBox(
+                            query = uiState.searchQuery,
+                            onQueryChange = { viewModel.updateSearchQuery(it) },
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
                     }
                     
                     when {
@@ -143,20 +158,44 @@ fun ThermalScreen(
                             EmptyState()
                         }
                         else -> {
-                            LazyColumn(
-                                modifier = Modifier.fillMaxSize(),
-                                contentPadding = PaddingValues(vertical = 8.dp)
-                            ) {
-                                items(
-                                    items = uiState.apps,
-                                    key = { it.packageName }
-                                ) { app ->
-                                    AppThermalItem(
-                                        app = app,
-                                        onStateChanged = { newState ->
-                                            viewModel.updateAppThermalState(app.packageName, newState)
-                                        }
+                            val filteredApps = remember(uiState.apps, uiState.searchQuery) {
+                                if (uiState.searchQuery.isBlank()) {
+                                    uiState.apps
+                                } else {
+                                    uiState.apps.filter {
+                                        it.label.contains(uiState.searchQuery, ignoreCase = true) ||
+                                        it.packageName.contains(uiState.searchQuery, ignoreCase = true)
+                                    }
+                                }
+                            }
+                            
+                            if (filteredApps.isEmpty() && uiState.searchQuery.isNotBlank()) {
+                                Box(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        text = "No apps found for \"${uiState.searchQuery}\"",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
+                                }
+                            } else {
+                                LazyColumn(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentPadding = PaddingValues(vertical = 8.dp)
+                                ) {
+                                    items(
+                                        items = filteredApps,
+                                        key = { it.packageName }
+                                    ) { app ->
+                                        AppThermalItem(
+                                            app = app,
+                                            onStateChanged = { newState ->
+                                                viewModel.updateAppThermalState(app.packageName, newState)
+                                            }
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -236,5 +275,89 @@ private fun EmptyState() {
                 textAlign = TextAlign.Center
             )
         }
+    }
+}
+
+@Composable
+fun M3ExpressiveSearchBox(
+    query: String,
+    onQueryChange: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var isFocused by remember { mutableStateOf(false) }
+
+    val elevation by animateDpAsState(
+        targetValue = if (isFocused) 6.dp else 0.dp,
+        animationSpec = tween<androidx.compose.ui.unit.Dp>(durationMillis = 300, easing = FastOutSlowInEasing),
+        label = "search_elevation"
+    )
+
+    val containerColor by animateColorAsState(
+        targetValue = if (isFocused)
+            MaterialTheme.colorScheme.surfaceContainerHigh
+        else
+            MaterialTheme.colorScheme.surfaceContainer,
+        animationSpec = tween<Color>(durationMillis = 300, easing = FastOutSlowInEasing),
+        label = "search_color"
+    )
+
+    Surface(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(56.dp)
+            .padding(horizontal = 16.dp),
+        shape = CircleShape,
+        color = containerColor,
+        tonalElevation = elevation,
+        shadowElevation = elevation
+    ) {
+        TextField(
+            value = query,
+            onValueChange = onQueryChange,
+            modifier = Modifier
+                .fillMaxSize()
+                .onFocusChanged { isFocused = it.isFocused },
+            placeholder = {
+                Text(
+                    text = "Search...",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "Search",
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            },
+            trailingIcon = {
+                AnimatedVisibility(
+                    visible = query.isNotEmpty(),
+                    enter = fadeIn(animationSpec = tween(200)),
+                    exit = fadeOut(animationSpec = tween(200))
+                ) {
+                    IconButton(onClick = { onQueryChange("") }) {
+                        Icon(
+                            imageVector = Icons.Default.Clear,
+                            contentDescription = "Clear search",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            },
+            textStyle = MaterialTheme.typography.bodyLarge.copy(
+                color = MaterialTheme.colorScheme.onSurface
+            ),
+            singleLine = true,
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent
+            ),
+            shape = CircleShape
+        )
     }
 }
