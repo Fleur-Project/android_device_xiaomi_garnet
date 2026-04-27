@@ -21,3 +21,8 @@ allow system_app sysfs_kgsl:lnk_file read;
 
 # Allow KProfiles to be adjusted by a system app
 allow system_app sysfs_kprofiles:file rw_file_perms;
+
+# Thermal Profiles
+allow system_app sysfs_thermal:file write;
+allow system_app sysfs_thermal:file rw_file_perms;
+
