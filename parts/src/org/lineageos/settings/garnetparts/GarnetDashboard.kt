@@ -48,6 +48,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -56,6 +57,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.unit.sp
 import org.lineageos.settings.R
 import org.lineageos.settings.corecontrol.CoreControlActivity
@@ -118,44 +120,16 @@ fun GarnetDashboard(onBackPressed: () -> Unit) {
     MaterialTheme(colorScheme = colorScheme) {
         Scaffold(
             topBar = {
-                LargeTopAppBar(
-                    title = {
-                        Column {
-                            Text(
-                                "GARNET PARTS",
-                                style = MaterialTheme.typography.headlineMedium.copy(
-                                    fontWeight = FontWeight.Black,
-                                    letterSpacing = 2.sp
-                                ),
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Text(
-                                "SYSTEM IS YOURS",
-                                style = MaterialTheme.typography.labelMedium.copy(
-                                    fontWeight = FontWeight.Bold,
-                                    letterSpacing = 3.sp
-                                ),
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                    },
-                    navigationIcon = {
-                        IconButton(
-                            onClick = onBackPressed,
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .background(
-                                    color = MaterialTheme.colorScheme.surfaceContainerHighest,
-                                    shape = RoundedCornerShape(12.dp)
-                                )
-                        ) {
-                            Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = MaterialTheme.colorScheme.onSurface)
-                        }
-                    },
-                    colors = TopAppBarDefaults.largeTopAppBarColors(
-                        containerColor = Color.Transparent,
-                        scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer
-                    )
+                val collapseThreshold = 120f
+                val collapseTarget = (scrollState.value / collapseThreshold).coerceIn(0f, 1f)
+                val collapseProgress by animateFloatAsState(
+                    targetValue = collapseTarget,
+                    animationSpec = tween(durationMillis = 220, easing = LinearOutSlowInEasing),
+                    label = "header_collapse_progress"
+                )
+                CollapsingHeader(
+                    collapseProgress = collapseProgress,
+                    onBackPressed = onBackPressed
                 )
             },
             containerColor = MaterialTheme.colorScheme.background
@@ -245,6 +219,129 @@ fun GarnetDashboard(onBackPressed: () -> Unit) {
         }
     }
 }
+
+@Composable
+private fun CollapsingHeader(
+    collapseProgress: Float,
+    onBackPressed: () -> Unit
+) {
+    val titleScale by animateFloatAsState(
+        targetValue = 1f - (0.36f * collapseProgress),
+        animationSpec = tween(durationMillis = 220, easing = LinearOutSlowInEasing),
+        label = "header_title_scale"
+    )
+    val subtitleAlpha by animateFloatAsState(
+        targetValue = 1f - collapseProgress,
+        animationSpec = tween(durationMillis = 180, easing = LinearOutSlowInEasing),
+        label = "header_subtitle_alpha"
+    )
+    val headerHeight by animateDpAsState(
+        targetValue = lerp(180.dp, 110.dp, collapseProgress), 
+        animationSpec = tween(durationMillis = 220, easing = LinearOutSlowInEasing),
+        label = "header_height"
+    )
+    val headerBottomCorner by animateDpAsState(
+        targetValue = lerp(0.dp, 32.dp, collapseProgress),
+        animationSpec = tween(durationMillis = 220, easing = LinearOutSlowInEasing),
+        label = "header_bottom_corner"
+    )
+    val backButtonCorner by animateDpAsState(
+        targetValue = lerp(12.dp, 24.dp, collapseProgress),
+        animationSpec = tween(durationMillis = 220, easing = LinearOutSlowInEasing),
+        label = "back_button_corner"
+    )
+    val backButtonBgColor by animateColorAsState(
+        targetValue = androidx.compose.ui.graphics.lerp(
+            MaterialTheme.colorScheme.surfaceContainerHighest,
+            MaterialTheme.colorScheme.primary,
+            collapseProgress
+        ),
+        animationSpec = tween(durationMillis = 220, easing = LinearOutSlowInEasing),
+        label = "back_button_bg_color"
+    )
+    val backButtonIconColor by animateColorAsState(
+        targetValue = androidx.compose.ui.graphics.lerp(
+            MaterialTheme.colorScheme.onSurface,
+            MaterialTheme.colorScheme.onPrimary,
+            collapseProgress
+        ),
+        animationSpec = tween(durationMillis = 220, easing = LinearOutSlowInEasing),
+        label = "back_button_icon_color"
+    )
+    
+    val titleXOffset = lerp(0.dp, 60.dp, collapseProgress)
+    val titleYOffset = lerp(68.dp, 20.dp, collapseProgress) 
+    
+    val backButtonShape = if (collapseProgress >= 0.98f) {
+        CircleShape
+    } else {
+        RoundedCornerShape(backButtonCorner)
+    }
+
+    Surface(
+        color = MaterialTheme.colorScheme.background,
+        tonalElevation = lerp(0.dp, 4.dp, collapseProgress),
+        shape = RoundedCornerShape(bottomStart = headerBottomCorner, bottomEnd = headerBottomCorner)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(headerHeight)
+                .statusBarsPadding()
+                .padding(top = 8.dp, start = 16.dp, end = 16.dp)
+        ) {
+            IconButton(
+                onClick = onBackPressed,
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(top = 8.dp)
+                    .background(
+                        color = backButtonBgColor,
+                        shape = backButtonShape
+                    )
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back",
+                    tint = backButtonIconColor
+                )
+            }
+
+            Column(
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .offset(x = titleXOffset, y = titleYOffset)
+                    .graphicsLayer {
+                        scaleX = titleScale
+                        scaleY = titleScale
+                        transformOrigin = TransformOrigin(0f, 0f)
+                    }
+            ) {
+                Text(
+                    text = "GARNET PARTS",
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        fontWeight = FontWeight.Black,
+                        letterSpacing = 2.sp
+                    ),
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Text(
+                    text = "SYSTEM IS YOURS",
+                    style = MaterialTheme.typography.labelMedium.copy(
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 3.sp
+                    ),
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.graphicsLayer {
+                        alpha = subtitleAlpha
+                        translationY = -16f * collapseProgress
+                    }
+                )
+            }
+        }
+    }
+}
+
 
 @Composable
 fun HeroBanner(scrollValue: Int = 0) {
