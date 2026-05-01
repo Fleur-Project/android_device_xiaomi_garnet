@@ -118,10 +118,11 @@
         </service>
 
         <!-- Bypass Charging -->
-	    <activity
-    	    android:name=".charge.ChargeActivity"
+        <activity
+            android:name=".charge.ChargeActivity"
             android:label="@string/charge_bypass_title"
-    	    android:exported="false" />
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar"
+            android:exported="false" />
 
         <!-- Core Control -->
         <activity
