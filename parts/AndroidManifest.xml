@@ -145,6 +145,7 @@
         <activity
             android:name=".gpumanager.GpuManagerActivity"
             android:label="@string/gpu_manager_title"
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar"
             android:exported="false" />
 
         <!-- Refresh Rate Settings -->
