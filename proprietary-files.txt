@@ -1559,9 +1559,12 @@ vendor/lib64/vendor.dolby.hardware.dms@2.0.so|e1aced930abf83580d980d40f9adb7aa3b
 
 # Media (Dolby Vision)
 vendor/bin/hw/dolbycodec2|807b8f8e6bb4e16d8b03df5a9069053f92f0c63a
+vendor/bin/hw/dvs-hal-service|2906e02ef0210bcdfc6ff8c9e85e457d637b0ae1
 vendor/etc/dolby_vision.cfg|1e329d752824b869d42b886eba8e21aeb2859ab6
 vendor/etc/media_codecs_dolby_video.xml|e2ae015ca5365ebd920146fa4ca7b93da0a4bea2
 vendor/etc/init/vendor.dolbyvision.media.c2@1.0-service.rc|1ea8b363e94fd4f5410cadceb30de8229fb38045
+vendor/etc/init/vendor.dolby.media.dvs-service-vision.rc|2ea3b75edba48954b27bc30957fc3b4c4a0bb76b
+vendor/etc/vintf/manifest/vendor.dolby.media.dvs-service.xml|64cc88f5846d169cc7a88ad45b382beac0239f33
 vendor/lib/libstagefright_foundation-swiitchoff.so|a5620aace8dea5534e114ce4046c2de0745059bc
 vendor/lib64/c2.dolby.avc.dec.so|49955626c9aaa9f50aeeababb049f267357f7f13
 vendor/lib64/c2.dolby.avc.sec.dec.so|b6891ebc149a48e3a051f701bb1892c0df0ef890
@@ -1574,6 +1577,7 @@ vendor/lib64/c2.dolby.store.so|36c70638a61fe8d260a3634f418423068b2b522c
 vendor/lib64/libdolbyottcameracontrol.so|8f4f31fff73dc00293104d5bcfc082ab7d654e5d
 vendor/lib64/libdolbyvision.so|ded3529b6c3ed48b6ce44de9d90585c93ea3892d
 vendor/lib64/libstagefright_foundation-swiitchoff.so|8fbfecff9453fa5d467b8a9b8929483fde772b2a
+vendor/lib64/vendor.dolby.dvs@1.0.so|c1aca6dc58ba2ddf954d752c796c23964bea2727
 
 # Media Config
 vendor/etc/media_codecs_c2_audio.xml
