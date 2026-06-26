@@ -7,3 +7,8 @@ attribute vendor_hal_camerapostproc_xiaomi_server;
 attribute hal_dms;
 attribute hal_dms_client;
 attribute hal_dms_server;
+
+# Dolby Vision
+attribute hal_dvs;
+attribute hal_dvs_client;
+attribute hal_dvs_server;

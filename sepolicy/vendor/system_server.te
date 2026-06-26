@@ -1,1 +1,4 @@
 allow system_server securityfs:file write;
+
+# Dolby Vision
+allow system_server hal_dvs_default:binder { call transfer };
