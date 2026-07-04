@@ -7,4 +7,5 @@
   ( new_objects
     aux_camera_control_prop
     devicesettings_app
-    settingslib_prop))
+    settingslib_prop
+    vendor_nfc_prop))
