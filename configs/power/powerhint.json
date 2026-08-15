@@ -250,6 +250,25 @@
             "ResetOnInit": true
         },
         {
+            "Name": "DevicesSystemCpuBusDcvsL3BoostFreq",
+            "Path": "/sys/devices/system/cpu/bus_dcvs/L3/boost_freq",
+            "Values": [
+                "307200",
+                "556800",
+                "652800",
+                "806400",
+                "940800",
+                "1056000",
+                "1190400",
+                "1248000",
+                "1382400",
+                "1420800",
+                "1440000"
+            ],
+            "DefaultIndex": 0,
+            "ResetOnInit": true
+        },
+        {
             "Name": "CpuDmaLatency",
             "Path": "/dev/cpu_dma_latency",
             "Values": [
@@ -264,6 +283,41 @@
             "Values": [
                 "0",
                 "691200"
+            ],
+            "DefaultIndex": 0,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "UClampTALatency",
+            "Path": "/dev/cpuctl/top-app/cpu.uclamp.latency_sensitive",
+            "Values": [
+                "0",
+                "1"
+            ],
+            "DefaultIndex": 0,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "UclampFGMin",
+            "Path": "/dev/cpuctl/foreground/cpu.uclamp.min",
+            "Values": [
+                "0",
+                "30",
+                "40",
+                "50"
+            ],
+            "DefaultIndex": 0,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "UclampTAMin",
+            "Path": "/dev/cpuctl/top-app/cpu.uclamp.min",
+            "Values": [
+                "0",
+                "20",
+                "30",
+                "40",
+                "50"
             ],
             "DefaultIndex": 0,
             "ResetOnInit": true
@@ -292,6 +346,24 @@
             "PowerHint": "SUSTAINED_PERFORMANCE",
             "Node": "ClassKgslKgsl3d0DevfreqMaxFreq",
             "Value": "500000000",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "SUSTAINED_PERFORMANCE",
+            "Node": "UClampTALatency",
+            "Value": "1",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "SUSTAINED_PERFORMANCE",
+            "Node": "UclampFGMin",
+            "Value": "30",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "SUSTAINED_PERFORMANCE",
+            "Node": "UclampTAMin",
+            "Value": "20",
             "Duration": 0
         },
         {
@@ -385,6 +457,30 @@
             "Duration": 250
         },
         {
+            "PowerHint": "INTERACTION",
+            "Node": "DevicesSystemCpuBusDcvsL3BoostFreq",
+            "Value": "1056000",
+            "Duration": 250
+        },
+        {
+            "PowerHint": "INTERACTION",
+            "Node": "UClampTALatency",
+            "Value": "1",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "INTERACTION",
+            "Node": "UclampFGMin",
+            "Value": "30",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "INTERACTION",
+            "Node": "UclampTAMin",
+            "Value": "20",
+            "Duration": 0
+        },
+        {
             "PowerHint": "LAUNCH",
             "Node": "SysWaltSchedBoost",
             "Value": "1",
@@ -412,6 +508,30 @@
             "PowerHint": "LAUNCH",
             "Node": "CpuDmaLatency",
             "Value": "1",
+            "Duration": 2500
+        },
+        {
+            "PowerHint": "LAUNCH",
+            "Node": "UClampTALatency",
+            "Value": "1",
+            "Duration": 2500
+        },
+        {
+            "PowerHint": "LAUNCH",
+            "Node": "UclampFGMin",
+            "Value": "50",
+            "Duration": 2500
+        },
+        {
+            "PowerHint": "LAUNCH",
+            "Node": "UclampTAMin",
+            "Value": "40",
+            "Duration": 2500
+        },
+        {
+            "PowerHint": "LAUNCH",
+            "Node": "DevicesSystemCpuBusDcvsL3BoostFreq",
+            "Value": "1440000",
             "Duration": 2500
         },
         {
@@ -445,6 +565,24 @@
             "Duration": 0
         },
         {
+            "PowerHint": "EXPENSIVE_RENDERING",
+            "Node": "UClampTALatency",
+            "Value": "1",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "EXPENSIVE_RENDERING",
+            "Node": "UclampFGMin",
+            "Value": "30",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "EXPENSIVE_RENDERING",
+            "Node": "UclampTAMin",
+            "Value": "20",
+            "Duration": 0
+        },
+        {
             "PowerHint": "CAMERA_LAUNCH",
             "Node": "KernelMsmPerformanceParametersCpuMinFreq",
             "Value": "0:1958400 1:1958400 2:1958400 3:1958400 4:1900800 5:1900800 6:1900800 7:1900800",
@@ -460,6 +598,24 @@
             "PowerHint": "CAMERA_LAUNCH",
             "Node": "CpuDmaLatency",
             "Value": "1",
+            "Duration": 1000
+        },
+        {
+            "PowerHint": "CAMERA_LAUNCH",
+            "Node": "UClampTALatency",
+            "Value": "1",
+            "Duration": 1000
+        },
+        {
+            "PowerHint": "CAMERA_LAUNCH",
+            "Node": "UclampFGMin",
+            "Value": "50",
+            "Duration": 1000
+        },
+        {
+            "PowerHint": "CAMERA_LAUNCH",
+            "Node": "UclampTAMin",
+            "Value": "40",
             "Duration": 1000
         },
         {
@@ -538,6 +694,24 @@
             "PowerHint": "CAMERA_STREAMING_LOW",
             "Node": "DevicesSystemCpuBusDcvsDdr19091000QcomBwmonDdrIoPercent",
             "Value": "100",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_LOW",
+            "Node": "UClampTALatency",
+            "Value": "1",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_LOW",
+            "Node": "UclampFGMin",
+            "Value": "30",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_LOW",
+            "Node": "UclampTAMin",
+            "Value": "30",
             "Duration": 0
         },
         {
@@ -625,6 +799,24 @@
             "Duration": 0
         },
         {
+            "PowerHint": "CAMERA_STREAMING_MID",
+            "Node": "UClampTALatency",
+            "Value": "1",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_MID",
+            "Node": "UclampFGMin",
+            "Value": "40",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_MID",
+            "Node": "UclampTAMin",
+            "Value": "40",
+            "Duration": 0
+        },
+        {
             "PowerHint": "CAMERA_STREAMING_HIGH",
             "Node": "DevicesSystemCpuCpufreqPolicy4WaltBoost",
             "Value": "691200",
@@ -694,6 +886,24 @@
             "PowerHint": "CAMERA_STREAMING_HIGH",
             "Node": "DevicesSystemCpuBusDcvsDdr19091000QcomBwmonDdrMinFreq",
             "Value": "2092000",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_HIGH",
+            "Node": "UClampTALatency",
+            "Value": "1",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_HIGH",
+            "Node": "UclampFGMin",
+            "Value": "50",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_HIGH",
+            "Node": "UclampTAMin",
+            "Value": "50",
             "Duration": 0
         }
     ]
