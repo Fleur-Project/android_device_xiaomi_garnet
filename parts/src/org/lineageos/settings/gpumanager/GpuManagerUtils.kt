@@ -99,11 +99,11 @@ class GpuManagerUtils {
     }
 
     fun getForceNoNap(): Boolean {
-        return runCatching { readFile(GPU_FORCE_NO_NAP).trim() == "1" }.getOrDefault(false)
+        return runCatching { readFile(GPU_FORCE_NO_NAP).trim() == "1" }.getOrDefault(true)
     }
 
     fun getBusSplit(): Boolean {
-        return runCatching { readFile(GPU_BUS_SPLIT).trim() == "1" }.getOrDefault(false)
+        return runCatching { readFile(GPU_BUS_SPLIT).trim() == "1" }.getOrDefault(true)
     }
 
     fun setGovernor(governor: String) {
@@ -147,8 +147,8 @@ class GpuManagerUtils {
         setForceClkOn(false)
         setForceBusOn(false)
         setForceRailOn(false)
-        setForceNoNap(false)
-        setBusSplit(false)
+        setForceNoNap(true)
+        setBusSplit(true)
     }
 
     private fun readFile(path: String): String {
