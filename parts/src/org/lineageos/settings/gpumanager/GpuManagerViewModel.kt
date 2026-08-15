@@ -11,7 +11,9 @@
 
 package org.lineageos.settings.gpumanager
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import android.content.Context
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,9 +22,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class GpuManagerViewModel : ViewModel() {
+class GpuManagerViewModel(application: Application) : AndroidViewModel(application) {
 
     private val gpuUtils = GpuManagerUtils()
+    private val prefs = application.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     data class GpuState(
         val gpuModel: String = "",
@@ -51,19 +54,25 @@ class GpuManagerViewModel : ViewModel() {
     }
 
     private fun loadInitialState() {
+        val governor = prefs.getString(PREF_GOVERNOR, null)
+            ?: gpuUtils.getCurrentGovernor()
+        val minFreq = prefs.getString(PREF_MIN_FREQ, null)
+            ?: gpuUtils.getCurrentMinFrequency()
+        val maxFreq = prefs.getString(PREF_MAX_FREQ, null)
+            ?: gpuUtils.getCurrentMaxFrequency()
         _uiState.update {
             it.copy(
                 gpuModel = gpuUtils.getGpuModel(),
-                currentGovernor = gpuUtils.getCurrentGovernor(),
+                currentGovernor = governor,
                 availableGovernors = gpuUtils.getAvailableGovernors().toList(),
-                currentMinFreq = gpuUtils.getCurrentMinFrequency(),
-                currentMaxFreq = gpuUtils.getCurrentMaxFrequency(),
+                currentMinFreq = minFreq,
+                currentMaxFreq = maxFreq,
                 availableFrequencies = gpuUtils.getAvailableFrequencies()?.toList() ?: emptyList(),
-                forceClkOn = gpuUtils.getForceClkOn(),
-                forceBusOn = gpuUtils.getForceBusOn(),
-                forceRailOn = gpuUtils.getForceRailOn(),
-                forceNoNap = gpuUtils.getForceNoNap(),
-                busSplit = gpuUtils.getBusSplit()
+                forceClkOn = prefs.getBoolean(PREF_FORCE_CLK_ON, gpuUtils.getForceClkOn()),
+                forceBusOn = prefs.getBoolean(PREF_FORCE_BUS_ON, gpuUtils.getForceBusOn()),
+                forceRailOn = prefs.getBoolean(PREF_FORCE_RAIL_ON, gpuUtils.getForceRailOn()),
+                forceNoNap = prefs.getBoolean(PREF_FORCE_NO_NAP, gpuUtils.getForceNoNap()),
+                busSplit = prefs.getBoolean(PREF_BUS_SPLIT, gpuUtils.getBusSplit())
             )
         }
         updateDynamicInfo()
@@ -130,10 +139,33 @@ class GpuManagerViewModel : ViewModel() {
         gpuUtils.setForceRailOn(state.forceRailOn)
         gpuUtils.setForceNoNap(state.forceNoNap)
         gpuUtils.setBusSplit(state.busSplit)
+        prefs.edit()
+            .putString(PREF_GOVERNOR, state.currentGovernor)
+            .putString(PREF_MIN_FREQ, state.currentMinFreq)
+            .putString(PREF_MAX_FREQ, state.currentMaxFreq)
+            .putBoolean(PREF_FORCE_CLK_ON, state.forceClkOn)
+            .putBoolean(PREF_FORCE_BUS_ON, state.forceBusOn)
+            .putBoolean(PREF_FORCE_RAIL_ON, state.forceRailOn)
+            .putBoolean(PREF_FORCE_NO_NAP, state.forceNoNap)
+            .putBoolean(PREF_BUS_SPLIT, state.busSplit)
+            .apply()
     }
 
     fun resetSettings() {
+        prefs.edit().clear().apply()
         gpuUtils.resetToDefaults()
         loadInitialState()
+    }
+
+    companion object {
+        private const val PREFS_NAME = "gpu_manager_settings"
+        private const val PREF_GOVERNOR = "governor"
+        private const val PREF_MIN_FREQ = "min_freq"
+        private const val PREF_MAX_FREQ = "max_freq"
+        private const val PREF_FORCE_CLK_ON = "force_clk_on"
+        private const val PREF_FORCE_BUS_ON = "force_bus_on"
+        private const val PREF_FORCE_RAIL_ON = "force_rail_on"
+        private const val PREF_FORCE_NO_NAP = "force_no_nap"
+        private const val PREF_BUS_SPLIT = "bus_split"
     }
 }
