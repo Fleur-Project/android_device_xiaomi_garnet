@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="kernel_governor_fallback_entries">
-        <item>schedutil</item>
+        <item>walt</item>
     </string-array>
 
     <string-array name="kernel_governor_fallback_values">
-        <item>schedutil</item>
+        <item>walt</item>
     </string-array>
 
     <string-array name="kernel_freq_fallback_entries">
