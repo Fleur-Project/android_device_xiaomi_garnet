@@ -232,6 +232,17 @@ fun KernelManagerScreen(
                     )
                 }
             }
+
+            item {
+                AnimatedEntrance(visible = visible, index = 5) {
+                    SwitchCard(
+                        title = stringResource(R.string.apply_on_boot_title),
+                        subtitle = stringResource(R.string.apply_on_boot_summary),
+                        checked = state.applyOnBoot,
+                        onCheckedChange = viewModel::setApplyOnBoot
+                    )
+                }
+            }
         }
     }
 }
@@ -473,6 +484,68 @@ fun FrequencySelector(
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun SwitchCard(
+    title: String,
+    subtitle: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit
+) {
+    val backgroundColor by animateColorAsState(
+        targetValue = if (checked) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceContainerLow,
+        animationSpec = tween(durationMillis = 300),
+        label = "switchBg"
+    )
+    val contentColor by animateColorAsState(
+        targetValue = if (checked) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface,
+        animationSpec = tween(durationMillis = 300),
+        label = "switchContent"
+    )
+
+    Surface(
+        onClick = { onCheckedChange(!checked) },
+        shape = MaterialTheme.shapes.extraLarge,
+        color = backgroundColor,
+        modifier = Modifier
+            .fillMaxWidth()
+            .bounceClick()
+            .animateContentSize(spring(stiffness = Spring.StiffnessLow))
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp, vertical = 20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column(modifier = Modifier.weight(1f).padding(end = 16.dp)) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = contentColor,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = subtitle,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = contentColor.copy(alpha = 0.8f)
+                )
+            }
+            Switch(
+                checked = checked,
+                onCheckedChange = null,
+                colors = SwitchDefaults.colors(
+                    checkedThumbColor = MaterialTheme.colorScheme.primary,
+                    checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+                    uncheckedThumbColor = MaterialTheme.colorScheme.outline,
+                    uncheckedTrackColor = MaterialTheme.colorScheme.surfaceContainerHighest
+                )
+            )
         }
     }
 }

@@ -28,6 +28,7 @@ data class KernelState(
     val perfAvailableFreqs: List<String> = emptyList(),
     val perfMinFreq: String = "",
     val perfMaxFreq: String = "",
+    val applyOnBoot: Boolean = false,
 )
 
 class KernelManagerViewModel(application: Application) : AndroidViewModel(application) {
@@ -66,7 +67,8 @@ class KernelManagerViewModel(application: Application) : AndroidViewModel(applic
                 effMaxFreq = effMax,
                 perfAvailableFreqs = perfFreqs,
                 perfMinFreq = perfMin,
-                perfMaxFreq = perfMax
+                perfMaxFreq = perfMax,
+                applyOnBoot = prefs.getBoolean(PREF_APPLY_ON_BOOT, false)
             )
         }
     }
@@ -91,6 +93,11 @@ class KernelManagerViewModel(application: Application) : AndroidViewModel(applic
         _state.update { it.copy(perfMaxFreq = freq) }
     }
 
+    fun setApplyOnBoot(enabled: Boolean) {
+        _state.update { it.copy(applyOnBoot = enabled) }
+        prefs.edit().putBoolean(PREF_APPLY_ON_BOOT, enabled).apply()
+    }
+
     fun applySettings() {
         val s = state.value
         KernelManagerUtils.setGovernor(s.currentGovernor)
@@ -112,11 +119,12 @@ class KernelManagerViewModel(application: Application) : AndroidViewModel(applic
     }
 
     companion object {
-        private const val PREFS_NAME = "kernel_manager_settings"
-        private const val PREF_GOVERNOR = "governor"
-        private const val PREF_EFF_MIN = "efficiency_min_freq"
-        private const val PREF_EFF_MAX = "efficiency_max_freq"
-        private const val PREF_PERF_MIN = "performance_min_freq"
-        private const val PREF_PERF_MAX = "performance_max_freq"
+        const val PREFS_NAME = "kernel_manager_settings"
+        const val PREF_GOVERNOR = "governor"
+        const val PREF_EFF_MIN = "efficiency_min_freq"
+        const val PREF_EFF_MAX = "efficiency_max_freq"
+        const val PREF_PERF_MIN = "performance_min_freq"
+        const val PREF_PERF_MAX = "performance_max_freq"
+        const val PREF_APPLY_ON_BOOT = "apply_on_boot"
     }
 }
