@@ -63,7 +63,7 @@ class ApplyOnBootReceiver : BroadcastReceiver() {
         utils.setForceClkOn(prefs.getBoolean(GpuManagerViewModel.PREF_FORCE_CLK_ON, false))
         utils.setForceBusOn(prefs.getBoolean(GpuManagerViewModel.PREF_FORCE_BUS_ON, false))
         utils.setForceRailOn(prefs.getBoolean(GpuManagerViewModel.PREF_FORCE_RAIL_ON, false))
-        utils.setForceNoNap(prefs.getBoolean(GpuManagerViewModel.PREF_FORCE_NO_NAP, false))
-        utils.setBusSplit(prefs.getBoolean(GpuManagerViewModel.PREF_BUS_SPLIT, false))
+        utils.setForceNoNap(prefs.getBoolean(GpuManagerViewModel.PREF_FORCE_NO_NAP, true))
+        utils.setBusSplit(prefs.getBoolean(GpuManagerViewModel.PREF_BUS_SPLIT, true))
     }
 }
