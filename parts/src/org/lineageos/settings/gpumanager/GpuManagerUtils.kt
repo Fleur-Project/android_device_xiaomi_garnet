@@ -12,7 +12,6 @@
 package org.lineageos.settings.gpumanager
 
 import java.io.File
-import java.io.IOException
 
 class GpuManagerUtils {
 
@@ -152,12 +151,10 @@ class GpuManagerUtils {
         setBusSplit(false)
     }
 
-    @Throws(IOException::class)
     private fun readFile(path: String): String {
         return File(path).readText()
     }
 
-    @Throws(IOException::class)
     private fun writeFile(path: String, value: String) {
         File(path).writeText(value)
     }
