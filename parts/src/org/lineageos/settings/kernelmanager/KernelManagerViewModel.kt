@@ -11,7 +11,9 @@
 
 package org.lineageos.settings.kernelmanager
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import android.content.Context
+import androidx.lifecycle.AndroidViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,7 +30,9 @@ data class KernelState(
     val perfMaxFreq: String = "",
 )
 
-class KernelManagerViewModel : ViewModel() {
+class KernelManagerViewModel(application: Application) : AndroidViewModel(application) {
+    private val prefs = application.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
     private val _state = MutableStateFlow(KernelState())
     val state: StateFlow<KernelState> = _state.asStateFlow()
 
@@ -38,15 +42,20 @@ class KernelManagerViewModel : ViewModel() {
 
     fun loadSettings() {
         val govs = KernelManagerUtils.getAvailableGovernors()
-        val curGov = KernelManagerUtils.getCurrentGovernor(KernelManagerUtils.EFFICIENCY_CLUSTER)
+        val curGov = prefs.getString(PREF_GOVERNOR, null)
+            ?: KernelManagerUtils.getCurrentGovernor(KernelManagerUtils.EFFICIENCY_CLUSTER)
         
         val effFreqs = KernelManagerUtils.getAvailableFrequencies(KernelManagerUtils.EFFICIENCY_CLUSTER) ?: emptyList()
-        val effMin = KernelManagerUtils.getCurrentMinFrequency(KernelManagerUtils.EFFICIENCY_CLUSTER)
-        val effMax = KernelManagerUtils.getCurrentMaxFrequency(KernelManagerUtils.EFFICIENCY_CLUSTER)
+        val effMin = prefs.getString(PREF_EFF_MIN, null)
+            ?: KernelManagerUtils.getCurrentMinFrequency(KernelManagerUtils.EFFICIENCY_CLUSTER)
+        val effMax = prefs.getString(PREF_EFF_MAX, null)
+            ?: KernelManagerUtils.getCurrentMaxFrequency(KernelManagerUtils.EFFICIENCY_CLUSTER)
         
         val perfFreqs = KernelManagerUtils.getAvailableFrequencies(KernelManagerUtils.PERFORMANCE_CLUSTER) ?: emptyList()
-        val perfMin = KernelManagerUtils.getCurrentMinFrequency(KernelManagerUtils.PERFORMANCE_CLUSTER)
-        val perfMax = KernelManagerUtils.getCurrentMaxFrequency(KernelManagerUtils.PERFORMANCE_CLUSTER)
+        val perfMin = prefs.getString(PREF_PERF_MIN, null)
+            ?: KernelManagerUtils.getCurrentMinFrequency(KernelManagerUtils.PERFORMANCE_CLUSTER)
+        val perfMax = prefs.getString(PREF_PERF_MAX, null)
+            ?: KernelManagerUtils.getCurrentMaxFrequency(KernelManagerUtils.PERFORMANCE_CLUSTER)
 
         _state.update {
             it.copy(
@@ -87,10 +96,27 @@ class KernelManagerViewModel : ViewModel() {
         KernelManagerUtils.setGovernor(s.currentGovernor)
         KernelManagerUtils.setFrequencyRange(KernelManagerUtils.EFFICIENCY_CLUSTER, s.effMinFreq, s.effMaxFreq)
         KernelManagerUtils.setFrequencyRange(KernelManagerUtils.PERFORMANCE_CLUSTER, s.perfMinFreq, s.perfMaxFreq)
+        prefs.edit()
+            .putString(PREF_GOVERNOR, s.currentGovernor)
+            .putString(PREF_EFF_MIN, s.effMinFreq)
+            .putString(PREF_EFF_MAX, s.effMaxFreq)
+            .putString(PREF_PERF_MIN, s.perfMinFreq)
+            .putString(PREF_PERF_MAX, s.perfMaxFreq)
+            .apply()
     }
 
     fun resetSettings() {
+        prefs.edit().clear().apply()
         KernelManagerUtils.resetToDefaults()
         loadSettings()
+    }
+
+    companion object {
+        private const val PREFS_NAME = "kernel_manager_settings"
+        private const val PREF_GOVERNOR = "governor"
+        private const val PREF_EFF_MIN = "efficiency_min_freq"
+        private const val PREF_EFF_MAX = "efficiency_max_freq"
+        private const val PREF_PERF_MIN = "performance_min_freq"
+        private const val PREF_PERF_MAX = "performance_max_freq"
     }
 }
