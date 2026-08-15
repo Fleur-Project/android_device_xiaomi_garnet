@@ -272,6 +272,17 @@ fun GpuManagerScreen(
                     )
                 }
             }
+
+            item {
+                AnimatedEntrance(visible = visible, index = 12) {
+                    GpuSwitchPreference(
+                        title = stringResource(R.string.apply_on_boot_title),
+                        summary = stringResource(R.string.apply_on_boot_summary),
+                        checked = uiState.applyOnBoot,
+                        onCheckedChange = { viewModel.setApplyOnBoot(it) }
+                    )
+                }
+            }
         }
     }
 }

@@ -42,7 +42,8 @@ class GpuManagerViewModel(application: Application) : AndroidViewModel(applicati
         val forceBusOn: Boolean = false,
         val forceRailOn: Boolean = false,
         val forceNoNap: Boolean = false,
-        val busSplit: Boolean = false
+        val busSplit: Boolean = false,
+        val applyOnBoot: Boolean = false
     )
 
     private val _uiState = MutableStateFlow(GpuState())
@@ -72,7 +73,8 @@ class GpuManagerViewModel(application: Application) : AndroidViewModel(applicati
                 forceBusOn = prefs.getBoolean(PREF_FORCE_BUS_ON, gpuUtils.getForceBusOn()),
                 forceRailOn = prefs.getBoolean(PREF_FORCE_RAIL_ON, gpuUtils.getForceRailOn()),
                 forceNoNap = prefs.getBoolean(PREF_FORCE_NO_NAP, gpuUtils.getForceNoNap()),
-                busSplit = prefs.getBoolean(PREF_BUS_SPLIT, gpuUtils.getBusSplit())
+                busSplit = prefs.getBoolean(PREF_BUS_SPLIT, gpuUtils.getBusSplit()),
+                applyOnBoot = prefs.getBoolean(PREF_APPLY_ON_BOOT, false)
             )
         }
         updateDynamicInfo()
@@ -130,6 +132,11 @@ class GpuManagerViewModel(application: Application) : AndroidViewModel(applicati
         _uiState.update { it.copy(busSplit = enabled) }
     }
 
+    fun setApplyOnBoot(enabled: Boolean) {
+        _uiState.update { it.copy(applyOnBoot = enabled) }
+        prefs.edit().putBoolean(PREF_APPLY_ON_BOOT, enabled).apply()
+    }
+
     fun applySettings() {
         val state = _uiState.value
         gpuUtils.setGovernor(state.currentGovernor)
@@ -158,14 +165,15 @@ class GpuManagerViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     companion object {
-        private const val PREFS_NAME = "gpu_manager_settings"
-        private const val PREF_GOVERNOR = "governor"
-        private const val PREF_MIN_FREQ = "min_freq"
-        private const val PREF_MAX_FREQ = "max_freq"
-        private const val PREF_FORCE_CLK_ON = "force_clk_on"
-        private const val PREF_FORCE_BUS_ON = "force_bus_on"
-        private const val PREF_FORCE_RAIL_ON = "force_rail_on"
-        private const val PREF_FORCE_NO_NAP = "force_no_nap"
-        private const val PREF_BUS_SPLIT = "bus_split"
+        const val PREFS_NAME = "gpu_manager_settings"
+        const val PREF_GOVERNOR = "governor"
+        const val PREF_MIN_FREQ = "min_freq"
+        const val PREF_MAX_FREQ = "max_freq"
+        const val PREF_FORCE_CLK_ON = "force_clk_on"
+        const val PREF_FORCE_BUS_ON = "force_bus_on"
+        const val PREF_FORCE_RAIL_ON = "force_rail_on"
+        const val PREF_FORCE_NO_NAP = "force_no_nap"
+        const val PREF_BUS_SPLIT = "bus_split"
+        const val PREF_APPLY_ON_BOOT = "apply_on_boot"
     }
 }

@@ -70,6 +70,17 @@
             </intent-filter>
         </receiver>
 
+        <receiver
+            android:name=".ApplyOnBootReceiver"
+            android:exported="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
         <!-- Garnet Parts -->
         <activity
             android:name=".garnetparts.GarnetPartsActivity"
