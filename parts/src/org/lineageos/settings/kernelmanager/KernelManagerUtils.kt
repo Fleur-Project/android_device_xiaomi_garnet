@@ -29,63 +29,47 @@ object KernelManagerUtils {
     private const val SCALING_AVAILABLE_FREQUENCIES = "/scaling_available_frequencies"
 
     fun getAvailableGovernors(): List<String> {
-        return try {
+        return runCatching {
             readFile(CPU_BASE_PATH + EFFICIENCY_CLUSTER + SCALING_AVAILABLE_GOVERNORS)
                 .trim().split("\\s+".toRegex())
-        } catch (e: Exception) {
-            listOf("walt", "schedutil", "performance", "powersave", "ondemand", "conservative")
-        }
+        }.getOrDefault(listOf("walt", "schedutil", "performance", "powersave", "ondemand", "conservative"))
     }
 
     fun getAvailableFrequencies(cluster: Int): List<String>? {
-        return try {
+        return runCatching {
             readFile(CPU_BASE_PATH + cluster + SCALING_AVAILABLE_FREQUENCIES)
                 .trim().split("\\s+".toRegex())
-        } catch (e: Exception) {
-            null
-        }
+        }.getOrNull()
     }
 
     fun getCurrentGovernor(cluster: Int): String {
-        return try {
+        return runCatching {
             readFile(CPU_BASE_PATH + cluster + SCALING_GOVERNOR).trim()
-        } catch (e: Exception) {
-            DEFAULT_GOVERNOR
-        }
+        }.getOrDefault(DEFAULT_GOVERNOR)
     }
 
     fun getCurrentMinFrequency(cluster: Int): String {
-        return try {
+        return runCatching {
             readFile(CPU_BASE_PATH + cluster + SCALING_MIN_FREQ).trim()
-        } catch (e: Exception) {
-            getAvailableFrequencies(cluster)?.firstOrNull() ?: "0"
-        }
+        }.getOrDefault(DEFAULT_MIN_FREQ)
     }
 
     fun getCurrentMaxFrequency(cluster: Int): String {
-        return try {
+        return runCatching {
             readFile(CPU_BASE_PATH + cluster + SCALING_MAX_FREQ).trim()
-        } catch (e: Exception) {
-            getAvailableFrequencies(cluster)?.lastOrNull() ?: "0"
-        }
+        }.getOrDefault(getAvailableFrequencies(cluster)?.lastOrNull() ?: "0")
     }
 
     fun setGovernor(governor: String) {
         for (cluster in POLICIES) {
-            try {
-                writeFile(CPU_BASE_PATH + cluster + SCALING_GOVERNOR, governor)
-            } catch (e: Exception) {
-                // Continue
-            }
+            runCatching { writeFile(CPU_BASE_PATH + cluster + SCALING_GOVERNOR, governor) }
         }
     }
 
     fun setFrequencyRange(cluster: Int, minFreq: String, maxFreq: String) {
-        try {
+        runCatching {
             writeFile(CPU_BASE_PATH + cluster + SCALING_MIN_FREQ, minFreq)
             writeFile(CPU_BASE_PATH + cluster + SCALING_MAX_FREQ, maxFreq)
-        } catch (e: Exception) {
-            // Ignore errors
         }
     }
 
