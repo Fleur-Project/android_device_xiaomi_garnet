@@ -18,7 +18,8 @@ object KernelManagerUtils {
     const val PERFORMANCE_CLUSTER = 4
     
     private val POLICIES = intArrayOf(EFFICIENCY_CLUSTER, PERFORMANCE_CLUSTER)
-    private const val DEFAULT_GOVERNOR = "schedutil"
+    private const val DEFAULT_GOVERNOR = "walt"
+    private const val DEFAULT_MIN_FREQ = "691200"
     
     private const val CPU_BASE_PATH = "/sys/devices/system/cpu/cpufreq/policy"
     private const val SCALING_GOVERNOR = "/scaling_governor"
@@ -32,7 +33,7 @@ object KernelManagerUtils {
             readFile(CPU_BASE_PATH + EFFICIENCY_CLUSTER + SCALING_AVAILABLE_GOVERNORS)
                 .trim().split("\\s+".toRegex())
         } catch (e: Exception) {
-            listOf("schedutil", "performance", "powersave", "ondemand", "conservative")
+            listOf("walt", "schedutil", "performance", "powersave", "ondemand", "conservative")
         }
     }
 
@@ -92,9 +93,8 @@ object KernelManagerUtils {
         setGovernor(DEFAULT_GOVERNOR)
         for (cluster in POLICIES) {
             val frequencies = getAvailableFrequencies(cluster)
-            if (!frequencies.isNullOrEmpty()) {
-                setFrequencyRange(cluster, frequencies.first(), frequencies.last())
-            }
+            val maxFreq = frequencies?.lastOrNull() ?: "0"
+            setFrequencyRange(cluster, DEFAULT_MIN_FREQ, maxFreq)
         }
     }
 
