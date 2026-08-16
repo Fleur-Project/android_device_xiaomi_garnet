@@ -113,7 +113,8 @@ class KernelManagerViewModel(application: Application) : AndroidViewModel(applic
     }
 
     fun resetSettings() {
-        prefs.edit().clear().apply()
+        val keepApplyOnBoot = prefs.getBoolean(PREF_APPLY_ON_BOOT, false)
+        prefs.edit().clear().putBoolean(PREF_APPLY_ON_BOOT, keepApplyOnBoot).apply()
         KernelManagerUtils.resetToDefaults()
 
         // Update state directly with known defaults instead of reading
@@ -133,7 +134,7 @@ class KernelManagerViewModel(application: Application) : AndroidViewModel(applic
                 perfAvailableFreqs = perfFreqs,
                 perfMinFreq = defaultMinFreq,
                 perfMaxFreq = perfFreqs.lastOrNull() ?: "0",
-                applyOnBoot = false
+                applyOnBoot = keepApplyOnBoot
             )
         }
     }
