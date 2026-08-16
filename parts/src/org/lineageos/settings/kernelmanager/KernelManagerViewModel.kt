@@ -115,7 +115,27 @@ class KernelManagerViewModel(application: Application) : AndroidViewModel(applic
     fun resetSettings() {
         prefs.edit().clear().apply()
         KernelManagerUtils.resetToDefaults()
-        loadSettings()
+
+        // Update state directly with known defaults instead of reading
+        // back from sysfs, because the walt governor may immediately
+        // override scaling_min_freq with its own floor value.
+        val effFreqs = KernelManagerUtils.getAvailableFrequencies(KernelManagerUtils.EFFICIENCY_CLUSTER) ?: emptyList()
+        val perfFreqs = KernelManagerUtils.getAvailableFrequencies(KernelManagerUtils.PERFORMANCE_CLUSTER) ?: emptyList()
+        val defaultMinFreq = KernelManagerUtils.DEFAULT_MIN_FREQ
+
+        _state.update {
+            it.copy(
+                availableGovernors = KernelManagerUtils.getAvailableGovernors(),
+                currentGovernor = KernelManagerUtils.DEFAULT_GOVERNOR,
+                effAvailableFreqs = effFreqs,
+                effMinFreq = defaultMinFreq,
+                effMaxFreq = effFreqs.lastOrNull() ?: "0",
+                perfAvailableFreqs = perfFreqs,
+                perfMinFreq = defaultMinFreq,
+                perfMaxFreq = perfFreqs.lastOrNull() ?: "0",
+                applyOnBoot = false
+            )
+        }
     }
 
     companion object {

@@ -18,8 +18,8 @@ object KernelManagerUtils {
     const val PERFORMANCE_CLUSTER = 4
     
     private val POLICIES = intArrayOf(EFFICIENCY_CLUSTER, PERFORMANCE_CLUSTER)
-    private const val DEFAULT_GOVERNOR = "walt"
-    private const val DEFAULT_MIN_FREQ = "691200"
+    internal const val DEFAULT_GOVERNOR = "walt"
+    internal const val DEFAULT_MIN_FREQ = "691200"
     
     private const val CPU_BASE_PATH = "/sys/devices/system/cpu/cpufreq/policy"
     private const val SCALING_GOVERNOR = "/scaling_governor"
@@ -32,7 +32,7 @@ object KernelManagerUtils {
         return runCatching {
             readFile(CPU_BASE_PATH + EFFICIENCY_CLUSTER + SCALING_AVAILABLE_GOVERNORS)
                 .trim().split("\\s+".toRegex())
-        }.getOrDefault(listOf("walt", "schedutil", "performance", "powersave", "ondemand", "conservative"))
+        }.getOrDefault(listOf(DEFAULT_GOVERNOR, "schedutil", "performance", "powersave", "ondemand", "conservative"))
     }
 
     fun getAvailableFrequencies(cluster: Int): List<String>? {
@@ -68,17 +68,17 @@ object KernelManagerUtils {
 
     fun setFrequencyRange(cluster: Int, minFreq: String, maxFreq: String) {
         runCatching {
-            writeFile(CPU_BASE_PATH + cluster + SCALING_MIN_FREQ, minFreq)
+            // Write max before min to avoid kernel rejecting min > current_max
             writeFile(CPU_BASE_PATH + cluster + SCALING_MAX_FREQ, maxFreq)
+            writeFile(CPU_BASE_PATH + cluster + SCALING_MIN_FREQ, minFreq)
         }
     }
 
     fun resetToDefaults() {
         setGovernor(DEFAULT_GOVERNOR)
         for (cluster in POLICIES) {
-            val frequencies = getAvailableFrequencies(cluster)
-            val maxFreq = frequencies?.lastOrNull() ?: "0"
-            setFrequencyRange(cluster, DEFAULT_MIN_FREQ, maxFreq)
+            val frequencies = getAvailableFrequencies(cluster) ?: continue
+            setFrequencyRange(cluster, DEFAULT_MIN_FREQ, frequencies.last())
         }
     }
 
