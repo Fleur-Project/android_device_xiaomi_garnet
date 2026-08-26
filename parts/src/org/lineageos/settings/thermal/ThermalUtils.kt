@@ -91,7 +91,7 @@ private constructor(
 
     fun setDefaultThermalProfile() {
         Logging.d(TAG, "setDefaultThermalProfile")
-        FileUtils.writeLine(THERMAL_SCONFIG, THERMAL_STATE_DEFAULT)
+        FileUtils.writeLine(THERMAL_SCONFIG, ThermalState.DEFAULT.config)
     }
 
     fun setThermalProfile(packageName: String) {
@@ -151,7 +151,7 @@ private constructor(
         BROWSER(1, "11", "thermal.browser=", R.string.thermal_browser),
         CAMERA(2, "12", "thermal.camera=", R.string.thermal_camera),
         DIALER(3, "8", "thermal.dialer=", R.string.thermal_dialer),
-        GAMING(4, "13", "thermal.gaming=", R.string.thermal_gaming),
+        GAMING(4, "9", "thermal.gaming=", R.string.thermal_gaming),
         NAVIGATION(5, "19", "thermal.navigation=", R.string.thermal_navigation),
         VIDEOCALL(6, "4", "thermal.streaming=", R.string.thermal_streaming),
         VIDEO(7, "21", "thermal.video=", R.string.thermal_video),
@@ -164,7 +164,6 @@ private constructor(
         private const val THERMAL_ENABLED = "thermal_enabled"
 
         private const val THERMAL_SCONFIG = "/sys/class/thermal/thermal_message/sconfig"
-        private const val THERMAL_STATE_DEFAULT = "20" // thermal-mgame.conf
 
         private val DEFAULT_VALUE = ThermalState.values().joinToString(":") { "${it.prefix}," }
 
