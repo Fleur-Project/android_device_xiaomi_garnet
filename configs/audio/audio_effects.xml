@@ -82,9 +82,7 @@
         <!--DOLBY END-->
         <!--DOLBY VQE-->
         <library name="vqe" path="libswvqe.so"/>
-        <!--DOLBY SPATIALIZER-->
-        <library name="spatializer" path="libswspatializer.so"/>
-        <!--DOLBY SPATIALIZER-->
+        <!--DOLBY END-->
 	    <!-- JamesDSP -->
 	    <library name="jdsp" path="libjamesdsp.so"/>
 	    <!-- JamesDSP -->
@@ -148,9 +146,7 @@
         <!--DOLBY END-->
         <!--DOLBY VQE-->
         <effect name="vqe" library="vqe" uuid="64a0f614-7fa4-48b8-b081-d59dc954616f"/>
-        <!--DOLBY SPATIALIZER-->
-        <effect name="spatializer" library="spatializer" uuid="ccd4cf09-a79d-46c2-9aae-06a1698d6c8f"/>
-        <!--DOLBY SPATIALIZER-->
+        <!--DOLBY END-->
 	    <!-- JamesDSP -->
 	    <effect name="jamesdsp" library="jdsp" uuid="f27317f4-c984-4de6-9a90-545759495bf2"/>
 	    <!-- JamesDSP -->
