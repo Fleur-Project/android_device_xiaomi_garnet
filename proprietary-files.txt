@@ -2175,6 +2175,7 @@ vendor/firmware/0_click_P_RTP.bin:vendor/etc/vibrator/primitive_effect_0.bin
 vendor/firmware/1_doubelClick_P_RTP.bin:vendor/etc/vibrator/effect_1.bin
 vendor/firmware/1_doubelClick_P_RTP.bin:vendor/etc/vibrator/primitive_effect_1.bin
 vendor/firmware/2_tick_P_RTP.bin:vendor/etc/vibrator/effect_2.bin
+vendor/firmware/2_tick_P_RTP.bin:vendor/etc/vibrator/effect_21.bin
 vendor/firmware/2_tick_P_RTP.bin:vendor/etc/vibrator/primitive_effect_2.bin
 vendor/firmware/3_thud_P_RTP.bin:vendor/etc/vibrator/effect_3.bin
 vendor/firmware/3_thud_P_RTP.bin:vendor/etc/vibrator/primitive_effect_3.bin
