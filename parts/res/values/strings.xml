@@ -155,31 +155,31 @@
 
     <!-- Garnet Parts -->
     <string name="garnet_parts_title">Garnet Parts</string>
-    <string name="garnet_parts_summary">System is Yours</string>
-    <string name="garnet_parts_description">Your central hub for advanced hardware controls. Fine-tune performance, display, battery, and kernel settings to optimize your device experience</string>
+    <string name="garnet_parts_summary">Hardware controls</string>
+    <string name="garnet_parts_description">Adjust CPU, GPU, thermal, display, charging, and speaker settings.</string>
     <string name="garnet_dashboard_title">GARNET PARTS</string>
-    <string name="garnet_dashboard_subtitle">SYSTEM IS YOURS</string>
+    <string name="garnet_dashboard_subtitle">HARDWARE CONTROLS</string>
     <string name="garnet_system_utilities">SYSTEM UTILITIES</string>
     <string name="garnet_navigate_back">Navigate back</string>
     <string name="garnet_open_feature">Open %s</string>
     <string name="garnet_engine_content_description">Garnet Engine</string>
-    <string name="garnet_hero_prompt">❯</string>
-    <string name="garnet_hero_terminal">root@garnet:~#</string>
-    <string name="garnet_supported_devices">RN 13 PRO 5G /\nPOCO X6 5G</string>
-    <string name="garnet_system_performance_optimized">System performance optimized</string>
-    <string name="garnet_core_control_summary">Optimized CPU management</string>
-    <string name="garnet_kernel_manager_summary">Advanced system tuning</string>
-    <string name="garnet_gpu_manager_summary">Peak graphics performance</string>
-    <string name="garnet_thermal_engine_summary">Pro-active heat management</string>
-    <string name="garnet_display_labs_title">Display Labs</string>
-    <string name="garnet_display_labs_summary">Color &amp; Saturation</string>
-    <string name="garnet_clear_speaker_summary">Sonic dust removal</string>
-    <string name="garnet_smooth_display_summary">Set the maximum refresh rate for a specific applications</string>
-    <string name="garnet_bypass_charge_summary">Direct power delivery</string>
+    <string name="garnet_hero_prompt">Status:</string>
+    <string name="garnet_hero_terminal">Ready</string>
+    <string name="garnet_supported_devices">Redmi Note 13 Pro 5G /\nPOCO X6 5G</string>
+    <string name="garnet_system_performance_optimized">Hardware controls ready</string>
+    <string name="garnet_core_control_summary">Enable or disable CPU cores</string>
+    <string name="garnet_kernel_manager_summary">Adjust CPU frequencies and governors</string>
+    <string name="garnet_gpu_manager_summary">Adjust GPU frequencies and power</string>
+    <string name="garnet_thermal_engine_summary">Choose per-app thermal profiles</string>
+    <string name="garnet_display_labs_title">Display saturation</string>
+    <string name="garnet_display_labs_summary">Adjust display color saturation</string>
+    <string name="garnet_clear_speaker_summary">Play audio through the speaker</string>
+    <string name="garnet_smooth_display_summary">Set the maximum refresh rate for a specific application</string>
+    <string name="garnet_bypass_charge_summary">Charge without using the battery</string>
     
     <!-- Kprofiles -->
     <string name="kprofiles_title">KProfiles</string>
-    <string name="kprofiles_summary">Managing Kernelspace profiles to achieve balancing in terms of battery backup and performance</string>
+    <string name="kprofiles_summary">Switch between battery, balanced, and performance profiles</string>
     <string name="kprofiles_auto_title">Use Auto KProfiles</string>
     <string name="kprofiles_auto_summary">Automatically switch to battery mode when device screen turns off and back to default profile when screen turns on</string>
     <string name="kprofiles_modes_title">KProfiles Modes</string>
@@ -189,9 +189,9 @@
     <string name="kprofiles_modes_performance">Performance</string>
     <string name="kprofiles_not_supported">KProfiles is not currently supported by the kernel</string>
     <string name="kprofiles_modes_description" translatable="false"><xliff:g id="description">%s</xliff:g></string>
-    <string name="kprofiles_modes_none_description">Regulate and manage in-kernel activities in a profile-oriented manner to achieve balance in terms of battery backup and performance accordingly</string>
-    <string name="kprofiles_modes_battery_description">Battery Mode:\nSkip all userspace and/or in-kernel boosts, reduces gpu scaling frequency</string>
-    <string name="kprofiles_modes_balanced_description">Balanced Mode:\nTips the balance between battery and performance modes</string>
-    <string name="kprofiles_modes_performance_description">Performance Mode:\nMaximize all boosts, increases gpu scaling frequency to its max</string>
+    <string name="kprofiles_modes_none_description">Manage in-kernel activity without selecting a profile</string>
+    <string name="kprofiles_modes_battery_description">Battery mode:\nSkip userspace and in-kernel boosts and reduce GPU scaling frequency</string>
+    <string name="kprofiles_modes_balanced_description">Balanced mode:\nBalance battery use and performance</string>
+    <string name="kprofiles_modes_performance_description">Performance mode:\nEnable all boosts and increase GPU scaling frequency to its maximum</string>
 
 </resources>
