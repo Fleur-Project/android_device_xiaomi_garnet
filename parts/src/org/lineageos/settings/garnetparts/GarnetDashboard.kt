@@ -52,6 +52,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
@@ -99,15 +100,55 @@ private val GarnetTypography = Typography(
 fun GarnetDashboard(onBackPressed: () -> Unit) {
     val context = LocalContext.current
     val view = LocalView.current
-    val coreControl = GarnetFeature("Core Control", "Optimized CPU management", R.drawable.ic_cpu, CoreControlActivity::class.java)
-    val kernelManager = GarnetFeature("Kernel Manager", "Advanced system tuning", R.drawable.ic_kernel_manager, KernelManagerActivity::class.java)
-    val gpuManager = GarnetFeature("GPU Manager", "Peak graphics performance", R.drawable.ic_gpu_manager, GpuManagerActivity::class.java)
-    val thermalEngine = GarnetFeature("Thermal Engine", "Pro-active heat management", R.drawable.ic_thermal_settings, ThermalComposeActivity::class.java)
+    val coreControl = GarnetFeature(
+        stringResource(R.string.core_control_title),
+        stringResource(R.string.garnet_core_control_summary),
+        R.drawable.ic_cpu,
+        CoreControlActivity::class.java
+    )
+    val kernelManager = GarnetFeature(
+        stringResource(R.string.kernel_manager_title),
+        stringResource(R.string.garnet_kernel_manager_summary),
+        R.drawable.ic_kernel_manager,
+        KernelManagerActivity::class.java
+    )
+    val gpuManager = GarnetFeature(
+        stringResource(R.string.gpu_manager_title),
+        stringResource(R.string.garnet_gpu_manager_summary),
+        R.drawable.ic_gpu_manager,
+        GpuManagerActivity::class.java
+    )
+    val thermalEngine = GarnetFeature(
+        stringResource(R.string.thermal_title),
+        stringResource(R.string.garnet_thermal_engine_summary),
+        R.drawable.ic_thermal_settings,
+        ThermalComposeActivity::class.java
+    )
     val carouselFeatures = listOf(
-        GarnetFeature("Display Labs", "Color & Saturation", R.drawable.ic_saturation_tile, SaturationActivity::class.java),
-        GarnetFeature("Clear Speaker", "Sonic dust removal", R.drawable.ic_clear_speaker, ClearSpeakerActivity::class.java),
-        GarnetFeature("Smooth Display", "Per-app refresh rates", R.drawable.ic_refresh_default, RefreshSettingsActivity::class.java),
-        GarnetFeature("Bypass Charge", "Direct power delivery", R.drawable.ic_charge, ChargeActivity::class.java)
+        GarnetFeature(
+            stringResource(R.string.garnet_display_labs_title),
+            stringResource(R.string.garnet_display_labs_summary),
+            R.drawable.ic_saturation_tile,
+            SaturationActivity::class.java
+        ),
+        GarnetFeature(
+            stringResource(R.string.clear_speaker_title),
+            stringResource(R.string.garnet_clear_speaker_summary),
+            R.drawable.ic_clear_speaker,
+            ClearSpeakerActivity::class.java
+        ),
+        GarnetFeature(
+            stringResource(R.string.refresh_title),
+            stringResource(R.string.garnet_smooth_display_summary),
+            R.drawable.ic_refresh_default,
+            RefreshSettingsActivity::class.java
+        ),
+        GarnetFeature(
+            stringResource(R.string.charge_bypass_title),
+            stringResource(R.string.garnet_bypass_charge_summary),
+            R.drawable.ic_charge,
+            ChargeActivity::class.java
+        )
     )
 
     val carouselState = rememberCarouselState { carouselFeatures.size }
@@ -213,7 +254,7 @@ fun GarnetDashboard(onBackPressed: () -> Unit) {
                 // override is part of GarnetTypography.labelMedium — no inline .copy() needed.
                 StaggeredAnimatedItem(index = 2, isVisible = isVisible) {
                     Text(
-                        "SYSTEM UTILITIES",
+                        text = stringResource(R.string.garnet_system_utilities),
                         modifier = Modifier.padding(horizontal = 24.dp),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.primary
@@ -252,6 +293,8 @@ private fun CollapsingHeader(
     collapseProgress: Float,
     onBackPressed: () -> Unit
 ) {
+    val navigateBackDescription = stringResource(R.string.garnet_navigate_back)
+
     // [Motion §5] Use spring() for morph/state animations — back button shape & color.
     val titleScale by animateFloatAsState(
         targetValue = 1f - (0.36f * collapseProgress),
@@ -359,7 +402,7 @@ private fun CollapsingHeader(
                         shape = backButtonShape
                     )
                     .semantics {
-                        contentDescription = "Navigate back"
+                        contentDescription = navigateBackDescription
                         role = Role.Button
                     }
             ) {
@@ -383,13 +426,13 @@ private fun CollapsingHeader(
                 // [Typography §6] headlineMedium with Black/letterSpacing is now part of
                 // GarnetTypography — no inline .copy() required.
                 Text(
-                    text = "GARNET PARTS",
+                    text = stringResource(R.string.garnet_dashboard_title),
                     style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 // [Typography §6] labelMedium Bold/letterSpacing also in GarnetTypography.
                 Text(
-                    text = "SYSTEM IS YOURS",
+                    text = stringResource(R.string.garnet_dashboard_subtitle),
                     style = MaterialTheme.typography.labelMedium.copy(
                         // Subtitle uses a tighter 3sp tracking — a named constant keeps intent clear.
                         letterSpacing = 3.sp
@@ -464,7 +507,7 @@ fun HeroBanner(scrollValue: Int = 0) {
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            "❯",
+                            text = stringResource(R.string.garnet_hero_prompt),
                             style = MaterialTheme.typography.labelSmall.copy(
                                 fontFamily = FontFamily.Monospace,
                                 fontWeight = FontWeight.ExtraBold,
@@ -474,7 +517,7 @@ fun HeroBanner(scrollValue: Int = 0) {
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
-                            "root@garnet:~#",
+                            text = stringResource(R.string.garnet_hero_terminal),
                             style = MaterialTheme.typography.labelSmall.copy(
                                 fontFamily = FontFamily.Monospace,
                                 fontWeight = FontWeight.ExtraBold,
@@ -489,7 +532,7 @@ fun HeroBanner(scrollValue: Int = 0) {
 
                 // [Typography §6] Remove hardcoded lineHeight override; let MD3 tokens govern.
                 Text(
-                    "RN 13 PRO 5G /\nPOCO X6 5G",
+                    text = stringResource(R.string.garnet_supported_devices),
                     style = MaterialTheme.typography.headlineSmall.copy(
                         fontWeight = FontWeight.Black,
                         letterSpacing = 1.sp
@@ -501,7 +544,7 @@ fun HeroBanner(scrollValue: Int = 0) {
 
                 // [Typography §6] Remove hardcoded lineHeight; bodySmall token governs line height.
                 Text(
-                    "System performance optimized",
+                    text = stringResource(R.string.garnet_system_performance_optimized),
                     style = MaterialTheme.typography.bodySmall.copy(
                         fontWeight = FontWeight.Medium,
                         letterSpacing = 0.5.sp
@@ -512,7 +555,7 @@ fun HeroBanner(scrollValue: Int = 0) {
 
             Icon(
                 painter = painterResource(id = R.drawable.ic_garnet),
-                contentDescription = "Garnet Engine",
+                contentDescription = stringResource(R.string.garnet_engine_content_description),
                 modifier = Modifier
                     .size(180.dp)
                     .align(Alignment.CenterEnd)
@@ -612,6 +655,7 @@ fun CarouselFeatureItem(
     modifier: Modifier = Modifier
 ) {
     val isGrouped = false
+    val openFeatureDescription = stringResource(R.string.garnet_open_feature, feature.title)
 
     // [Shape §1] extraLarge replaces PremiumCardShape.
     Card(
@@ -620,7 +664,7 @@ fun CarouselFeatureItem(
             .fillMaxSize()
             // [Accessibility §2] Semantic label for the carousel card action.
             .semantics {
-                contentDescription = "Open ${feature.title}"
+                contentDescription = openFeatureDescription
                 role = Role.Button
             },
         shape = MaterialTheme.shapes.extraLarge,
@@ -684,7 +728,7 @@ fun FeatureItemContent(
             // [Accessibility §2] Minimum 48dp touch target; clickable with role + label.
             .defaultMinSize(minHeight = 48.dp)
             .clickable(
-                onClickLabel = "Open ${feature.title}"
+                onClickLabel = stringResource(R.string.garnet_open_feature, feature.title)
             ) {
                 context.startActivity(Intent(context, feature.activityClass))
             }

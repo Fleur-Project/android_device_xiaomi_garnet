@@ -157,6 +157,25 @@
     <string name="garnet_parts_title">Garnet Parts</string>
     <string name="garnet_parts_summary">System is Yours</string>
     <string name="garnet_parts_description">Your central hub for advanced hardware controls. Fine-tune performance, display, battery, and kernel settings to optimize your device experience</string>
+    <string name="garnet_dashboard_title">GARNET PARTS</string>
+    <string name="garnet_dashboard_subtitle">SYSTEM IS YOURS</string>
+    <string name="garnet_system_utilities">SYSTEM UTILITIES</string>
+    <string name="garnet_navigate_back">Navigate back</string>
+    <string name="garnet_open_feature">Open %s</string>
+    <string name="garnet_engine_content_description">Garnet Engine</string>
+    <string name="garnet_hero_prompt">❯</string>
+    <string name="garnet_hero_terminal">root@garnet:~#</string>
+    <string name="garnet_supported_devices">RN 13 PRO 5G /\nPOCO X6 5G</string>
+    <string name="garnet_system_performance_optimized">System performance optimized</string>
+    <string name="garnet_core_control_summary">Optimized CPU management</string>
+    <string name="garnet_kernel_manager_summary">Advanced system tuning</string>
+    <string name="garnet_gpu_manager_summary">Peak graphics performance</string>
+    <string name="garnet_thermal_engine_summary">Pro-active heat management</string>
+    <string name="garnet_display_labs_title">Display Labs</string>
+    <string name="garnet_display_labs_summary">Color &amp; Saturation</string>
+    <string name="garnet_clear_speaker_summary">Sonic dust removal</string>
+    <string name="garnet_smooth_display_summary">Set the maximum refresh rate for a specific applications</string>
+    <string name="garnet_bypass_charge_summary">Direct power delivery</string>
     
     <!-- Kprofiles -->
     <string name="kprofiles_title">KProfiles</string>
