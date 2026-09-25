@@ -141,7 +141,14 @@ class GpuManagerUtils {
         setGovernor(DEFAULT_GOVERNOR)
         val frequencies = getAvailableFrequencies()
         if (!frequencies.isNullOrEmpty()) {
-            setFrequencyRange(frequencies.first(), frequencies.last())
+            val validFrequencies = frequencies.mapNotNull { frequency ->
+                frequency.toLongOrNull()?.let { value -> value to frequency }
+            }
+            val minFrequency = validFrequencies.minByOrNull { it.first }?.second
+            val maxFrequency = validFrequencies.maxByOrNull { it.first }?.second
+            if (minFrequency != null && maxFrequency != null) {
+                setFrequencyRange(minFrequency, maxFrequency)
+            }
         }
         
         setForceClkOn(false)
