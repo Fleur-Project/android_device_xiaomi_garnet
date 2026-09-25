@@ -471,7 +471,7 @@ fun HeroBanner(scrollValue: Int = 0) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp),
+            .height(160.dp),
         shape = MaterialTheme.shapes.extraLarge,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
@@ -481,9 +481,9 @@ fun HeroBanner(scrollValue: Int = 0) {
         ) {
             Column(
                 modifier = Modifier
-                    .padding(24.dp)
+                    .padding(20.dp)
                     .align(Alignment.CenterStart)
-                    .fillMaxWidth(0.65f)
+                    .fillMaxWidth(0.72f)
                     .graphicsLayer {
                         translationY = parallaxOffset * 0.5f
                     }
@@ -495,59 +495,58 @@ fun HeroBanner(scrollValue: Int = 0) {
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                     ) {
                         Box(
                             modifier = Modifier
-                                .size(8.dp)
+                                .size(6.dp)
                                 .background(
                                     color = MaterialTheme.colorScheme.tertiary,
                                     shape = CircleShape
                                 )
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
+                        Spacer(modifier = Modifier.width(6.dp))
                         Text(
                             text = stringResource(R.string.garnet_hero_prompt),
                             style = MaterialTheme.typography.labelSmall.copy(
                                 fontFamily = FontFamily.Monospace,
                                 fontWeight = FontWeight.ExtraBold,
-                                letterSpacing = 1.sp
+                                letterSpacing = 0.5.sp
                             ),
                             color = MaterialTheme.colorScheme.primary
                         )
-                        Spacer(modifier = Modifier.width(6.dp))
+                        Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = stringResource(R.string.garnet_hero_terminal),
                             style = MaterialTheme.typography.labelSmall.copy(
                                 fontFamily = FontFamily.Monospace,
                                 fontWeight = FontWeight.ExtraBold,
-                                letterSpacing = 1.sp
+                                letterSpacing = 0.5.sp
                             ),
                             color = MaterialTheme.colorScheme.tertiary
                         )
                     }
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 // [Typography §6] Remove hardcoded lineHeight override; let MD3 tokens govern.
                 Text(
                     text = stringResource(R.string.garnet_supported_devices),
-                    style = MaterialTheme.typography.headlineSmall.copy(
+                    style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Black,
-                        letterSpacing = 1.sp
+                        letterSpacing = 0.5.sp
                     ),
                     color = MaterialTheme.colorScheme.onSurface
                 )
 
-                Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(4.dp))
 
                 // [Typography §6] Remove hardcoded lineHeight; bodySmall token governs line height.
                 Text(
                     text = stringResource(R.string.garnet_system_performance_optimized),
                     style = MaterialTheme.typography.bodySmall.copy(
-                        fontWeight = FontWeight.Medium,
-                        letterSpacing = 0.5.sp
+                        fontWeight = FontWeight.Medium
                     ),
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -557,7 +556,7 @@ fun HeroBanner(scrollValue: Int = 0) {
                 painter = painterResource(id = R.drawable.ic_garnet),
                 contentDescription = stringResource(R.string.garnet_engine_content_description),
                 modifier = Modifier
-                    .size(180.dp)
+                    .size(140.dp)
                     .align(Alignment.CenterEnd)
                     .offset(x = 10.dp, y = iconOffset.dp)
                     .graphicsLayer {
