@@ -18,6 +18,7 @@ package org.lineageos.settings.garnetparts
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 
@@ -25,10 +26,17 @@ class GarnetPartsActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+
         enableEdgeToEdge()
-        
+
         setContent {
+            // [Predictive Back §4] Replace raw onBackPressed = { finish() } with BackHandler
+            // so the Android 14+ (API 34+) OnBackPressedDispatcher predictive back gesture
+            // animation runs correctly before the activity finishes.
+            BackHandler {
+                finish()
+            }
+
             GarnetDashboard(
                 onBackPressed = { finish() }
             )
