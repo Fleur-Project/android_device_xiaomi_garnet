@@ -115,6 +115,8 @@ blob_fixups: blob_fixups_user_type = {
         .regex_replace(r'.*<Alias name="OMX\.dolby\..*/>\r?\n', ''),
     'vendor/etc/vintf/manifest/c2_manifest_vendor.xml': blob_fixup()
         .regex_replace('dolby', 'default1'),
+    'vendor/lib64/soundfx/libdlbvol.so': blob_fixup()
+        .add_needed('libspatializerparamstorage.so'),
     (
         'vendor/bin/hw/vendor.qti.media.c2@1.0-service',
         'vendor/bin/hw/vendor.qti.media.c2audio@1.0-service',
