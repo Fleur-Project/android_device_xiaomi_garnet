@@ -97,6 +97,12 @@ blob_fixups: blob_fixups_user_type = {
     'vendor/etc/vintf/manifest/c2_manifest_vendor.xml': blob_fixup()
         .regex_replace('.+dolby.+\n', ''),
     (
+        'vendor/bin/hw/vendor.qti.media.c2@1.0-service',
+        'vendor/bin/hw/vendor.qti.media.c2audio@1.0-service',
+    ): blob_fixup().binary_regex_replace(
+        b'\x00\x21\x80\x52', b'\x00\x24\x80\x52',
+    ),
+    (
         'vendor/lib64/libagm.so',
         'vendor/lib64/libmcs.so',
         'vendor/lib64/libkaraokepal.so',
