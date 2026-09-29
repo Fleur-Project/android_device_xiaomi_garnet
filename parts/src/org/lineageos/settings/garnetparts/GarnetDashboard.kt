@@ -19,6 +19,7 @@ package org.lineageos.settings.garnetparts
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.SystemProperties
 import android.view.HapticFeedbackConstants
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.*
@@ -94,6 +95,9 @@ private val GarnetTypography = Typography(
         letterSpacing = 2.sp
     )
 )
+
+private fun getSupportedDeviceName(): String? =
+    SystemProperties.get("bluetooth.device.default_name").takeIf { it.isNotBlank() }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -451,6 +455,7 @@ private fun CollapsingHeader(
 
 @Composable
 fun HeroBanner(scrollValue: Int = 0) {
+    val supportedDeviceName = remember { getSupportedDeviceName() }
     val infiniteTransition = rememberInfiniteTransition(label = "hero_banner")
 
     // [Motion §5] Use EmphasizedDecelerateEasing (400ms) for enter/ambient animations.
@@ -532,7 +537,8 @@ fun HeroBanner(scrollValue: Int = 0) {
 
                 // [Typography §6] Remove hardcoded lineHeight override; let MD3 tokens govern.
                 Text(
-                    text = stringResource(R.string.garnet_supported_devices),
+                    text = supportedDeviceName
+                        ?: stringResource(R.string.garnet_supported_devices),
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Black,
                         letterSpacing = 0.5.sp
