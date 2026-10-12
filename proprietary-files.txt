@@ -1538,7 +1538,7 @@ vendor/etc/media_codecs_dolby_audio.xml|3119c61cc5471bb7902ac8b1ccd5785bb55a1918
 vendor/etc/permissions/android.hardware.sensor.dynamic.head_tracker.xml|60eb02d005deaf9e45baa914ffe90472c5ad97be
 vendor/etc/vintf/manifest/vendor.dolby.hardware.dms.xml|c8095f649de19b80271fb429b4b6b439297a0678
 vendor/bin/hw/vendor.dolby.hardware.dms@2.0-service|a3f593de5fa48113bdc07f9b9b013b333830425d|fe81baa98a95b675ffe39df87f4c93ea0295f35f
-vendor/bin/hw/vendor.dolby.media.c2@1.0-service|4a88666d7f072ce6ba4147198fe3aee1eebf1481|a2ff305b8a89a5b67d7a010a3ac4908c1150fd45
+vendor/bin/hw/vendor.dolby.media.c2@1.0-service|a2ff305b8a89a5b67d7a010a3ac4908c1150fd45|334cb121a4771165cc5df1c3dd01a73810f634fc
 vendor/lib64/libcodec2_soft_ac4dec.so|60bcb6b15030af17ea965860d5cc76f8d5cfdf91|e28b67f4fb08b372638069889404efe1b1b8d73b
 vendor/lib64/libcodec2_soft_ddpdec.so|7ed16855d50f57e097bfaba5429d38d2b2a3e769|73df2e309beb3ac66e1f527c7ac5aa4ff605286b
 vendor/lib64/libcodec2_store_dolby.so|3749d05dc119cd7c06d536cafbe7a79101386bec|97f436f8eee40361f22b7123bce87fcaf3f6bc5f
@@ -1558,7 +1558,7 @@ vendor/lib64/vendor.dolby.hardware.dms@2.0-impl.so|41fe4079a982f0fef9ba77c3ca30e
 vendor/lib64/vendor.dolby.hardware.dms@2.0.so|e1aced930abf83580d980d40f9adb7aa3b0f80c4
 
 # Media (Dolby Vision)
-vendor/bin/hw/dolbycodec2|807b8f8e6bb4e16d8b03df5a9069053f92f0c63a
+vendor/bin/hw/dolbycodec2|807b8f8e6bb4e16d8b03df5a9069053f92f0c63a|d31dcfd4c1d936e069abf8fb0ad4443593729812
 vendor/bin/hw/dvs-hal-service|2906e02ef0210bcdfc6ff8c9e85e457d637b0ae1
 vendor/etc/dolby_vision.cfg|1e329d752824b869d42b886eba8e21aeb2859ab6
 vendor/etc/media_codecs_dolby_video.xml|e2ae015ca5365ebd920146fa4ca7b93da0a4bea2

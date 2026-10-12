@@ -126,6 +126,11 @@ blob_fixups: blob_fixups_user_type = {
         b'\x00\x21\x80\x52', b'\x00\x24\x80\x52',
     ),
     (
+        'vendor/bin/hw/dolbycodec2',
+        'vendor/bin/hw/vendor.dolby.media.c2@1.0-service',
+    ): blob_fixup()
+        .sig_replace('00 21 80 52', '00 28 80 52'),
+    (
         'vendor/lib64/libagm.so',
         'vendor/lib64/libmcs.so',
         'vendor/lib64/libkaraokepal.so',
