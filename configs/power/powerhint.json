@@ -26,7 +26,6 @@
                 "0:1324800 1:1324800 2:1324800 3:1324800 4:1190400 5:1190400 6:1190400 7:1190400",
                 "0:1958400 1:1958400 2:1958400 3:1958400 4:1900800 5:1900800 6:1900800 7:1900800",
                 "0:1958400 1:1958400 2:1958400 3:1958400 4:2400000 5:2400000 6:2400000 7:2400000",
-                "0:1958400 1:1958400 2:1958400 3:1958400 4:875000000 5:875000000 6:875000000 7:875000000",
                 "4:1497600 5:1497600 6:1497600 7:1497600"
             ],
             "DefaultIndex": 0,
@@ -148,7 +147,7 @@
             "Path": "/sys/devices/system/cpu/cpu4/cpufreq/walt/hispeed_freq",
             "Values": [
                 "1190000",
-                "940"
+                "960000"
             ],
             "DefaultIndex": 0,
             "ResetOnInit": true
@@ -633,7 +632,7 @@
         {
             "PowerHint": "CAMERA_STREAMING_LOW",
             "Node": "DevicesSystemCpuCpu4CpufreqWaltHispeedFreq",
-            "Value": "940",
+            "Value": "960000",
             "Duration": 0
         },
         {
@@ -729,7 +728,7 @@
         {
             "PowerHint": "CAMERA_STREAMING_MID",
             "Node": "DevicesSystemCpuCpu4CpufreqWaltHispeedFreq",
-            "Value": "940",
+            "Value": "960000",
             "Duration": 0
         },
         {
