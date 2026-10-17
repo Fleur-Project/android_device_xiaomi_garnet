@@ -369,115 +369,115 @@
             "PowerHint": "INTERACTION",
             "Node": "KernelMsmPerformanceParametersCpuMinFreq",
             "Value": "0:1324800 1:1324800 2:1324800 3:1324800 4:1651200 5:1651200 6:1651200 7:1651200",
-            "Duration": 250
+            "Duration": 150
         },
         {
             "PowerHint": "INTERACTION",
             "Node": "CpuDmaLatency",
             "Value": "1",
-            "Duration": 250
+            "Duration": 150
         },
         {
             "PowerHint": "INTERACTION",
             "Node": "SysWaltSchedBoost",
             "Value": "1",
-            "Duration": 250
+            "Duration": 150
         },
         {
             "PowerHint": "INTERACTION",
             "Node": "SysWaltSchedUpmigrate",
             "Value": "45",
-            "Duration": 250
+            "Duration": 150
         },
         {
             "PowerHint": "INTERACTION",
             "Node": "SysWaltSchedDownmigrate",
             "Value": "40",
-            "Duration": 250
+            "Duration": 150
         },
         {
             "PowerHint": "INTERACTION",
             "Node": "SysWaltSchedGroupUpmigrate",
             "Value": "45",
-            "Duration": 250
+            "Duration": 150
         },
         {
             "PowerHint": "INTERACTION",
             "Node": "SysWaltSchedGroupDownmigrate",
             "Value": "40",
-            "Duration": 250
+            "Duration": 150
         },
         {
             "PowerHint": "INTERACTION",
             "Node": "SysWaltSchedBusyHysteresisEnableCpus",
             "Value": "255",
-            "Duration": 250
+            "Duration": 150
         },
         {
             "PowerHint": "INTERACTION",
             "Node": "SysWaltSchedBusyHystNs",
             "Value": "39000000",
-            "Duration": 250
+            "Duration": 150
         },
         {
             "PowerHint": "INTERACTION",
             "Node": "SysWaltSchedMinTaskUtilForColocation",
             "Value": "0",
-            "Duration": 250
+            "Duration": 150
         },
         {
             "PowerHint": "INTERACTION",
             "Node": "SysWaltSchedMinTaskUtilForBoost",
             "Value": "0",
-            "Duration": 250
+            "Duration": 150
         },
         {
             "PowerHint": "INTERACTION",
             "Node": "ClassKgslKgsl3d0DevfreqMinFreq",
-            "Value": "600000000",
-            "Duration": 250
+            "Value": "345000000",
+            "Duration": 150
         },
         {
             "PowerHint": "INTERACTION",
             "Node": "DevicesSystemCpuBusDcvsDdr19091000QcomBwmonDdrMinFreq",
-            "Value": "2092000",
-            "Duration": 250
+            "Value": "1708000",
+            "Duration": 150
         },
         {
             "PowerHint": "INTERACTION",
             "Node": "DevicesSystemCpuBusDcvsDdr19091000QcomBwmonDdrSampleMs",
             "Value": "4",
-            "Duration": 250
+            "Duration": 150
         },
         {
             "PowerHint": "INTERACTION",
             "Node": "DevicesSystemCpuCpu4CoreCtlMinCpus",
-            "Value": "4",
-            "Duration": 250
+            "Value": "2",
+            "Duration": 150
         },
         {
             "PowerHint": "INTERACTION",
             "Node": "DevicesSystemCpuBusDcvsL3BoostFreq",
             "Value": "1056000",
-            "Duration": 250
+            "Duration": 150
         },
         {
             "PowerHint": "INTERACTION",
             "Node": "UClampTALatency",
             "Value": "1",
-            "Duration": 0
+            "Duration": 150
         },
         {
             "PowerHint": "INTERACTION",
             "Node": "UclampFGMin",
             "Value": "30",
-            "Duration": 0
+            "Duration": 150
         },
         {
             "PowerHint": "INTERACTION",
             "Node": "UclampTAMin",
             "Value": "20",
-            "Duration": 0
+            "Duration": 150
         },
         {
             "PowerHint": "LAUNCH",
