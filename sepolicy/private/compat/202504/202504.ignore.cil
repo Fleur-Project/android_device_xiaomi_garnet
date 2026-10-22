@@ -8,4 +8,5 @@
     aux_camera_control_prop
     devicesettings_app
     settingslib_prop
+    vendor_latency_device
     vendor_nfc_prop))
