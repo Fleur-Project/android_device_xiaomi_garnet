@@ -5,8 +5,5 @@ recovery_only(`
 allow init proc:file write;
 ')
 
-# KProfiles
-allow init sysfs_kprofiles:file { setattr };
-
 # Bluetooth
 set_prop(vendor_init, vendor_bt_stack_prop)

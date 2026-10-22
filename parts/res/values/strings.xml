@@ -104,7 +104,7 @@
 
     <!-- Kernel Manager -->
     <string name="kernel_manager_title">Kernel Manager</string>
-    <string name="kernel_manager_summary">Manage CPU frequencies, governor and KProfiles</string>
+    <string name="kernel_manager_summary">Manage CPU frequencies and governor</string>
     <string name="cpu_governor_title">CPU Governor</string>
     <string name="cpu_governor_summary">Current: %s</string>
     <string name="cpu_min_freq_title">Minimum Frequency</string>
@@ -113,7 +113,7 @@
     <string name="performance_cluster_title">Performance Cluster</string>
     <string name="kernel_info_category">Information</string>
     <string name="kernel_info_title">About Kernel Manager</string>
-    <string name="kernel_info_summary">Manage CPU governor, KProfiles and frequency scaling for all CPU clusters. Changes may affect performance and battery life.</string>
+    <string name="kernel_info_summary">Manage CPU governor and frequency scaling for all CPU clusters. Changes may affect performance and battery life.</string>
     <string name="apply_settings">Apply Settings</string>
     <string name="apply_on_boot_title">Apply on Boot</string>
     <string name="apply_on_boot_summary">Automatically apply these settings when the device boots</string>
@@ -179,22 +179,5 @@
     <string name="garnet_clear_speaker_summary">Play audio through the speaker</string>
     <string name="garnet_smooth_display_summary">Set the maximum refresh rate for a specific application</string>
     <string name="garnet_bypass_charge_summary">Charge without using the battery</string>
-    
-    <!-- Kprofiles -->
-    <string name="kprofiles_title">KProfiles</string>
-    <string name="kprofiles_summary">Switch between battery, balanced, and performance profiles</string>
-    <string name="kprofiles_auto_title">Use Auto KProfiles</string>
-    <string name="kprofiles_auto_summary">Automatically switch to battery mode when device screen turns off and back to default profile when screen turns on</string>
-    <string name="kprofiles_modes_title">KProfiles Modes</string>
-    <string name="kprofiles_modes_none">None</string>
-    <string name="kprofiles_modes_battery">Battery</string>
-    <string name="kprofiles_modes_balanced">Balanced</string>
-    <string name="kprofiles_modes_performance">Performance</string>
-    <string name="kprofiles_not_supported">KProfiles is not currently supported by the kernel</string>
-    <string name="kprofiles_modes_description" translatable="false"><xliff:g id="description">%s</xliff:g></string>
-    <string name="kprofiles_modes_none_description">Manage in-kernel activity without selecting a profile</string>
-    <string name="kprofiles_modes_battery_description">Battery mode:\nSkip userspace and in-kernel boosts and reduce GPU scaling frequency</string>
-    <string name="kprofiles_modes_balanced_description">Balanced mode:\nBalance battery use and performance</string>
-    <string name="kprofiles_modes_performance_description">Performance mode:\nEnable all boosts and increase GPU scaling frequency to its maximum</string>
 
 </resources>
