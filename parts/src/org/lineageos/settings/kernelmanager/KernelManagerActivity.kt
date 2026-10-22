@@ -44,7 +44,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import org.lineageos.settings.R
-import org.lineageos.settings.kprofiles.KprofilesSettingsActivity
 
 fun Modifier.bounceClick() = composed {
     var isPressed by remember { mutableStateOf(false) }
@@ -93,10 +92,7 @@ class KernelManagerActivity : ComponentActivity() {
                 ) {
                     KernelManagerScreen(
                         viewModel = viewModel,
-                        onBackPressed = { finish() },
-                        onNavigateToKProfiles = {
-                            startActivity(Intent(this@KernelManagerActivity, KprofilesSettingsActivity::class.java))
-                        }
+                        onBackPressed = { finish() }
                     )
                 }
             }
@@ -108,8 +104,7 @@ class KernelManagerActivity : ComponentActivity() {
 @Composable
 fun KernelManagerScreen(
     viewModel: KernelManagerViewModel,
-    onBackPressed: () -> Unit,
-    onNavigateToKProfiles: () -> Unit
+    onBackPressed: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
@@ -203,47 +198,6 @@ fun KernelManagerScreen(
                     )
                 }
             }
-
-            item {
-                AnimatedEntrance(visible = visible, index = 3) {
-                    ActionCard(
-                        title = "KProfiles",
-                        subtitle = "Manage advanced KProfiles settings",
-                        icon = Icons.Default.Settings,
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                        onClick = onNavigateToKProfiles
-                    )
-                }
-            }
-
-            item {
-                AnimatedEntrance(visible = visible, index = 4) {
-                    ActionCard(
-                        title = "Reset to Defaults",
-                        subtitle = "Restore original kernel configurations",
-                        icon = Icons.Default.Refresh,
-                        containerColor = MaterialTheme.colorScheme.errorContainer,
-                        contentColor = MaterialTheme.colorScheme.onErrorContainer,
-                        onClick = {
-                            viewModel.resetSettings()
-                            Toast.makeText(context, R.string.settings_reset, Toast.LENGTH_SHORT).show()
-                        }
-                    )
-                }
-            }
-
-            item {
-                AnimatedEntrance(visible = visible, index = 5) {
-                    SwitchCard(
-                        title = stringResource(R.string.apply_on_boot_title),
-                        subtitle = stringResource(R.string.apply_on_boot_summary),
-                        checked = state.applyOnBoot,
-                        onCheckedChange = viewModel::setApplyOnBoot
-                    )
-                }
-            }
-        }
     }
 }
 
