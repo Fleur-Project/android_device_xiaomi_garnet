@@ -198,6 +198,34 @@ fun KernelManagerScreen(
                     )
                 }
             }
+
+            item {
+                AnimatedEntrance(visible = visible, index = 3) {
+                    ActionCard(
+                        title = "Reset to Defaults",
+                        subtitle = "Restore original kernel configurations",
+                        icon = Icons.Default.Refresh,
+                        containerColor = MaterialTheme.colorScheme.errorContainer,
+                        contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                        onClick = {
+                            viewModel.resetSettings()
+                            Toast.makeText(context, R.string.settings_reset, Toast.LENGTH_SHORT).show()
+                        }
+                    )
+                }
+            }
+
+            item {
+                AnimatedEntrance(visible = visible, index = 4) {
+                    SwitchCard(
+                        title = stringResource(R.string.apply_on_boot_title),
+                        subtitle = stringResource(R.string.apply_on_boot_summary),
+                        checked = state.applyOnBoot,
+                        onCheckedChange = viewModel::setApplyOnBoot
+                    )
+                }
+            }
+        }
     }
 }
 
