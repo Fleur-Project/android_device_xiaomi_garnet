@@ -1,0 +1,40 @@
+on post-fs-data
+    copy /odm/etc/camera/videofilter/129_LeicaVivid.png /data/vendor/camera/2.png
+    chmod 0644 /data/vendor/camera/2.png
+    chown camera camera /data/vendor/camera/2.png
+
+    copy /odm/etc/camera/videofilter/130_LeicaNatural.png /data/vendor/camera/3.png
+    chmod 0644 /data/vendor/camera/3.png
+    chown camera camera /data/vendor/camera/3.png
+
+    copy /odm/etc/camera/videofilter/131_MonochromeTrue.png /data/vendor/camera/4.png
+    chmod 0644 /data/vendor/camera/4.png
+    chown camera camera /data/vendor/camera/4.png
+
+    copy /odm/etc/camera/videofilter/132_MonochromeHighContrast.png /data/vendor/camera/5.png
+    chmod 0644 /data/vendor/camera/5.png
+    chown camera camera /data/vendor/camera/5.png
+
+    copy /odm/etc/camera/videofilter/133_MonochromeBrown.png /data/vendor/camera/6.png
+    chmod 0644 /data/vendor/camera/6.png
+    chown camera camera /data/vendor/camera/6.png
+
+    copy /odm/etc/camera/videofilter/134_MonochromeBlue.png /data/vendor/camera/7.png
+    chmod 0644 /data/vendor/camera/7.png
+    chown camera camera /data/vendor/camera/7.png
+
+    copy /odm/etc/camera/videofilter/144_RedHero.png /data/vendor/camera/26.png
+    chmod 0644 /data/vendor/camera/26.png
+    chown camera camera /data/vendor/camera/26.png
+
+    copy /odm/etc/camera/videofilter/146_TactileGreen.png /data/vendor/camera/28.png
+    chmod 0644 /data/vendor/camera/28.png
+    chown camera camera /data/vendor/camera/28.png
+
+    copy /odm/etc/camera/videofilter/72.png /data/vendor/camera/72.png
+    chmod 0644 /data/vendor/camera/72.png
+    chown camera camera /data/vendor/camera/72.png
+
+    copy /odm/etc/camera/videofilter/73.png /data/vendor/camera/73.png
+    chmod 0644 /data/vendor/camera/73.png
+    chown camera camera /data/vendor/camera/73.png
