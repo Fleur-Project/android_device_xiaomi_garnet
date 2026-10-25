@@ -222,6 +222,7 @@ PRODUCT_PACKAGES += \
     init.qcom.rc \
     init.recovery.qcom.rc \
     init.target.rc \
+    init.videofilter.rc \
     ueventd-odm.rc \
     ueventd.qcom.rc
 
