@@ -91,6 +91,9 @@ blob_fixups: blob_fixups_user_type = {
         'vendor/etc/camera/pureShot_parameter.xml'
     ): blob_fixup()
         .regex_replace(r'=(\d+)>', r'="\1">'),
+    'vendor/etc/init/hw/init.qti.kernel.rc': blob_fixup()
+        .regex_replace(r'# set the io-scheduler to bfq on all mq support devices', '# set the io-scheduler to adios')
+        .regex_replace(r'queue/scheduler bfq', 'queue/scheduler adios'),
     'vendor/etc/media_codecs_parrot_v0.xml': blob_fixup()
         .regex_replace('.+media_codecs_(google_audio|google_c2|google_telephony|vendor_audio).+\n', '')
         .regex_replace(r'<MediaCodec name="c2\.dolby[\s\S]*?</MediaCodec>', '')
