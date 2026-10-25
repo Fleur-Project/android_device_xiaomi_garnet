@@ -118,6 +118,7 @@ private constructor(
             }
 
         return when {
+            GAME_PACKAGES.contains(packageName) -> ThermalState.GAMING
             NAVIGATION_PACKAGES.contains(packageName) -> ThermalState.NAVIGATION
             VIDEO_CALL_PACKAGES.contains(packageName) -> ThermalState.VIDEOCALL
             BENCHMARKING_APPS.contains(packageName) -> ThermalState.BENCHMARK
@@ -166,6 +167,68 @@ private constructor(
         private const val THERMAL_SCONFIG = "/sys/class/thermal/thermal_message/sconfig"
 
         private val DEFAULT_VALUE = ThermalState.values().joinToString(":") { "${it.prefix}," }
+
+        private val GAME_PACKAGES = arrayOf(
+            "com.activision.callofduty.shooter",
+            "com.activision.callofduty.warzone",
+            "com.dts.freefiremax",
+            "com.dts.freefireth",
+            "com.epicgames.fortnite",
+            "com.garena.game.codm",
+            "com.pubg.imobile",
+            "com.pubg.krmobile",
+            "com.pubg.newstate",
+            "com.rekoo.pubgm",
+            "com.tencent.ig",
+            "com.tencent.tmgp.cod",
+            "com.tencent.tmgp.pubgmhd",
+            "com.vng.pubgmobile",
+            "com.garena.game.kgid",
+            "com.garena.game.kgth",
+            "com.garena.game.kgtw",
+            "com.garena.game.kgvn",
+            "com.levelinfinite.sgameGlobal",
+            "com.mobile.legends",
+            "com.ngame.allstar.eu",
+            "com.riotgames.league.teamfighttactics",
+            "com.riotgames.league.wildrift",
+            "com.tencent.tmgp.sgame",
+            "com.HoYoverse.Nap",
+            "com.HoYoverse.hkrpgoversea",
+            "com.carxtech.sr",
+            "com.gameloft.android.ANMP.GloftA8HM",
+            "com.gameloft.android.ANMP.GloftA9HM",
+            "com.kurogame.gplay.punishing.grayraven.en",
+            "com.kurogame.haru.hero",
+            "com.kurogame.wutheringwaves.global",
+            "com.miHoYo.GenshinImpact",
+            "com.miHoYo.Nap",
+            "com.miHoYo.Yuanshen",
+            "com.miHoYo.bh3.mihoyo",
+            "com.miHoYo.bh3global",
+            "com.miHoYo.bh3oversea",
+            "com.miHoYo.hkrpg",
+            "com.mojang.minecraftpe",
+            "com.roblox.client",
+            "com.supercell.brawlstars",
+            "com.supercell.clashofclans",
+            "com.supercell.clashroyale",
+            "com.explusalpha.Snes9xPlus",
+            "com.fastemulator.gba",
+            "com.retroarch",
+            "com.retroarch.aarch64",
+            "com.winlator",
+            "com.winlator.mod",
+            "com.winlator.vanilla",
+            "org.citra.citra_emu",
+            "org.dolphinemu.dolphinemu",
+            "org.ppsspp.ppsspp",
+            "org.ppsspp.ppssppgold",
+            "org.yuzu.yuzu_emu",
+            "org.yuzu.yuzu_emu.ea",
+            "skyline.emu",
+            "xyz.aethersx2.android",
+        )
 
         private val NAVIGATION_PACKAGES = arrayOf(
             "com.google.android.apps.maps",
