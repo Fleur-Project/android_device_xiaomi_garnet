@@ -2087,12 +2087,12 @@ vendor/etc/thermal-map.conf
 vendor/etc/thermal-mgame.conf
 vendor/etc/thermal-navigation.conf
 vendor/etc/thermal-nolimits.conf
-vendor/etc/thermal-normal.conf
+vendor/etc/thermal-normal.conf|db1e8866248a5cbaed5f38831e471d1948b941f2
 vendor/etc/thermal-per-class0.conf
 vendor/etc/thermal-per-normal.conf
 vendor/etc/thermal-per-video.conf
 vendor/etc/thermal-phone.conf
-vendor/etc/thermal-tgame.conf
+vendor/etc/thermal-tgame.conf|ead8933d99a1b805c2f5351b9aebed3ae569fb7e
 vendor/etc/thermal-video.conf
 vendor/etc/thermal-videochat.conf
 vendor/etc/thermald-devices.conf
