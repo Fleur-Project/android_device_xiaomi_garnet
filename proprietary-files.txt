@@ -233,6 +233,8 @@ vendor/lib64/vendor.qti.latency@2.1.so
 odm/etc/camera/cameradfx_config.json
 odm/etc/camera/cameraopt_reclaim.json
 odm/etc/camera/camerascene.json
+odm/etc/camera/videofilter/72.png|93b82ac8461fdd53a42bce71c108fc9ade0b50ce
+odm/etc/camera/videofilter/73.png|386fe89d09b4ae5248b7c1ec58226b4afc0ab687
 odm/etc/camera/videofilter/110_BlackGold.png
 odm/etc/camera/videofilter/129_LeicaVivid.png
 odm/etc/camera/videofilter/130_LeicaNatural.png
