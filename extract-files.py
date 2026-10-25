@@ -93,7 +93,11 @@ blob_fixups: blob_fixups_user_type = {
         .regex_replace(r'=(\d+)>', r'="\1">'),
     'vendor/etc/media_codecs_parrot_v0.xml': blob_fixup()
         .regex_replace('.+media_codecs_(google_audio|google_c2|google_telephony|vendor_audio).+\n', '')
-        .regex_replace(r'<MediaCodec name="c2\.dolby[\s\S]*?</MediaCodec>', ''),
+        .regex_replace(r'<MediaCodec name="c2\.dolby[\s\S]*?</MediaCodec>', '')
+        .regex_replace(
+            r'(<Include href="media_codecs_c2_audio\.xml" />)',
+            r'\1\n    <Include href="media_codecs_dolby_audio.xml" />',
+        ),
     (
         'vendor/bin/hw/vendor.qti.media.c2@1.0-service',
         'vendor/bin/hw/vendor.qti.media.c2audio@1.0-service',
