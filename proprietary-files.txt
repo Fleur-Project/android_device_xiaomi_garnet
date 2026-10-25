@@ -1361,46 +1361,50 @@ vendor/etc/init/android.hardware.gatekeeper@1.0-service-qti.rc
 vendor/lib64/hw/android.hardware.gatekeeper@1.0-impl-qti.so
 
 # Graphics (Adreno)
+vendor/etc/init/init.qgl.rc|5b938709f416f08c7f75243824931bfc408a5c1d
+vendor/etc/qgl_config.txt|5a6443194089e9a1b43d6d74debdcc1bca916f29
 vendor/gpu/kbc/sequence_manifest.bin
 vendor/gpu/kbc/unified_kbcs_32.bin
 vendor/gpu/kbc/unified_kbcs_64.bin
 vendor/gpu/kbc/unified_ksqs.bin
-vendor/lib/egl/eglSubDriverAndroid.so
-vendor/lib/egl/libEGL_adreno.so;SYMLINK=vendor/lib/libEGL_adreno.so
-vendor/lib/egl/libGLESv1_CM_adreno.so
-vendor/lib/egl/libGLESv2_adreno.so;SYMLINK=vendor/lib/libGLESv2_adreno.so
-vendor/lib/egl/libVkLayer_ADRENO_qprofiler.so
-vendor/lib/egl/libq3dtools_adreno.so;SYMLINK=vendor/lib/libq3dtools_adreno.so
-vendor/lib/egl/libq3dtools_esx.so
-vendor/lib/libCB.so
+vendor/lib/egl/eglSubDriverAndroid.so|9f73f847ff78b54deb2c73e6b6b65796b22b92d2
+vendor/lib/egl/libEGL_adreno.so;SYMLINK=vendor/lib/libEGL_adreno.so|e3aad28bcb936e71f9937e74aaddea0266b5a27a
+vendor/lib/egl/libGLESv1_CM_adreno.so|9b0968909034e32fee7a31549b3f759a09445376
+vendor/lib/egl/libGLESv2_adreno.so;SYMLINK=vendor/lib/libGLESv2_adreno.so|534eab470e1fd32391091d39b8d2e55785ccf53b
+vendor/lib/egl/libVkLayer_ADRENO_qprofiler.so|3c12cec5dd061a2206c26e04d55fb062bc7f5467
+vendor/lib/egl/libq3dtools_adreno.so;SYMLINK=vendor/lib/libq3dtools_adreno.so|a8fd9462385c03f503ce658286138f98f0e30d2e
+vendor/lib/egl/libq3dtools_esx.so|55cea6322a3abf19f25ddd8b742f0e3794209a41
+vendor/lib/libCB.so|f6dcdfb2c6f072dff6c96fdaac7881a034036864
 vendor/lib/libOpenCL.so
-vendor/lib/libadreno_app_profiles.so
-vendor/lib/libadreno_utils.so
+vendor/lib/libadreno_app_profiles.so|4a7e6cc61f220c384a354b55a9ec22eaa14f33d7
+vendor/lib/libadreno_compiler_cl.so|5cab58737c3d6406222891733d52231f1903190c
+vendor/lib/libadreno_utils.so|11f251fe3135835ace5ef9e58e94ab243e08e9ce
 vendor/lib/libgpudataproducer.so
-vendor/lib/libgsl.so
-vendor/lib/libkcl.so
-vendor/lib/libkernelmanager.so
-vendor/lib/libllvm-glnext.so
-vendor/lib/libllvm-qcom.so
-vendor/lib/libllvm-qgl.so
-vendor/lib64/egl/eglSubDriverAndroid.so
-vendor/lib64/egl/libEGL_adreno.so;SYMLINK=vendor/lib64/libEGL_adreno.so
-vendor/lib64/egl/libGLESv1_CM_adreno.so
-vendor/lib64/egl/libGLESv2_adreno.so;SYMLINK=vendor/lib64/libGLESv2_adreno.so
-vendor/lib64/egl/libVkLayer_ADRENO_qprofiler.so
-vendor/lib64/egl/libq3dtools_adreno.so;SYMLINK=vendor/lib64/libq3dtools_adreno.so
-vendor/lib64/egl/libq3dtools_esx.so
-vendor/lib64/libCB.so
+vendor/lib/libgsl.so|4d16e5c8508fac30670917615e2b210f30677527
+vendor/lib/libkcl.so|ea7f01507bcb606ca58c690466aea0cd2489454f
+vendor/lib/libkernelmanager.so|1cc4725fa4ec65cbe33450cf0b1d1e949637ce70
+vendor/lib/libllvm-glnext.so|c79758694d09d96ae63f6099a181403a219a4f9c
+vendor/lib/libllvm-qcom.so|7fcfc436335cdbd007a75a858e93039aa88903d2
+vendor/lib/libllvm-qgl.so|4d74bc927eee4e8576cd837a7b9dca7b090b61d6
+vendor/lib64/egl/eglSubDriverAndroid.so|aca34a99e51120c7b7511bc5e0cafd573242216a
+vendor/lib64/egl/libEGL_adreno.so;SYMLINK=vendor/lib64/libEGL_adreno.so|e49f8a0d8bd2f4eb3644669c2dc68f0aa2f73041
+vendor/lib64/egl/libGLESv1_CM_adreno.so|951d48a6e468d3f8fb2b3a5c7a0231e1ce6d3710
+vendor/lib64/egl/libGLESv2_adreno.so;SYMLINK=vendor/lib64/libGLESv2_adreno.so|d20f74dc7db31161c46538db3a682995e826d803
+vendor/lib64/egl/libVkLayer_ADRENO_qprofiler.so|3fdcc1e0c2b5fdc0ad3ce177943973c02fc0a25c
+vendor/lib64/egl/libq3dtools_adreno.so;SYMLINK=vendor/lib64/libq3dtools_adreno.so|4d65983b09c1baa1f05e0d8cfc4c85203048c13a
+vendor/lib64/egl/libq3dtools_esx.so|ebed4a5e1f662c7e5ca0b8a0be02bba931748f51
+vendor/lib64/libCB.so|4babf71047537085126e7983fa8bcac2c25ebd01
 vendor/lib64/libOpenCL.so
-vendor/lib64/libadreno_app_profiles.so
-vendor/lib64/libadreno_utils.so
+vendor/lib64/libadreno_app_profiles.so|20cf6fc630f78b9d3b7a3b5d99c16c668b4f1ad6
+vendor/lib64/libadreno_compiler_cl.so|c53a93ee6c9c4be3412b8a0141587e799f186cf3
+vendor/lib64/libadreno_utils.so|08a584a26c4cb01718c482510a1afd7672875654
 vendor/lib64/libgpudataproducer.so
-vendor/lib64/libgsl.so
-vendor/lib64/libkcl.so
-vendor/lib64/libkernelmanager.so
-vendor/lib64/libllvm-glnext.so
-vendor/lib64/libllvm-qcom.so
-vendor/lib64/libllvm-qgl.so
+vendor/lib64/libgsl.so|c15dfc9b1b2588dd027c38997a9a9431cfb66dbf
+vendor/lib64/libkcl.so|fd5042a7a7f564abdd1aa65c0b2d2c80f18a524f
+vendor/lib64/libkernelmanager.so|cf80c9164df723923ecff21ff3e065e9a5ce0462
+vendor/lib64/libllvm-glnext.so|152a9f66ee3f5716379172759971ddf3b3c08e11
+vendor/lib64/libllvm-qcom.so|edb0508636372ca244a552f354e056c69445ee4a
+vendor/lib64/libllvm-qgl.so|0f74cd68de9d472f04c447a71058ede06c35a41b
 
 # Graphics (Adreno firmware)
 vendor/firmware/a710_sqe.fw
@@ -1413,7 +1417,8 @@ vendor/firmware/a710_zap.mdt
 vendor/firmware/gmu_gen70000.bin
 
 # Graphics (Vulkan)
-vendor/lib64/hw/vulkan.adreno.so
+vendor/lib/hw/vulkan.adreno.so|29327176c494c494e0dfebb6d0355daf320f99b1
+vendor/lib64/hw/vulkan.adreno.so|f024c263ada569aaf72f3bc603193c81ecfbbcc0
 
 # Hotword enrollment
 product/etc/permissions/privapp-permissions-google-audio-system.xml:product/etc/permissions/privapp-permissions-hotword.xml
@@ -1690,9 +1695,9 @@ vendor/bin/vendor.qti.qspmhal@1.0-service
 vendor/etc/init/vendor.qti.qspmhal@1.0-service.rc
 vendor/etc/seccomp_policy/qspm.policy
 vendor/lib/vendor.qti.qspmhal@1.0-impl.so
-vendor/lib/vendor.qti.qspmhal@1.0.so
+vendor/lib/vendor.qti.qspmhal@1.0.so|eb56a309f48ca73543a9d9bfdfec3d1f93dae407
 vendor/lib64/vendor.qti.qspmhal@1.0-impl.so
-vendor/lib64/vendor.qti.qspmhal@1.0.so
+vendor/lib64/vendor.qti.qspmhal@1.0.so|9a084a8b43ec3cfac307d67faf3e1de7ed6e58d7
 
 # QTI
 vendor/bin/init.qti.write.sh
