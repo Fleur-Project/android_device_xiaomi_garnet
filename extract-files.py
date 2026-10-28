@@ -99,7 +99,6 @@ blob_fixups: blob_fixups_user_type = {
         'vendor/bin/hw/vendor.dolby.media.c2@1.0-service',
         'vendor/lib64/libcodec2_soft_ddpdec.so',
         'vendor/lib64/libcodec2_store_dolby.so',
-        'vendor/lib64/libdlbdsservice.so',
         'vendor/lib64/libdlbpreg.so',
         'vendor/lib64/libswspatializer_ext.so',
         'vendor/lib64/soundfx/libdlbvol.so',
@@ -110,6 +109,10 @@ blob_fixups: blob_fixups_user_type = {
     'vendor/lib64/libcodec2_soft_ac4dec.so': blob_fixup()
         .add_needed('libstagefright_foundation-v33.so')
         .sig_replace('fd 7b be a9 f4 4f 01 a9 fd 03 00 91 94 05 00 f0', '80 35 86 52 80 00 a0 72 c0 03 5f d6 1f 20 03 d5'),
+    # Keep logical DAX profile IDs and the flags used by the signed range check.
+    'vendor/lib64/libdlbdsservice.so': blob_fixup()
+        .add_needed('libstagefright_foundation-v33.so')
+        .sig_replace('1f 01 00 71 28 11 9f 1a 14 01 14 2b a4 01 00 54', '1f 01 00 71 28 11 9f 1a 94 02 00 31 a4 01 00 54'),
     (
         'vendor/etc/camera/pureView_parameter.xml',
         'vendor/etc/camera/pureShot_parameter.xml'
