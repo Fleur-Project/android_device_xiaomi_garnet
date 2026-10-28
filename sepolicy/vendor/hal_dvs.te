@@ -10,6 +10,8 @@ allow hal_dvs_server hal_dvs_client:binder transfer;
 allow hal_dvs_server hal_dvs_client:binder { call transfer };
 allow hal_dvs_server hal_dvs_client:fd *;
 allow hal_dvs_default hal_dvs_service:service_manager { add find };
+add_hwservice(hal_dvs_default, hal_dvs_hwservice)
+allow hal_dvs_client hal_dvs_hwservice:hwservice_manager find;
 allow hal_dvs_default system_server:binder { call transfer };
 allow hal_dvs_default fwk_sensor_hwservice:hwservice_manager find;
 allow hal_dvs_default fwk_sensor_service:service_manager find;
