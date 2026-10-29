@@ -1535,7 +1535,7 @@ vendor/lib64/qti.video.utils.videobufferlayout.so
 vendor/etc/dolby/dax-default.xml|37b3876ccb96f50729b16673cf3869f6ef7890bc
 vendor/etc/init/vendor.dolby.hardware.dms@2.0-service.rc|29296ebfe89b2697fec573be73cc3757fd97bed6
 vendor/etc/init/vendor.dolby.media.c2@1.0-service.rc|bc1e134139c7dd0e5b4f98952aa51c629ea66dc7
-vendor/etc/media_codecs_dolby_audio.xml|3119c61cc5471bb7902ac8b1ccd5785bb55a1918
+vendor/etc/media_codecs_dolby_audio.xml|3119c61cc5471bb7902ac8b1ccd5785bb55a1918|63123209e197bb5ca0e448e6632e9b15ec26cc6f
 vendor/etc/permissions/android.hardware.sensor.dynamic.head_tracker.xml|60eb02d005deaf9e45baa914ffe90472c5ad97be
 vendor/etc/vintf/manifest/vendor.dolby.hardware.dms.xml|c8095f649de19b80271fb429b4b6b439297a0678
 vendor/bin/hw/vendor.dolby.hardware.dms@2.0-service|a3f593de5fa48113bdc07f9b9b013b333830425d|fe81baa98a95b675ffe39df87f4c93ea0295f35f
