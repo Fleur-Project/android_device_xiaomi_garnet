@@ -512,6 +512,8 @@ subsystem mem_buf_vm
 
 # Battery
 /sys/class/qcom-battery                                 input_suspend                   0660    system  system
+/sys/class/qcom-battery                                 sport_mode                      0664    system  system
+/sys/class/qcom-battery                                 pd_verifed                      0664    system  system
 
 # Torch control
 /sys/devices/platform/soc/c42d000.qcom,spmi/spmi-0/0-05/c42d000.qcom,spmi:qcom,pm6150l@5:qcom,leds@d300/leds/led:torch_0 brightness 0660 cameraserver camera
