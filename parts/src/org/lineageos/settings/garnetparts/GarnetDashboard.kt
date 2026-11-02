@@ -67,6 +67,7 @@ import androidx.compose.ui.unit.sp
 import org.lineageos.settings.R
 import org.lineageos.settings.corecontrol.CoreControlActivity
 import org.lineageos.settings.charge.ChargeActivity
+import org.lineageos.settings.chargeboost.ChargeBoostActivity
 import org.lineageos.settings.kernelmanager.KernelManagerActivity
 import org.lineageos.settings.gpumanager.GpuManagerActivity
 import org.lineageos.settings.saturation.SaturationActivity
@@ -152,6 +153,12 @@ fun GarnetDashboard(onBackPressed: () -> Unit) {
             stringResource(R.string.garnet_bypass_charge_summary),
             R.drawable.ic_charge,
             ChargeActivity::class.java
+        ),
+        GarnetFeature(
+            stringResource(R.string.charge_boost_title),
+            stringResource(R.string.charge_boost_summary),
+            R.drawable.ic_charge_boost,
+            ChargeBoostActivity::class.java
         )
     )
 

@@ -123,6 +123,17 @@
             android:theme="@android:style/Theme.DeviceDefault.NoActionBar"
             android:exported="false" />
 
+        <!-- Charge Boost -->
+        <activity
+            android:name=".chargeboost.ChargeBoostActivity"
+            android:label="@string/charge_boost_title"
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar"
+            android:exported="false" />
+
+        <service
+            android:name=".chargeboost.ChargeBoostService"
+            android:exported="false" />
+
         <!-- Core Control -->
         <activity
             android:name=".corecontrol.CoreControlActivity"
