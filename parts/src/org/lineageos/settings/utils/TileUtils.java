@@ -48,15 +48,13 @@ public class TileUtils {
         if (result == null)
             return;
         switch (result) {
-            case StatusBarManager.TILE_ADD_REQUEST_RESULT_TILE_ADDED:
+            case StatusBarManager.TILE_ADD_REQUEST_RESULT_TILE_ADDED ->
                 Toast.makeText(context, R.string.tile_added, Toast.LENGTH_SHORT).show();
-                break;
-            case StatusBarManager.TILE_ADD_REQUEST_RESULT_TILE_NOT_ADDED:
+            case StatusBarManager.TILE_ADD_REQUEST_RESULT_TILE_NOT_ADDED ->
                 Toast.makeText(context, R.string.tile_not_added, Toast.LENGTH_SHORT).show();
-                break;
-            case StatusBarManager.TILE_ADD_REQUEST_RESULT_TILE_ALREADY_ADDED:
+            case StatusBarManager.TILE_ADD_REQUEST_RESULT_TILE_ALREADY_ADDED ->
                 Toast.makeText(context, R.string.tile_already_added, Toast.LENGTH_SHORT).show();
-                break;
+            default -> {}
         }
     }
 }

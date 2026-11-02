@@ -29,6 +29,7 @@ public class ComponentUtils {
      * @param componentClass The class of the component to be enabled or disabled.
      * @param enable        If true, the component will be enabled; if false, it will be disabled.
      */
+    @SuppressWarnings("AndroidFrameworkRequiresPermission")
     public static void toggleComponent(Context context, Class<?> componentClass, boolean enable) {
         ComponentName componentName = new ComponentName(context, componentClass);
         PackageManager packageManager = context.getPackageManager();

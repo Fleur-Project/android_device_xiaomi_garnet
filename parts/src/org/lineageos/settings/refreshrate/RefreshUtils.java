@@ -37,15 +37,15 @@ public final class RefreshUtils {
     private static final String KEY_PEAK_REFRESH_RATE = "peak_refresh_rate";
     private static final String KEY_MIN_REFRESH_RATE = "min_refresh_rate";
     private Context mContext;
-    protected static boolean isAppInList = false;
+    static boolean isAppInList = false;
 
-    protected static final int STATE_DEFAULT = 0;
-    protected static final int STATE_60 = 1;
-    protected static final int STATE_90 = 2;
-    protected static final int STATE_120 = 3;
-    protected static final int STATE_60_LAND = 4;
-    protected static final int STATE_90_LAND = 5;
-    protected static final int STATE_120_LAND = 6;
+    static final int STATE_DEFAULT = 0;
+    static final int STATE_60 = 1;
+    static final int STATE_90 = 2;
+    static final int STATE_120 = 3;
+    static final int STATE_60_LAND = 4;
+    static final int STATE_90_LAND = 5;
+    static final int STATE_120_LAND = 6;
 
     private static final float REFRESH_STATE_DEFAULT = 120f;
     private static final float REFRESH_STATE_60 = 60f;
@@ -67,11 +67,12 @@ public final class RefreshUtils {
     private OrientationEventListener orientationListener;
     private boolean isLandscape = false;
 
-    protected RefreshUtils(Context context) {
+    RefreshUtils(Context context) {
         mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         mContext = context;
     }
 
+    @SuppressWarnings("AndroidFrameworkRequiresPermission")
     public static void startService(Context context) {
         context.startServiceAsUser(new Intent(context, RefreshService.class),
                 UserHandle.CURRENT);
@@ -81,17 +82,9 @@ public final class RefreshUtils {
         mSharedPrefs.edit().putString(REFRESH_CONTROL, profiles).apply();
     }
 
-    protected void getOldRate(){
+    void getOldRate(){
         defaultMaxRate = Settings.System.getFloat(mContext.getContentResolver(), KEY_PEAK_REFRESH_RATE, REFRESH_STATE_DEFAULT);
         defaultMinRate = Settings.System.getFloat(mContext.getContentResolver(), KEY_MIN_REFRESH_RATE, REFRESH_STATE_DEFAULT);
-    }
-
-    private float getUserMaxRefreshRate() {
-        return Settings.System.getFloat(mContext.getContentResolver(), KEY_PEAK_REFRESH_RATE, REFRESH_STATE_DEFAULT);
-    }
-
-    private float getUserMinRefreshRate() {
-        return Settings.System.getFloat(mContext.getContentResolver(), KEY_MIN_REFRESH_RATE, REFRESH_STATE_DEFAULT);
     }
     
     private void initializeOrientationListener(String packageName) {
@@ -154,10 +147,9 @@ public final class RefreshUtils {
         }
     }
 
-    protected void checkOrientationAndSetRate(String packageName) {
+    void checkOrientationAndSetRate(String packageName) {
         int currentOrientation = mContext.getResources().getConfiguration().orientation;
         boolean isCurrentlyLandscape = (currentOrientation == Configuration.ORIENTATION_LANDSCAPE);
-        float currentMaxRate = Settings.System.getFloat(mContext.getContentResolver(), KEY_PEAK_REFRESH_RATE, REFRESH_STATE_DEFAULT);
 
         if (isCurrentlyLandscape && isAppInList) {
             setLandscapeModeRefreshRate(packageName);
@@ -173,7 +165,7 @@ public final class RefreshUtils {
         }
     }
 
-    protected void setRefreshRate(String packageName) {
+    void setRefreshRate(String packageName) {
         String value = getValue();
         String[] modes = value.split(":");
         float maxRate = defaultMaxRate;
@@ -273,38 +265,27 @@ public final class RefreshUtils {
         return value;
     }
 
-    protected void writePackage(String packageName, int mode) {
+    void writePackage(String packageName, int mode) {
         String value = getValue();
         value = value.replace(packageName + ",", "");
         String[] modes = value.split(":");
         String finalString;
 
         switch (mode) {
-            case STATE_60:
-                modes[0] = modes[0] + packageName + ",";
-                break;
-            case STATE_90:
-                modes[1] = modes[1] + packageName + ",";
-                break;
-            case STATE_120:
-                modes[2] = modes[2] + packageName + ",";
-                break;
-            case STATE_60_LAND:
-                modes[3] = modes[3] + packageName + ",";
-                break;
-            case STATE_90_LAND:
-                modes[4] = modes[4] + packageName + ",";
-                break;
-            case STATE_120_LAND:
-                modes[5] = modes[5] + packageName + ",";
-                break;
+            case STATE_60 -> modes[0] = modes[0] + packageName + ",";
+            case STATE_90 -> modes[1] = modes[1] + packageName + ",";
+            case STATE_120 -> modes[2] = modes[2] + packageName + ",";
+            case STATE_60_LAND -> modes[3] = modes[3] + packageName + ",";
+            case STATE_90_LAND -> modes[4] = modes[4] + packageName + ",";
+            case STATE_120_LAND -> modes[5] = modes[5] + packageName + ",";
+            default -> {}
         }
 
         finalString = String.join(":", modes);
         writeValue(finalString);
     }
 
-    protected int getStateForPackage(String packageName) {
+    int getStateForPackage(String packageName) {
         String value = getValue();
         String[] modes = value.split(":");
         int state = STATE_DEFAULT;

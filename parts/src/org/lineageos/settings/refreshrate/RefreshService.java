@@ -106,7 +106,7 @@ public class RefreshService extends Service {
                     mRefreshUtils.checkOrientationAndSetRate(foregroundApp);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, "Error handling foreground app refresh rate", e);
             }
         }
     };
