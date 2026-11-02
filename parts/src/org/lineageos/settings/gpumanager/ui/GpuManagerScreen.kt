@@ -12,73 +12,81 @@
 package org.lineageos.settings.gpumanager.ui
 
 import android.widget.Toast
-import androidx.compose.animation.*
-import androidx.compose.animation.core.*
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.waitForUpOrCancellation
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import org.lineageos.settings.R
 import org.lineageos.settings.gpumanager.GpuManagerViewModel
-
-fun Modifier.bounceClick() = composed {
-    var isPressed by remember { mutableStateOf(false) }
-    val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.95f else 1f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessMedium
-        ),
-        label = "bounceScale"
-    )
-
-    this
-        .graphicsLayer {
-            scaleX = scale
-            scaleY = scale
-        }
-        .pointerInput(Unit) {
-            awaitPointerEventScope {
-                while (true) {
-                    awaitFirstDown(requireUnconsumed = false)
-                    isPressed = true
-                    waitForUpOrCancellation()
-                    isPressed = false
-                }
-            }
-        }
-}
-
-@Composable
-fun AnimatedEntrance(visible: Boolean, index: Int, content: @Composable () -> Unit) {
-    AnimatedVisibility(
-        visible = visible,
-        enter = slideInVertically(
-            initialOffsetY = { 50 + (index * 20) },
-            animationSpec = spring(dampingRatio = 0.8f, stiffness = Spring.StiffnessLow)
-        ) + fadeIn(animationSpec = tween(durationMillis = 300, delayMillis = index * 50))
-    ) {
-        content()
-    }
-}
+import org.lineageos.settings.ui.theme.ExpressiveMotion
+import org.lineageos.settings.ui.theme.ExpressiveShapes
+import org.lineageos.settings.ui.theme.ExpressiveTypography
+import org.lineageos.settings.ui.theme.expressiveBounceClick
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -100,12 +108,17 @@ fun GpuManagerScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             LargeTopAppBar(
-                title = { Text(stringResource(R.string.gpu_manager_title), fontWeight = FontWeight.Bold) },
+                title = {
+                    Text(
+                        stringResource(R.string.gpu_manager_title),
+                        style = ExpressiveTypography.HeadlineMediumEmphasized
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onBackPressed) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = null
+                            contentDescription = stringResource(R.string.garnet_navigate_back)
                         )
                     }
                 },
@@ -114,11 +127,12 @@ fun GpuManagerScreen(
                         viewModel.resetSettings()
                         Toast.makeText(context, R.string.settings_reset, Toast.LENGTH_SHORT).show()
                     }) {
-                        Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
+                        Icon(imageVector = Icons.Default.Refresh, contentDescription = "Reset")
                     }
                 },
                 scrollBehavior = scrollBehavior,
                 colors = TopAppBarDefaults.largeTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
                     scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer
                 )
             )
@@ -126,32 +140,39 @@ fun GpuManagerScreen(
         floatingActionButton = {
             AnimatedVisibility(
                 visible = visible,
-                enter = scaleIn(spring(dampingRatio = Spring.DampingRatioMediumBouncy)) + fadeIn(),
-                exit = scaleOut() + fadeOut()
+                enter = scaleIn(ExpressiveMotion.FastSpatial) + fadeIn(ExpressiveMotion.effectsFast()),
+                exit = scaleOut(ExpressiveMotion.FastSpatial) + fadeOut(ExpressiveMotion.effectsFast())
             ) {
                 ExtendedFloatingActionButton(
                     onClick = {
                         viewModel.applySettings()
                         Toast.makeText(context, R.string.settings_applied, Toast.LENGTH_SHORT).show()
                     },
-                    icon = { Icon(Icons.Default.Check, null) },
-                    text = { Text(stringResource(R.string.apply_settings), fontWeight = FontWeight.SemiBold) },
+                    icon = { Icon(Icons.Default.Check, contentDescription = null) },
+                    text = {
+                        Text(
+                            stringResource(R.string.apply_settings),
+                            style = ExpressiveTypography.LabelLargeEmphasized
+                        )
+                    },
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier.bounceClick(),
+                    shape = ExpressiveShapes.ShapeLarge,
+                    modifier = Modifier.expressiveBounceClick(),
                     elevation = FloatingActionButtonDefaults.elevation(
-                        defaultElevation = 0.dp,
+                        defaultElevation = 6.dp,
                         pressedElevation = 6.dp
                     )
                 )
             }
-        }
+        },
+        containerColor = MaterialTheme.colorScheme.surface
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
-            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 100.dp),
+            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 100.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
@@ -256,13 +277,13 @@ fun GpuManagerScreen(
                     )
                 }
             }
-            
+
             item {
                 AnimatedEntrance(visible = visible, index = 10) {
                     CategoryHeader(stringResource(R.string.gpu_thermal_title))
                 }
             }
-            
+
             item {
                 AnimatedEntrance(visible = visible, index = 11) {
                     InfoItem(
@@ -288,6 +309,29 @@ fun GpuManagerScreen(
 }
 
 @Composable
+fun AnimatedEntrance(visible: Boolean, index: Int, content: @Composable () -> Unit) {
+    var itemVisible by remember { mutableStateOf(false) }
+    LaunchedEffect(visible) {
+        if (visible) {
+            delay(index * 40L)
+            itemVisible = true
+        } else {
+            itemVisible = false
+        }
+    }
+
+    AnimatedVisibility(
+        visible = itemVisible,
+        enter = slideInVertically(
+            initialOffsetY = { 32 },
+            animationSpec = ExpressiveMotion.spatialFast()
+        ) + fadeIn(animationSpec = ExpressiveMotion.effectsFast())
+    ) {
+        content()
+    }
+}
+
+@Composable
 fun GpuInfoCard(
     model: String,
     load: String,
@@ -297,33 +341,54 @@ fun GpuInfoCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .bounceClick(),
-        shape = MaterialTheme.shapes.extraLarge,
+            .expressiveBounceClick(),
+        shape = ExpressiveShapes.ShapeExtraLarge,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-            contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            contentColor = MaterialTheme.colorScheme.onSurface
         )
     ) {
         Column(
-            modifier = Modifier.padding(24.dp),
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+            modifier = Modifier.padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    Icons.Default.Build, 
-                    contentDescription = null,
-                    modifier = Modifier.size(32.dp)
-                )
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.primaryContainer,
+                            shape = ExpressiveShapes.ShapeMedium
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        Icons.Default.Build,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.size(26.dp)
+                    )
+                }
                 Spacer(modifier = Modifier.width(16.dp))
-                Text(
-                    text = model,
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold
-                )
+                Column {
+                    Text(
+                        text = model,
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Text(
+                        text = "GPU Accelerator",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
-            
-            HorizontalDivider(color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.2f))
-            
+
+            HorizontalDivider(
+                color = MaterialTheme.colorScheme.outlineVariant,
+                thickness = 1.dp
+            )
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -331,7 +396,7 @@ fun GpuInfoCard(
                 InfoColumn(stringResource(R.string.gpu_busy_percentage_title), load)
                 InfoColumn(stringResource(R.string.gpu_temp_title), "$temp°C")
                 InfoColumn(
-                    stringResource(R.string.gpu_current_freq_title), 
+                    stringResource(R.string.gpu_current_freq_title),
                     if (freq != "0" && freq.isNotEmpty()) "${try { freq.toLong() / 1000000 } catch(e:Exception) { freq }} MHz" else "Offline"
                 )
             }
@@ -345,22 +410,21 @@ fun InfoColumn(title: String, value: String) {
         Text(
             text = title,
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.8f)
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+        Spacer(modifier = Modifier.height(2.dp))
         AnimatedContent(
             targetState = value,
             transitionSpec = {
-                (fadeIn(animationSpec = tween(220, delayMillis = 90)) +
-                        scaleIn(initialScale = 0.92f, animationSpec = tween(220, delayMillis = 90)))
-                    .togetherWith(fadeOut(animationSpec = tween(90)))
+                (fadeIn(ExpressiveMotion.effectsFast()) + scaleIn(ExpressiveMotion.spatialFast(), initialScale = 0.94f))
+                    .togetherWith(fadeOut(ExpressiveMotion.effectsFast()))
             },
             label = "value_anim"
         ) { targetValue ->
             Text(
                 text = targetValue,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.ExtraBold,
-                color = MaterialTheme.colorScheme.onTertiaryContainer
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.primary
             )
         }
     }
@@ -370,10 +434,9 @@ fun InfoColumn(title: String, value: String) {
 fun CategoryHeader(title: String) {
     Text(
         text = title,
-        style = MaterialTheme.typography.titleMedium,
-        fontWeight = FontWeight.Bold,
+        style = MaterialTheme.typography.labelLarge,
         color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.padding(top = 16.dp, bottom = 4.dp, start = 8.dp)
+        modifier = Modifier.padding(top = 8.dp, bottom = 2.dp, start = 8.dp)
     )
 }
 
@@ -388,51 +451,60 @@ fun GpuDropdownPreference(
     color: Color
 ) {
     var expanded by remember { mutableStateOf(false) }
-    
+
     val containerColor by animateColorAsState(
-        targetValue = if (expanded) MaterialTheme.colorScheme.surfaceContainerHigh else MaterialTheme.colorScheme.surfaceContainerLow,
-        animationSpec = tween(300),
+        targetValue = if (expanded) MaterialTheme.colorScheme.surfaceContainerHigh else MaterialTheme.colorScheme.surfaceContainer,
+        animationSpec = ExpressiveMotion.effectsDefault(),
         label = "dropdownColor"
     )
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .bounceClick()
-            .animateContentSize(spring(stiffness = Spring.StiffnessLow)),
-        shape = MaterialTheme.shapes.extraLarge,
+            .expressiveBounceClick()
+            .animateContentSize(ExpressiveMotion.spatialDefault()),
+        shape = ExpressiveShapes.ShapeExtraLarge,
         colors = CardDefaults.cardColors(containerColor = containerColor)
     ) {
         Column(
-            modifier = Modifier.padding(24.dp)
+            modifier = Modifier.padding(20.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    tint = color,
-                    modifier = Modifier.size(28.dp)
-                )
+                Box(
+                    modifier = Modifier
+                        .size(44.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.secondaryContainer,
+                            shape = ExpressiveShapes.ShapeMedium
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
                 Spacer(modifier = Modifier.width(16.dp))
                 Column {
                     Text(
                         text = title,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        fontWeight = FontWeight.Bold
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     AnimatedContent(targetState = selectedOption, label = "optionAnim") { opt ->
                         Text(
                             text = "Active: $opt",
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = MaterialTheme.typography.bodySmall,
                             color = color
                         )
                     }
                 }
             }
-            
-            Spacer(modifier = Modifier.height(20.dp))
-            
+
+            Spacer(modifier = Modifier.height(18.dp))
+
             ExposedDropdownMenuBox(
                 expanded = expanded,
                 onExpandedChange = { expanded = it }
@@ -447,11 +519,12 @@ fun GpuDropdownPreference(
                         .menuAnchor()
                         .fillMaxWidth(),
                     colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = color
+                        focusedBorderColor = color,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
                     ),
-                    shape = MaterialTheme.shapes.large
+                    shape = ExpressiveShapes.ShapeLarge
                 )
-                
+
                 ExposedDropdownMenu(
                     expanded = expanded,
                     onDismissRequest = { expanded = false },
@@ -459,12 +532,12 @@ fun GpuDropdownPreference(
                 ) {
                     options.forEach { option ->
                         DropdownMenuItem(
-                            text = { 
+                            text = {
                                 Text(
                                     text = option,
-                                    fontWeight = if (option == selectedOption) FontWeight.Bold else FontWeight.Normal,
+                                    style = if (option == selectedOption) ExpressiveTypography.LabelLargeEmphasized else MaterialTheme.typography.bodyMedium,
                                     color = if (option == selectedOption) color else MaterialTheme.colorScheme.onSurface
-                                ) 
+                                )
                             },
                             onClick = {
                                 onOptionSelected(option)
@@ -491,29 +564,38 @@ fun GpuFrequenciesCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .animateContentSize(spring(stiffness = Spring.StiffnessLow)),
-        shape = MaterialTheme.shapes.extraLarge,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
+            .animateContentSize(ExpressiveMotion.spatialDefault()),
+        shape = ExpressiveShapes.ShapeExtraLarge,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
     ) {
-        Column(modifier = Modifier.padding(24.dp)) {
+        Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    Icons.Default.Build,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.secondary,
-                    modifier = Modifier.size(28.dp)
-                )
+                Box(
+                    modifier = Modifier
+                        .size(44.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.tertiaryContainer,
+                            shape = ExpressiveShapes.ShapeMedium
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        Icons.Default.Build,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onTertiaryContainer,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
                 Spacer(modifier = Modifier.width(16.dp))
                 Text(
                     text = stringResource(R.string.gpu_freq_title),
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
-            
-            Spacer(modifier = Modifier.height(20.dp))
-            
+
+            Spacer(modifier = Modifier.height(18.dp))
+
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier.fillMaxWidth()
@@ -524,7 +606,7 @@ fun GpuFrequenciesCard(
                     currentFreq = minFreq,
                     options = options,
                     onSelected = onMinSelected,
-                    color = MaterialTheme.colorScheme.secondary
+                    color = MaterialTheme.colorScheme.tertiary
                 )
                 GpuFreqSelector(
                     modifier = Modifier.weight(1f),
@@ -532,7 +614,7 @@ fun GpuFrequenciesCard(
                     currentFreq = maxFreq,
                     options = options,
                     onSelected = onMaxSelected,
-                    color = MaterialTheme.colorScheme.secondary
+                    color = MaterialTheme.colorScheme.tertiary
                 )
             }
         }
@@ -550,7 +632,7 @@ fun GpuFreqSelector(
     color: Color
 ) {
     var expanded by remember { mutableStateOf(false) }
-    
+
     val displayFreq = try {
         "${currentFreq.toLong() / 1000000} MHz"
     } catch (e: Exception) {
@@ -560,7 +642,7 @@ fun GpuFreqSelector(
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = it },
-        modifier = modifier.bounceClick()
+        modifier = modifier.expressiveBounceClick()
     ) {
         OutlinedTextField(
             value = displayFreq,
@@ -571,9 +653,10 @@ fun GpuFreqSelector(
             modifier = Modifier.fillMaxWidth().menuAnchor(),
             singleLine = true,
             colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(
-                focusedBorderColor = color
+                focusedBorderColor = color,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
             ),
-            shape = MaterialTheme.shapes.large
+            shape = ExpressiveShapes.ShapeLarge
         )
         ExposedDropdownMenu(
             expanded = expanded,
@@ -587,12 +670,12 @@ fun GpuFreqSelector(
                     freq
                 }
                 DropdownMenuItem(
-                    text = { 
+                    text = {
                         Text(
                             text = freqDisplay,
-                            fontWeight = if (freq == currentFreq) FontWeight.Bold else FontWeight.Normal,
+                            style = if (freq == currentFreq) ExpressiveTypography.LabelLargeEmphasized else MaterialTheme.typography.bodyMedium,
                             color = if (freq == currentFreq) color else MaterialTheme.colorScheme.onSurface
-                        ) 
+                        )
                     },
                     onClick = {
                         onSelected(freq)
@@ -613,55 +696,52 @@ fun GpuSwitchPreference(
     onCheckedChange: (Boolean) -> Unit
 ) {
     val backgroundColor by animateColorAsState(
-        targetValue = if (checked) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceContainerLow,
-        animationSpec = tween(durationMillis = 300),
+        targetValue = if (checked) MaterialTheme.colorScheme.surfaceContainerHigh else MaterialTheme.colorScheme.surfaceContainer,
+        animationSpec = ExpressiveMotion.effectsDefault(),
         label = "switchBg"
-    )
-    val contentColor by animateColorAsState(
-        targetValue = if (checked) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface,
-        animationSpec = tween(durationMillis = 300),
-        label = "switchContent"
     )
 
     Surface(
         onClick = { onCheckedChange(!checked) },
-        shape = MaterialTheme.shapes.extraLarge,
+        shape = ExpressiveShapes.ShapeExtraLarge,
         color = backgroundColor,
         modifier = Modifier
             .fillMaxWidth()
-            .bounceClick()
-            .animateContentSize(spring(stiffness = Spring.StiffnessLow))
+            .expressiveBounceClick()
+            .animateContentSize(ExpressiveMotion.spatialDefault())
+            .semantics { role = Role.Switch }
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp, vertical = 20.dp),
+                .defaultMinSize(minHeight = 56.dp)
+                .padding(horizontal = 20.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column(modifier = Modifier.weight(1f).padding(end = 16.dp)) {
                 Text(
-                    text = title, 
-                    style = MaterialTheme.typography.titleLarge,
-                    color = contentColor,
-                    fontWeight = FontWeight.Bold
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = summary,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = contentColor.copy(alpha = 0.8f)
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             Switch(
                 checked = checked,
                 onCheckedChange = null,
-                colors = SwitchDefaults.colors(
-                    checkedThumbColor = MaterialTheme.colorScheme.primary,
-                    checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
-                    uncheckedThumbColor = MaterialTheme.colorScheme.outline,
-                    uncheckedTrackColor = MaterialTheme.colorScheme.surfaceContainerHighest
-                )
+                thumbContent = {
+                    Icon(
+                        imageVector = if (checked) Icons.Filled.Check else Icons.Filled.Close,
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
             )
         }
     }
@@ -672,38 +752,37 @@ fun InfoItem(title: String, value: String, summary: String) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .bounceClick(),
-        shape = MaterialTheme.shapes.extraLarge,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
+            .expressiveBounceClick(),
+        shape = ExpressiveShapes.ShapeExtraLarge,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
     ) {
-        Column(modifier = Modifier.padding(24.dp)) {
+        Column(modifier = Modifier.padding(20.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = title, 
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Surface(
                     color = MaterialTheme.colorScheme.errorContainer,
-                    shape = MaterialTheme.shapes.medium
+                    shape = ExpressiveShapes.ShapeMedium
                 ) {
                     Text(
                         text = value,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.ExtraBold,
+                        style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.onErrorContainer,
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = summary,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }

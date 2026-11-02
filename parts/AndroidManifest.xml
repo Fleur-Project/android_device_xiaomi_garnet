@@ -138,6 +138,7 @@
         <activity
             android:name=".corecontrol.CoreControlActivity"
             android:label="@string/core_control_title"
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar"
             android:exported="false" />
 
         <!-- Clear Speaker -->
@@ -151,6 +152,7 @@
         <activity
             android:name=".kernelmanager.KernelManagerActivity"
             android:label="@string/kernel_manager_title"
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar"
             android:exported="false" />
 
         <!-- GPU Control -->
@@ -164,6 +166,7 @@
         <activity
             android:name=".refreshrate.RefreshSettingsActivity"
             android:label="@string/refresh_title"
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar"
             android:exported="false" />
 
         <service
@@ -175,6 +178,7 @@
         <activity
             android:name=".saturation.SaturationActivity"
             android:label="@string/saturation_title"
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar"
             android:exported="false" />
 
         <!-- Display Saturation tile service -->

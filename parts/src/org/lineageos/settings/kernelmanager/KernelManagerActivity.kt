@@ -11,84 +11,94 @@
 
 package org.lineageos.settings.kernelmanager
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.animation.*
-import androidx.compose.animation.core.*
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.waitForUpOrCancellation
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import org.lineageos.settings.R
-
-fun Modifier.bounceClick() = composed {
-    var isPressed by remember { mutableStateOf(false) }
-    val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.95f else 1f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessMedium
-        ),
-        label = "bounceScale"
-    )
-
-    this
-        .graphicsLayer {
-            scaleX = scale
-            scaleY = scale
-        }
-        .pointerInput(Unit) {
-            awaitPointerEventScope {
-                while (true) {
-                    awaitFirstDown(requireUnconsumed = false)
-                    isPressed = true
-                    waitForUpOrCancellation()
-                    isPressed = false
-                }
-            }
-        }
-}
+import org.lineageos.settings.ui.theme.ExpressiveMotion
+import org.lineageos.settings.ui.theme.ExpressiveShapes
+import org.lineageos.settings.ui.theme.ExpressiveTheme
+import org.lineageos.settings.ui.theme.ExpressiveTypography
+import org.lineageos.settings.ui.theme.expressiveBounceClick
 
 class KernelManagerActivity : ComponentActivity() {
     private val viewModel: KernelManagerViewModel by viewModels()
 
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+        enableEdgeToEdge()
+
         setContent {
-            val context = LocalContext.current
-            val darkTheme = isSystemInDarkTheme()
-            val colorScheme = if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-            
-            MaterialTheme(colorScheme = colorScheme) {
+            ExpressiveTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.surface
                 ) {
                     KernelManagerScreen(
                         viewModel = viewModel,
@@ -107,12 +117,12 @@ fun KernelManagerScreen(
     onBackPressed: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val context = LocalContext.current
-    
+
     var visible by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
-        delay(100)
+        delay(50)
         visible = true
     }
 
@@ -120,14 +130,23 @@ fun KernelManagerScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             LargeTopAppBar(
-                title = { Text("Kernel Manager", fontWeight = FontWeight.Bold) },
+                title = {
+                    Text(
+                        stringResource(R.string.kernel_manager_title),
+                        style = ExpressiveTypography.HeadlineMediumEmphasized
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onBackPressed) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.garnet_navigate_back)
+                        )
                     }
                 },
                 scrollBehavior = scrollBehavior,
                 colors = TopAppBarDefaults.largeTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
                     scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer
                 )
             )
@@ -135,8 +154,8 @@ fun KernelManagerScreen(
         floatingActionButton = {
             AnimatedVisibility(
                 visible = visible,
-                enter = scaleIn(spring(dampingRatio = Spring.DampingRatioMediumBouncy)) + fadeIn(),
-                exit = scaleOut() + fadeOut()
+                enter = scaleIn(ExpressiveMotion.FastSpatial) + fadeIn(ExpressiveMotion.effectsFast()),
+                exit = scaleOut(ExpressiveMotion.FastSpatial) + fadeOut(ExpressiveMotion.effectsFast())
             ) {
                 ExtendedFloatingActionButton(
                     onClick = {
@@ -144,24 +163,31 @@ fun KernelManagerScreen(
                         Toast.makeText(context, R.string.settings_applied, Toast.LENGTH_SHORT).show()
                     },
                     icon = { Icon(Icons.Default.Check, contentDescription = "Apply") },
-                    text = { Text("Apply Settings", fontWeight = FontWeight.SemiBold) },
+                    text = {
+                        Text(
+                            "Apply Settings",
+                            style = ExpressiveTypography.LabelLargeEmphasized
+                        )
+                    },
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier.bounceClick(),
+                    shape = ExpressiveShapes.ShapeLarge,
+                    modifier = Modifier.expressiveBounceClick(),
                     elevation = FloatingActionButtonDefaults.elevation(
-                        defaultElevation = 0.dp,
+                        defaultElevation = 6.dp,
                         pressedElevation = 6.dp
                     )
                 )
             }
-        }
+        },
+        containerColor = MaterialTheme.colorScheme.surface
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 100.dp)
+            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 100.dp)
         ) {
             item {
                 AnimatedEntrance(visible = visible, index = 0) {
@@ -172,7 +198,7 @@ fun KernelManagerScreen(
                     )
                 }
             }
-            
+
             item {
                 AnimatedEntrance(visible = visible, index = 1) {
                     FrequencyClusterCard(
@@ -180,12 +206,14 @@ fun KernelManagerScreen(
                         availableFreqs = state.effAvailableFreqs,
                         minFreq = state.effMinFreq,
                         maxFreq = state.effMaxFreq,
+                        iconContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                        iconContentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                         onMinFreqSelected = viewModel::updateEffMinFreq,
                         onMaxFreqSelected = viewModel::updateEffMaxFreq
                     )
                 }
             }
-            
+
             item {
                 AnimatedEntrance(visible = visible, index = 2) {
                     FrequencyClusterCard(
@@ -193,6 +221,8 @@ fun KernelManagerScreen(
                         availableFreqs = state.perfAvailableFreqs,
                         minFreq = state.perfMinFreq,
                         maxFreq = state.perfMaxFreq,
+                        iconContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                        iconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                         onMinFreqSelected = viewModel::updatePerfMinFreq,
                         onMaxFreqSelected = viewModel::updatePerfMaxFreq
                     )
@@ -231,12 +261,22 @@ fun KernelManagerScreen(
 
 @Composable
 fun AnimatedEntrance(visible: Boolean, index: Int, content: @Composable () -> Unit) {
+    var itemVisible by remember { mutableStateOf(false) }
+    LaunchedEffect(visible) {
+        if (visible) {
+            delay(index * 50L)
+            itemVisible = true
+        } else {
+            itemVisible = false
+        }
+    }
+
     AnimatedVisibility(
-        visible = visible,
+        visible = itemVisible,
         enter = slideInVertically(
-            initialOffsetY = { 50 + (index * 20) },
-            animationSpec = spring(dampingRatio = 0.8f, stiffness = Spring.StiffnessLow)
-        ) + fadeIn(animationSpec = tween(durationMillis = 300, delayMillis = index * 50))
+            initialOffsetY = { 32 },
+            animationSpec = ExpressiveMotion.spatialFast()
+        ) + fadeIn(animationSpec = ExpressiveMotion.effectsFast())
     ) {
         content()
     }
@@ -250,54 +290,63 @@ fun GovernorSelectionCard(
     onGovernorSelected: (String) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-    
+
     val containerColor by animateColorAsState(
-        targetValue = if (expanded) MaterialTheme.colorScheme.surfaceContainerHigh else MaterialTheme.colorScheme.surfaceContainerLow,
-        animationSpec = tween(300),
+        targetValue = if (expanded) MaterialTheme.colorScheme.surfaceContainerHigh else MaterialTheme.colorScheme.surfaceContainer,
+        animationSpec = ExpressiveMotion.effectsDefault(),
         label = "govColor"
     )
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .bounceClick()
-            .animateContentSize(spring(stiffness = Spring.StiffnessMediumLow)),
-        shape = MaterialTheme.shapes.extraLarge,
+            .expressiveBounceClick()
+            .animateContentSize(ExpressiveMotion.spatialDefault()),
+        shape = ExpressiveShapes.ShapeExtraLarge,
         colors = CardDefaults.cardColors(containerColor = containerColor)
     ) {
         Column(
-            modifier = Modifier.padding(24.dp)
+            modifier = Modifier.padding(20.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    Icons.Default.Build, 
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(28.dp)
-                )
+                Box(
+                    modifier = Modifier
+                        .size(44.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.tertiaryContainer,
+                            shape = ExpressiveShapes.ShapeMedium
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        Icons.Default.Build,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onTertiaryContainer,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
                 Spacer(modifier = Modifier.width(16.dp))
                 Column {
                     Text(
                         text = "CPU Governor",
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        fontWeight = FontWeight.Bold
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     AnimatedContent(targetState = currentGovernor, label = "govAnim") { gov ->
                         Text(
                             text = "Active: $gov",
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.primary
                         )
                     }
                 }
             }
-            
-            Spacer(modifier = Modifier.height(24.dp))
-            
+
+            Spacer(modifier = Modifier.height(18.dp))
+
             ExposedDropdownMenuBox(
                 expanded = expanded,
-                onExpandedChange = { expanded = it },
+                onExpandedChange = { expanded = it }
             ) {
                 OutlinedTextField(
                     value = currentGovernor,
@@ -312,7 +361,7 @@ fun GovernorSelectionCard(
                         focusedBorderColor = MaterialTheme.colorScheme.primary,
                         unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
                     ),
-                    shape = MaterialTheme.shapes.large
+                    shape = ExpressiveShapes.ShapeLarge
                 )
                 ExposedDropdownMenu(
                     expanded = expanded,
@@ -321,12 +370,12 @@ fun GovernorSelectionCard(
                 ) {
                     governors.forEach { gov ->
                         DropdownMenuItem(
-                            text = { 
+                            text = {
                                 Text(
-                                    text = gov, 
-                                    fontWeight = if (gov == currentGovernor) FontWeight.Bold else FontWeight.Normal,
+                                    text = gov,
+                                    style = if (gov == currentGovernor) ExpressiveTypography.LabelLargeEmphasized else MaterialTheme.typography.bodyMedium,
                                     color = if (gov == currentGovernor) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
-                                ) 
+                                )
                             },
                             onClick = {
                                 onGovernorSelected(gov)
@@ -348,39 +397,50 @@ fun FrequencyClusterCard(
     availableFreqs: List<String>,
     minFreq: String,
     maxFreq: String,
+    iconContainerColor: Color = MaterialTheme.colorScheme.secondaryContainer,
+    iconContentColor: Color = MaterialTheme.colorScheme.onSecondaryContainer,
     onMinFreqSelected: (String) -> Unit,
     onMaxFreqSelected: (String) -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .animateContentSize(spring(stiffness = Spring.StiffnessLow)),
-        shape = MaterialTheme.shapes.extraLarge,
+            .animateContentSize(ExpressiveMotion.spatialDefault()),
+        shape = ExpressiveShapes.ShapeExtraLarge,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+            containerColor = MaterialTheme.colorScheme.surfaceContainer
         )
     ) {
         Column(
-            modifier = Modifier.padding(24.dp)
+            modifier = Modifier.padding(20.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    Icons.Default.Build, 
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.tertiary,
-                    modifier = Modifier.size(28.dp)
-                )
+                Box(
+                    modifier = Modifier
+                        .size(44.dp)
+                        .background(
+                            color = iconContainerColor,
+                            shape = ExpressiveShapes.ShapeMedium
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        Icons.Default.Build,
+                        contentDescription = null,
+                        tint = iconContentColor,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
                 Spacer(modifier = Modifier.width(16.dp))
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
-            
-            Spacer(modifier = Modifier.height(24.dp))
-            
+
+            Spacer(modifier = Modifier.height(18.dp))
+
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier.fillMaxWidth()
@@ -392,7 +452,7 @@ fun FrequencyClusterCard(
                     availableFreqs = availableFreqs,
                     onFreqSelected = onMinFreqSelected
                 )
-                
+
                 FrequencySelector(
                     modifier = Modifier.weight(1f),
                     label = "Max",
@@ -415,7 +475,7 @@ fun FrequencySelector(
     onFreqSelected: (String) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-    
+
     val displayFreq = try {
         "${currentFreq.toInt() / 1000} MHz"
     } catch (e: Exception) {
@@ -425,7 +485,7 @@ fun FrequencySelector(
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = it },
-        modifier = modifier.bounceClick()
+        modifier = modifier.expressiveBounceClick()
     ) {
         OutlinedTextField(
             value = displayFreq,
@@ -433,12 +493,15 @@ fun FrequencySelector(
             readOnly = true,
             label = { Text(label, maxLines = 1) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-            modifier = Modifier.fillMaxWidth().menuAnchor(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .menuAnchor(),
             singleLine = true,
             colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(
-                focusedBorderColor = MaterialTheme.colorScheme.tertiary
+                focusedBorderColor = MaterialTheme.colorScheme.tertiary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
             ),
-            shape = MaterialTheme.shapes.large
+            shape = ExpressiveShapes.ShapeLarge
         )
         ExposedDropdownMenu(
             expanded = expanded,
@@ -452,12 +515,12 @@ fun FrequencySelector(
                     freq
                 }
                 DropdownMenuItem(
-                    text = { 
+                    text = {
                         Text(
                             text = freqDisplay,
-                            fontWeight = if (freq == currentFreq) FontWeight.Bold else FontWeight.Normal,
+                            style = if (freq == currentFreq) ExpressiveTypography.LabelLargeEmphasized else MaterialTheme.typography.bodyMedium,
                             color = if (freq == currentFreq) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurface
-                        ) 
+                        )
                     },
                     onClick = {
                         onFreqSelected(freq)
@@ -478,55 +541,51 @@ fun SwitchCard(
     onCheckedChange: (Boolean) -> Unit
 ) {
     val backgroundColor by animateColorAsState(
-        targetValue = if (checked) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceContainerLow,
-        animationSpec = tween(durationMillis = 300),
+        targetValue = if (checked) MaterialTheme.colorScheme.surfaceContainerHigh else MaterialTheme.colorScheme.surfaceContainer,
+        animationSpec = ExpressiveMotion.effectsDefault(),
         label = "switchBg"
-    )
-    val contentColor by animateColorAsState(
-        targetValue = if (checked) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface,
-        animationSpec = tween(durationMillis = 300),
-        label = "switchContent"
     )
 
     Surface(
         onClick = { onCheckedChange(!checked) },
-        shape = MaterialTheme.shapes.extraLarge,
+        shape = ExpressiveShapes.ShapeExtraLarge,
         color = backgroundColor,
         modifier = Modifier
             .fillMaxWidth()
-            .bounceClick()
-            .animateContentSize(spring(stiffness = Spring.StiffnessLow))
+            .expressiveBounceClick()
+            .animateContentSize(ExpressiveMotion.spatialDefault())
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp, vertical = 20.dp),
+                .defaultMinSize(minHeight = 56.dp)
+                .padding(horizontal = 20.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column(modifier = Modifier.weight(1f).padding(end = 16.dp)) {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleLarge,
-                    color = contentColor,
-                    fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = subtitle,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = contentColor.copy(alpha = 0.8f)
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             Switch(
                 checked = checked,
                 onCheckedChange = null,
-                colors = SwitchDefaults.colors(
-                    checkedThumbColor = MaterialTheme.colorScheme.primary,
-                    checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
-                    uncheckedThumbColor = MaterialTheme.colorScheme.outline,
-                    uncheckedTrackColor = MaterialTheme.colorScheme.surfaceContainerHighest
-                )
+                thumbContent = {
+                    Icon(
+                        imageVector = if (checked) Icons.Filled.Check else Icons.Filled.Close,
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
             )
         }
     }
@@ -543,35 +602,34 @@ fun ActionCard(
 ) {
     Surface(
         onClick = onClick,
-        shape = MaterialTheme.shapes.extraLarge,
+        shape = ExpressiveShapes.ShapeExtraLarge,
         color = containerColor,
         modifier = Modifier
             .fillMaxWidth()
-            .bounceClick()
+            .expressiveBounceClick()
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(24.dp),
+                .padding(20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 imageVector = icon,
                 contentDescription = null,
                 tint = contentColor,
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.size(28.dp)
             )
-            Spacer(modifier = Modifier.width(20.dp))
+            Spacer(modifier = Modifier.width(16.dp))
             Column {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleLarge,
-                    color = contentColor,
-                    fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.titleMedium,
+                    color = contentColor
                 )
                 Text(
                     text = subtitle,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodySmall,
                     color = contentColor.copy(alpha = 0.8f)
                 )
             }

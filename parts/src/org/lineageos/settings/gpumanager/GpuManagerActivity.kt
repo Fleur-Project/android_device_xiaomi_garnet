@@ -17,14 +17,14 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.lineageos.settings.gpumanager.ui.GpuManagerScreen
-import org.lineageos.settings.gpumanager.ui.theme.GpuTheme
+import org.lineageos.settings.ui.theme.ExpressiveTheme
 
 class GpuManagerActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            GpuTheme {
+            ExpressiveTheme {
                 val viewModel: GpuManagerViewModel = viewModel()
                 GpuManagerScreen(
                     viewModel = viewModel,

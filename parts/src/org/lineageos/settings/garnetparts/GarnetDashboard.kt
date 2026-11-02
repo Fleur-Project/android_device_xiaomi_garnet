@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2026 zylhdrXP
+ * Copyright (C) 2026 The LineageOS Project
+ *           (C) 2026 zylhdrXP
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,22 +19,53 @@ package org.lineageos.settings.garnetparts
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.SystemProperties
 import android.view.HapticFeedbackConstants
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material3.carousel.HorizontalMultiBrowseCarousel
 import androidx.compose.material3.carousel.rememberCarouselState
 import androidx.compose.runtime.Composable
@@ -64,37 +96,28 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
 import org.lineageos.settings.R
-import org.lineageos.settings.corecontrol.CoreControlActivity
 import org.lineageos.settings.charge.ChargeActivity
 import org.lineageos.settings.chargeboost.ChargeBoostActivity
-import org.lineageos.settings.kernelmanager.KernelManagerActivity
+import org.lineageos.settings.corecontrol.CoreControlActivity
 import org.lineageos.settings.gpumanager.GpuManagerActivity
-import org.lineageos.settings.saturation.SaturationActivity
+import org.lineageos.settings.kernelmanager.KernelManagerActivity
 import org.lineageos.settings.refreshrate.RefreshSettingsActivity
+import org.lineageos.settings.saturation.SaturationActivity
 import org.lineageos.settings.speaker.ClearSpeakerActivity
 import org.lineageos.settings.thermal.ThermalComposeActivity
+import org.lineageos.settings.ui.theme.ExpressiveMotion
+import org.lineageos.settings.ui.theme.ExpressiveShapes
+import org.lineageos.settings.ui.theme.ExpressiveTheme
+import org.lineageos.settings.ui.theme.ExpressiveTypography
+import org.lineageos.settings.ui.theme.expressiveBounceClick
 
 data class GarnetFeature(
     val title: String,
     val summary: String,
     val iconRes: Int,
     val activityClass: Class<*>
-)
-
-/**
- * Custom Typography that extends the default MD3 type scale with project-specific overrides.
- * Bold/expressive variants are defined here rather than via inline .copy() calls at usage sites.
- */
-private val GarnetTypography = Typography(
-    headlineMedium = Typography().headlineMedium.copy(
-        fontWeight = FontWeight.Black,
-        letterSpacing = 2.sp
-    ),
-    labelMedium = Typography().labelMedium.copy(
-        fontWeight = FontWeight.Bold,
-        letterSpacing = 2.sp
-    )
 )
 
 private fun getSupportedDeviceName(): String? =
@@ -170,38 +193,20 @@ fun GarnetDashboard(onBackPressed: () -> Unit) {
         }
     }
 
-    val darkTheme = isSystemInDarkTheme()
-    val colorScheme = when {
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-        darkTheme -> darkColorScheme()
-        else -> lightColorScheme()
-    }
-
     val scrollState = rememberScrollState()
     var isVisible by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
         isVisible = true
     }
 
-    // Wrap with a custom Typography so downstream composables inherit the expressive overrides
-    // without needing inline .copy() calls at every call site.
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = GarnetTypography
-    ) {
+    ExpressiveTheme {
         Scaffold(
             topBar = {
                 val collapseThreshold = 120f
                 val collapseTarget = (scrollState.value / collapseThreshold).coerceIn(0f, 1f)
-                // [Motion §5] Use spring() for UI-state transitions (header collapse).
                 val collapseProgress by animateFloatAsState(
                     targetValue = collapseTarget,
-                    animationSpec = spring(
-                        dampingRatio = Spring.DampingRatioNoBouncy,
-                        stiffness = Spring.StiffnessMedium
-                    ),
+                    animationSpec = ExpressiveMotion.spatialDefault(),
                     label = "header_collapse_progress"
                 )
                 CollapsingHeader(
@@ -209,7 +214,6 @@ fun GarnetDashboard(onBackPressed: () -> Unit) {
                     onBackPressed = onBackPressed
                 )
             },
-            // [Color §3] Replace deprecated colorScheme.background → surface
             containerColor = MaterialTheme.colorScheme.surface
         ) { padding ->
             Column(
@@ -259,15 +263,13 @@ fun GarnetDashboard(onBackPressed: () -> Unit) {
                     }
                 }
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(4.dp))
 
-                // [Typography §6] Use MaterialTheme.typography token directly; letterSpacing
-                // override is part of GarnetTypography.labelMedium — no inline .copy() needed.
                 StaggeredAnimatedItem(index = 2, isVisible = isVisible) {
                     Text(
                         text = stringResource(R.string.garnet_system_utilities),
                         modifier = Modifier.padding(horizontal = 24.dp),
-                        style = MaterialTheme.typography.labelMedium,
+                        style = ExpressiveTypography.LabelLargeEmphasized,
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
@@ -286,9 +288,7 @@ fun GarnetDashboard(onBackPressed: () -> Unit) {
                         CarouselFeatureItem(
                             feature = feature,
                             context = context,
-                            // [Shape §1] Use MaterialTheme.shapes.extraLarge (28dp) in place of
-                            // the former PremiumCardShape = RoundedCornerShape(32.dp).
-                            modifier = Modifier.maskClip(MaterialTheme.shapes.extraLarge)
+                            modifier = Modifier.maskClip(ExpressiveShapes.ShapeExtraLarge)
                         )
                     }
                 }
@@ -305,93 +305,49 @@ private fun CollapsingHeader(
     onBackPressed: () -> Unit
 ) {
     val navigateBackDescription = stringResource(R.string.garnet_navigate_back)
+    val progress = collapseProgress.coerceIn(0f, 1f)
 
-    // [Motion §5] Use spring() for morph/state animations — back button shape & color.
-    val titleScale by animateFloatAsState(
-        targetValue = 1f - (0.36f * collapseProgress),
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioNoBouncy,
-            stiffness = Spring.StiffnessMedium
-        ),
-        label = "header_title_scale"
-    )
-    val subtitleAlpha by animateFloatAsState(
-        targetValue = 1f - collapseProgress,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioNoBouncy,
-            stiffness = Spring.StiffnessMedium
-        ),
-        label = "header_subtitle_alpha"
-    )
-    val headerHeight by animateDpAsState(
-        targetValue = lerp(180.dp, 110.dp, collapseProgress),
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioNoBouncy,
-            stiffness = Spring.StiffnessMedium
-        ),
-        label = "header_height"
-    )
-    val headerBottomCorner by animateDpAsState(
-        targetValue = lerp(0.dp, 32.dp, collapseProgress),
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioNoBouncy,
-            stiffness = Spring.StiffnessMedium
-        ),
-        label = "header_bottom_corner"
-    )
-    val backButtonCorner by animateDpAsState(
-        targetValue = lerp(12.dp, 24.dp, collapseProgress),
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioNoBouncy,
-            stiffness = Spring.StiffnessMedium
-        ),
-        label = "back_button_corner"
-    )
-    val backButtonBgColor by animateColorAsState(
-        targetValue = androidx.compose.ui.graphics.lerp(
-            MaterialTheme.colorScheme.surfaceContainerHighest,
-            MaterialTheme.colorScheme.primary,
-            collapseProgress
-        ),
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioNoBouncy,
-            stiffness = Spring.StiffnessMedium
-        ),
-        label = "back_button_bg_color"
-    )
-    val backButtonIconColor by animateColorAsState(
-        targetValue = androidx.compose.ui.graphics.lerp(
-            MaterialTheme.colorScheme.onSurface,
-            MaterialTheme.colorScheme.onPrimary,
-            collapseProgress
-        ),
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioNoBouncy,
-            stiffness = Spring.StiffnessMedium
-        ),
-        label = "back_button_icon_color"
+    val titleScale = 1f - (0.36f * progress)
+    val subtitleAlpha = (1f - progress).coerceIn(0f, 1f)
+
+    val headerHeight = lerp(160.dp, 104.dp, progress)
+    val headerBottomCorner = lerp(0.dp, ExpressiveShapes.CornerExtraLarge, progress).coerceAtLeast(0.dp)
+    val backButtonCorner = lerp(12.dp, 24.dp, progress).coerceAtLeast(0.dp)
+
+    val backButtonBgColor = androidx.compose.ui.graphics.lerp(
+        MaterialTheme.colorScheme.surfaceContainerHighest,
+        MaterialTheme.colorScheme.primary,
+        progress
     )
 
-    val titleXOffset = lerp(0.dp, 60.dp, collapseProgress)
-    val titleYOffset = lerp(68.dp, 20.dp, collapseProgress)
+    val backButtonIconColor = androidx.compose.ui.graphics.lerp(
+        MaterialTheme.colorScheme.onSurface,
+        MaterialTheme.colorScheme.onPrimary,
+        progress
+    )
 
-    val backButtonShape: Shape = if (collapseProgress >= 0.98f) {
+    val titleXOffset = lerp(0.dp, 56.dp, progress)
+    val titleYOffset = lerp(60.dp, 16.dp, progress)
+
+    val backButtonShape: Shape = if (progress >= 0.98f) {
         CircleShape
     } else {
-        // [Shape §1] Derive corner radii from MaterialTheme tokens where possible.
-        // backButtonCorner interpolates between shapes.small (≈12dp) → shapes.full (24dp).
-        MaterialTheme.shapes.small.copy(all = androidx.compose.foundation.shape.CornerSize(backButtonCorner))
+        androidx.compose.foundation.shape.RoundedCornerShape(backButtonCorner)
     }
 
-    // [Color §3] Replace deprecated colorScheme.background → surface
+    val headerContainerColor = androidx.compose.ui.graphics.lerp(
+        MaterialTheme.colorScheme.surface,
+        MaterialTheme.colorScheme.surfaceContainer,
+        progress
+    )
+
     Surface(
-        color = MaterialTheme.colorScheme.surface,
-        tonalElevation = lerp(0.dp, 4.dp, collapseProgress),
-        shape = MaterialTheme.shapes.large.copy(
-            topStart = androidx.compose.foundation.shape.CornerSize(0.dp),
-            topEnd = androidx.compose.foundation.shape.CornerSize(0.dp),
-            bottomStart = androidx.compose.foundation.shape.CornerSize(headerBottomCorner),
-            bottomEnd = androidx.compose.foundation.shape.CornerSize(headerBottomCorner)
+        color = headerContainerColor,
+        shape = androidx.compose.foundation.shape.RoundedCornerShape(
+            topStart = 0.dp,
+            topEnd = 0.dp,
+            bottomStart = headerBottomCorner,
+            bottomEnd = headerBottomCorner
         )
     ) {
         Box(
@@ -401,7 +357,6 @@ private fun CollapsingHeader(
                 .statusBarsPadding()
                 .padding(top = 8.dp, start = 16.dp, end = 16.dp)
         ) {
-            // [Accessibility §2] Minimum 48dp touch target; semantics role declared.
             IconButton(
                 onClick = onBackPressed,
                 modifier = Modifier
@@ -419,7 +374,7 @@ private fun CollapsingHeader(
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = null, // described by parent semantics
+                    contentDescription = null,
                     tint = backButtonIconColor
                 )
             }
@@ -434,24 +389,18 @@ private fun CollapsingHeader(
                         transformOrigin = TransformOrigin(0f, 0f)
                     }
             ) {
-                // [Typography §6] headlineMedium with Black/letterSpacing is now part of
-                // GarnetTypography — no inline .copy() required.
                 Text(
                     text = stringResource(R.string.garnet_dashboard_title),
-                    style = MaterialTheme.typography.headlineMedium,
+                    style = ExpressiveTypography.HeadlineMediumEmphasized,
                     color = MaterialTheme.colorScheme.onSurface
                 )
-                // [Typography §6] labelMedium Bold/letterSpacing also in GarnetTypography.
                 Text(
                     text = stringResource(R.string.garnet_dashboard_subtitle),
-                    style = MaterialTheme.typography.labelMedium.copy(
-                        // Subtitle uses a tighter 3sp tracking — a named constant keeps intent clear.
-                        letterSpacing = 3.sp
-                    ),
+                    style = ExpressiveTypography.LabelMediumEmphasized,
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.graphicsLayer {
                         alpha = subtitleAlpha
-                        translationY = -16f * collapseProgress
+                        translationY = -12f * progress
                     }
                 )
             }
@@ -459,13 +408,11 @@ private fun CollapsingHeader(
     }
 }
 
-
 @Composable
 fun HeroBanner(scrollValue: Int = 0) {
     val supportedDeviceName = remember { getSupportedDeviceName() }
     val infiniteTransition = rememberInfiniteTransition(label = "hero_banner")
 
-    // [Motion §5] Use EmphasizedDecelerateEasing (400ms) for enter/ambient animations.
     val animationProgress by infiniteTransition.animateFloat(
         initialValue = 0f,
         targetValue = 1f,
@@ -476,15 +423,15 @@ fun HeroBanner(scrollValue: Int = 0) {
         label = "progress"
     )
 
-    val iconOffset = (animationProgress - 0.5f) * 24f
-    val parallaxOffset = scrollValue * 0.2f
+    val iconOffset = (animationProgress - 0.5f) * 20f
+    val parallaxOffset = scrollValue * 0.15f
 
-    // [Shape §1] MaterialTheme.shapes.extraLarge ≈ 28dp replaces PremiumCardShape (32dp).
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(160.dp),
-        shape = MaterialTheme.shapes.extraLarge,
+            .height(160.dp)
+            .expressiveBounceClick(),
+        shape = ExpressiveShapes.ShapeExtraLarge,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
@@ -500,10 +447,9 @@ fun HeroBanner(scrollValue: Int = 0) {
                         translationY = parallaxOffset * 0.5f
                     }
             ) {
-                // [Shape §1] Standardize hero banner badge to MaterialTheme.shapes.small (8dp).
                 Surface(
                     color = MaterialTheme.colorScheme.surfaceContainerHighest,
-                    shape = MaterialTheme.shapes.small
+                    shape = ExpressiveShapes.ShapeSmall
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -522,8 +468,7 @@ fun HeroBanner(scrollValue: Int = 0) {
                             text = stringResource(R.string.garnet_hero_prompt),
                             style = MaterialTheme.typography.labelSmall.copy(
                                 fontFamily = FontFamily.Monospace,
-                                fontWeight = FontWeight.ExtraBold,
-                                letterSpacing = 0.5.sp
+                                fontWeight = FontWeight.Bold
                             ),
                             color = MaterialTheme.colorScheme.primary
                         )
@@ -532,8 +477,7 @@ fun HeroBanner(scrollValue: Int = 0) {
                             text = stringResource(R.string.garnet_hero_terminal),
                             style = MaterialTheme.typography.labelSmall.copy(
                                 fontFamily = FontFamily.Monospace,
-                                fontWeight = FontWeight.ExtraBold,
-                                letterSpacing = 0.5.sp
+                                fontWeight = FontWeight.Bold
                             ),
                             color = MaterialTheme.colorScheme.tertiary
                         )
@@ -542,25 +486,19 @@ fun HeroBanner(scrollValue: Int = 0) {
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                // [Typography §6] Remove hardcoded lineHeight override; let MD3 tokens govern.
                 Text(
-                    text = supportedDeviceName
-                        ?: stringResource(R.string.garnet_supported_devices),
-                    style = MaterialTheme.typography.titleLarge.copy(
-                        fontWeight = FontWeight.Black,
-                        letterSpacing = 0.5.sp
-                    ),
-                    color = MaterialTheme.colorScheme.onSurface
+                    text = supportedDeviceName ?: stringResource(R.string.garnet_supported_devices),
+                    style = ExpressiveTypography.TitleLargeEmphasized,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
 
                 Spacer(modifier = Modifier.height(4.dp))
 
-                // [Typography §6] Remove hardcoded lineHeight; bodySmall token governs line height.
                 Text(
                     text = stringResource(R.string.garnet_system_performance_optimized),
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        fontWeight = FontWeight.Medium
-                    ),
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -569,7 +507,7 @@ fun HeroBanner(scrollValue: Int = 0) {
                 painter = painterResource(id = R.drawable.ic_garnet),
                 contentDescription = stringResource(R.string.garnet_engine_content_description),
                 modifier = Modifier
-                    .size(140.dp)
+                    .size(136.dp)
                     .align(Alignment.CenterEnd)
                     .offset(x = 10.dp, y = iconOffset.dp)
                     .graphicsLayer {
@@ -590,41 +528,44 @@ fun GroupedFeatureCard(
     stretchHeight: Boolean = false
 ) {
     val isGrouped = features.size > 1
-    // [Color §3] Replace deprecated surfaceVariant → surfaceContainerHighest.
     val cardBgColor = if (isGrouped) {
-        MaterialTheme.colorScheme.surfaceContainerHighest
+        MaterialTheme.colorScheme.surfaceContainerHigh
     } else {
         MaterialTheme.colorScheme.surfaceContainer
     }
 
-    // [Shape §1] MaterialTheme.shapes.extraLarge replaces PremiumCardShape = RoundedCornerShape(32.dp).
     Card(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .expressiveBounceClick(),
         colors = CardDefaults.cardColors(
             containerColor = cardBgColor,
             contentColor = MaterialTheme.colorScheme.onSurface
         ),
-        shape = MaterialTheme.shapes.extraLarge,
+        shape = ExpressiveShapes.ShapeExtraLarge,
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         val columnModifier = if (stretchHeight) Modifier.fillMaxSize() else Modifier
         Column(modifier = columnModifier) {
             features.forEachIndexed { index, feature ->
-                // [Shape §1] Remove hardcoded magic numbers; derive sub-item radii from tokens.
-                // extraLarge corner = 28dp; small corner ≈ 4dp used as the inner "flush" corner.
-                val extraLargeSize = 28.dp
-                val innerSize = 4.dp
+                // Optical roundness: inner = outer - padding (28dp - 16dp = 12dp)
+                val outerCorner = ExpressiveShapes.CornerExtraLarge // 28dp
+                val innerCorner = ExpressiveShapes.CornerSmall // 8dp
                 val itemShape: Shape = when {
-                    !isGrouped -> MaterialTheme.shapes.extraLarge
-                    index == 0 -> MaterialTheme.shapes.extraLarge.copy(
-                        bottomStart = androidx.compose.foundation.shape.CornerSize(innerSize),
-                        bottomEnd = androidx.compose.foundation.shape.CornerSize(innerSize)
+                    !isGrouped -> ExpressiveShapes.ShapeExtraLarge
+                    index == 0 -> androidx.compose.foundation.shape.RoundedCornerShape(
+                        topStart = outerCorner,
+                        topEnd = outerCorner,
+                        bottomStart = innerCorner,
+                        bottomEnd = innerCorner
                     )
-                    index == features.size - 1 -> MaterialTheme.shapes.extraLarge.copy(
-                        topStart = androidx.compose.foundation.shape.CornerSize(innerSize),
-                        topEnd = androidx.compose.foundation.shape.CornerSize(innerSize)
+                    index == features.size - 1 -> androidx.compose.foundation.shape.RoundedCornerShape(
+                        topStart = innerCorner,
+                        topEnd = innerCorner,
+                        bottomStart = outerCorner,
+                        bottomEnd = outerCorner
                     )
-                    else -> MaterialTheme.shapes.extraSmall
+                    else -> ExpressiveShapes.ShapeExtraSmall
                 }
 
                 if (stretchHeight) {
@@ -649,9 +590,9 @@ fun GroupedFeatureCard(
 
                 if (index < features.size - 1) {
                     HorizontalDivider(
-                        modifier = Modifier.padding(horizontal = 22.dp),
+                        modifier = Modifier.padding(horizontal = 20.dp),
                         thickness = 1.dp,
-                        color = if (isGrouped) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.outlineVariant
+                        color = MaterialTheme.colorScheme.outlineVariant
                     )
                 }
             }
@@ -669,17 +610,15 @@ fun CarouselFeatureItem(
     val isGrouped = false
     val openFeatureDescription = stringResource(R.string.garnet_open_feature, feature.title)
 
-    // [Shape §1] extraLarge replaces PremiumCardShape.
     Card(
         onClick = { context.startActivity(Intent(context, feature.activityClass)) },
         modifier = modifier
             .fillMaxSize()
-            // [Accessibility §2] Semantic label for the carousel card action.
             .semantics {
                 contentDescription = openFeatureDescription
                 role = Role.Button
             },
-        shape = MaterialTheme.shapes.extraLarge,
+        shape = ExpressiveShapes.ShapeExtraLarge,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
@@ -692,25 +631,17 @@ fun CarouselFeatureItem(
             FeatureIcon(feature.iconRes, isGrouped)
 
             Column {
-                // [Typography §6] Remove inline letterSpacing / fontWeight overrides where
-                // the intent is purely expressive — keep only where semantically distinct.
                 Text(
                     text = feature.title,
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Black,
-                        letterSpacing = 0.5.sp
-                    ),
+                    style = ExpressiveTypography.TitleMediumEmphasized,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                Spacer(modifier = Modifier.height(6.dp))
-                // [Typography §6] Remove hardcoded lineHeight = 16.sp override.
+                Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = feature.summary,
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    ),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -737,7 +668,6 @@ fun FeatureItemContent(
     Column(
         modifier = modifier
             .clip(shape)
-            // [Accessibility §2] Minimum 48dp touch target; clickable with role + label.
             .defaultMinSize(minHeight = 48.dp)
             .clickable(
                 onClickLabel = stringResource(R.string.garnet_open_feature, feature.title)
@@ -745,28 +675,22 @@ fun FeatureItemContent(
                 context.startActivity(Intent(context, feature.activityClass))
             }
             .semantics { role = Role.Button }
-            .padding(horizontal = 22.dp, vertical = 20.dp),
+            .padding(horizontal = 20.dp, vertical = 18.dp),
         verticalArrangement = Arrangement.Center
     ) {
         FeatureIcon(feature.iconRes, isGrouped)
-        Spacer(modifier = Modifier.height(18.dp))
-        // [Typography §6] Remove inline letterSpacing = 1.sp; keep fontWeight for brand identity.
+        Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = feature.title,
-            style = MaterialTheme.typography.titleMedium.copy(
-                fontWeight = FontWeight.Black
-            )
+            style = MaterialTheme.typography.titleMedium
         )
-        Spacer(modifier = Modifier.height(6.dp))
-        // [Typography §6] Remove hardcoded lineHeight = 16.sp override.
+        Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = feature.summary,
-            style = MaterialTheme.typography.bodySmall.copy(
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
-        Spacer(modifier = Modifier.height(18.dp))
+        Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End
@@ -779,45 +703,33 @@ fun FeatureItemContent(
 @Composable
 private fun FeatureIcon(iconRes: Int, isGrouped: Boolean = false) {
     val targetBgColor = if (isGrouped) MaterialTheme.colorScheme.surfaceContainer else MaterialTheme.colorScheme.primary
-    // [Color §3] When not grouped, icon tint → onPrimary (correct tonal pair for primary bg).
     val iconTint = if (isGrouped) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onPrimary
 
-    // [Motion §5] Use spring() for shape morph animation.
     val cornerRadius by animateDpAsState(
-        targetValue = if (isGrouped) 28.dp else 16.dp,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioNoBouncy,
-            stiffness = Spring.StiffnessMedium
-        ),
+        targetValue = if (isGrouped) ExpressiveShapes.CornerExtraLarge else ExpressiveShapes.CornerLarge,
+        animationSpec = ExpressiveMotion.spatialDefault(),
         label = "shape_morph"
     )
 
     val animatedBgColor by animateColorAsState(
         targetValue = targetBgColor,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioNoBouncy,
-            stiffness = Spring.StiffnessMedium
-        ),
+        animationSpec = ExpressiveMotion.effectsDefault(),
         label = "bg_color_morph"
     )
 
     Box(
         modifier = Modifier
-            .size(56.dp)
+            .size(52.dp)
             .background(
                 color = animatedBgColor,
-                // [Shape §1] cornerRadius is derived from a spring animation between MD3
-                // token values (extraLarge ≈ 28dp, large ≈ 16dp); no raw magic number.
-                shape = MaterialTheme.shapes.medium.copy(
-                    all = androidx.compose.foundation.shape.CornerSize(cornerRadius)
-                )
+                shape = androidx.compose.foundation.shape.RoundedCornerShape(cornerRadius.coerceAtLeast(0.dp))
             ),
         contentAlignment = Alignment.Center
     ) {
         Icon(
             painter = painterResource(id = iconRes),
-            contentDescription = null, // decorative; parent item has a semantic label
-            modifier = Modifier.size(28.dp),
+            contentDescription = null,
+            modifier = Modifier.size(26.dp),
             tint = iconTint
         )
     }
@@ -826,12 +738,11 @@ private fun FeatureIcon(iconRes: Int, isGrouped: Boolean = false) {
 @Composable
 private fun ArrowBubble(isGrouped: Boolean = false) {
     val bgColor = if (isGrouped) MaterialTheme.colorScheme.surfaceContainer else MaterialTheme.colorScheme.primary
-    // [Color §3] When not grouped, icon tint → onPrimary (correct tonal pair for primary bg).
     val iconTint = if (isGrouped) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onPrimary
 
     Box(
         modifier = Modifier
-            .size(38.dp)
+            .size(36.dp)
             .background(
                 color = bgColor,
                 shape = CircleShape
@@ -840,7 +751,7 @@ private fun ArrowBubble(isGrouped: Boolean = false) {
     ) {
         Icon(
             imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-            contentDescription = null, // decorative; parent item has a semantic label
+            contentDescription = null,
             modifier = Modifier.size(16.dp),
             tint = iconTint
         )
@@ -848,10 +759,7 @@ private fun ArrowBubble(isGrouped: Boolean = false) {
 }
 
 /**
- * Staggered enter animation for dashboard items.
- *
- * [Motion §5] Uses EmphasizedDecelerateEasing at 400ms (MD3 enter duration)
- * with a per-index delay to create a stagger effect.
+ * Staggered enter animation using fast spatial translation and default effects fade.
  */
 @Composable
 fun StaggeredAnimatedItem(
@@ -860,18 +768,25 @@ fun StaggeredAnimatedItem(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
-    // MD3 Emphasized Decelerate easing: cubic-bezier(0.05, 0.7, 0.1, 1.0)
-    val emphasizedDecelerateEasing = CubicBezierEasing(0.05f, 0.7f, 0.1f, 1.0f)
+    var itemVisible by remember { mutableStateOf(false) }
+    LaunchedEffect(isVisible) {
+        if (isVisible) {
+            delay(index * 60L)
+            itemVisible = true
+        } else {
+            itemVisible = false
+        }
+    }
 
     val alpha by animateFloatAsState(
-        targetValue = if (isVisible) 1f else 0f,
-        // [Motion §5] 400ms enter duration with EmphasizedDecelerateEasing.
-        animationSpec = tween(durationMillis = 400, delayMillis = index * 100, easing = emphasizedDecelerateEasing),
+        targetValue = if (itemVisible) 1f else 0f,
+        animationSpec = ExpressiveMotion.effectsDefault(),
         label = "alpha_$index"
     )
+
     val translateY by animateDpAsState(
-        targetValue = if (isVisible) 0.dp else 40.dp,
-        animationSpec = tween(durationMillis = 400, delayMillis = index * 100, easing = emphasizedDecelerateEasing),
+        targetValue = if (itemVisible) 0.dp else 28.dp,
+        animationSpec = ExpressiveMotion.spatialFast(),
         label = "translateY_$index"
     )
 
