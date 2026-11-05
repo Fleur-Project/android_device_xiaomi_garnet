@@ -89,6 +89,9 @@ blob_fixups: blob_fixups_user_type = {
     (
         'vendor/bin/hw/vendor.dolby.hardware.dms@2.0-service',
         'vendor/bin/hw/vendor.dolby.media.c2@1.0-service',
+        'vendor/lib64/libcodec2_soft_ac4dec.so',
+        'vendor/lib64/libcodec2_soft_ddpdec.so',
+        'vendor/lib64/libcodec2_store_dolby.so',
         'vendor/lib64/libdlbdsservice.so',
         'vendor/lib64/libdlbpreg.so',
         'vendor/lib64/soundfx/libdlbvol.so',
