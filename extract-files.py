@@ -94,7 +94,9 @@ blob_fixups: blob_fixups_user_type = {
         'vendor/lib64/libcodec2_store_dolby.so',
         'vendor/lib64/libdlbdsservice.so',
         'vendor/lib64/libdlbpreg.so',
+        'vendor/lib64/libswspatializer_ext.so',
         'vendor/lib64/soundfx/libdlbvol.so',
+        'vendor/lib64/soundfx/libswspatializer.so',
         'vendor/lib64/soundfx/libhwdap.so' ,
     ): blob_fixup()
         .add_needed('libstagefright_foundation-v33.so'),
