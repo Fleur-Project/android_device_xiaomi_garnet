@@ -1579,6 +1579,9 @@ vendor/lib64/libdolbyvision.so|ded3529b6c3ed48b6ce44de9d90585c93ea3892d
 vendor/lib64/libstagefright_foundation-swiitchoff.so|8fbfecff9453fa5d467b8a9b8929483fde772b2a
 vendor/lib64/vendor.dolby.dvs@1.0.so|c1aca6dc58ba2ddf954d752c796c23964bea2727
 
+# Media (V4A)
+vendor/lib64/soundfx/libv4a_re.so|1a6afccbcac2e90d02d395fddab6b3ec656e63e2
+
 # Media Config
 vendor/etc/media_codecs_c2_audio.xml
 vendor/etc/media_codecs_parrot_v0.xml
