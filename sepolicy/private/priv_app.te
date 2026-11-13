@@ -1,0 +1,2 @@
+allow priv_app servicemanager:service_manager list;
+allow priv_app viper_control_service:service_manager find;
