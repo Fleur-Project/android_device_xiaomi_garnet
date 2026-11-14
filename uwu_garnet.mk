@@ -18,6 +18,7 @@ $(call inherit-product, device/xiaomi/garnet/device.mk)
 UWU_DEVICE_TYPE := phone
 UWU_SUPPORTS_TELEPHONY := true
 UWU_MAINTAINER := HEYDR
+TARGET_USES_NATIVE_FACEUNLOCK := true
 
 PRODUCT_NAME := uwu_garnet
 PRODUCT_DEVICE := garnet
