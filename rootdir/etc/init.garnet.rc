@@ -110,6 +110,10 @@ service vendor.audio-hal /vendor/bin/hw/android.hardware.audio.service
     task_profiles ProcessCapacityHigh HighPerformance
     onrestart restart audioserver
     socket audio_us_socket_0 seqpacket 0666 system system
+    disabled
+
+on property:persist.vendor.audio.pa.smartpa_type=*
+    enable vendor.audio-hal
 
 service vendor.sensors-hal-multihal /vendor/bin/hw/android.hardware.sensors-service.xiaomi-multihal
     override
